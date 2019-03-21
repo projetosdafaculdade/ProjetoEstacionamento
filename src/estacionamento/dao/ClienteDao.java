@@ -2,8 +2,6 @@ package estacionamento.dao;
 
 import estacionamento.interfaces.DaoI;
 import estacionamento.model.Cliente;
-import estacionamento.model.PesquisarClienteVeiculo;
-import estacionamento.model.Veiculo;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -14,6 +12,13 @@ import java.util.logging.Logger;
 
 public class ClienteDao extends Dao implements DaoI<Cliente> {
 
+    
+    /**
+     * Método para listar os clientes no BD
+     * <br>Retorna lista De clientes
+     * <br><b>Retorna vazia se houver erro</b>
+     * @return List<>
+     */
     @Override
     public List<Cliente> Listar() {
         PreparedStatement stmt;
@@ -38,36 +43,6 @@ public class ClienteDao extends Dao implements DaoI<Cliente> {
         return clientes;
     }
 
-    public List<Cliente> ListarClientesComVeiculo() {
-        PreparedStatement stmt;
-        ResultSet rs;
-        List<Cliente> clientes = new ArrayList<>();
-        String sql = ("select cliente.idcliente,cliente.condutor,veiculo.idVeiculo,cliente.tipocliente, cliente.valorPagoCliente,cliente.ativado "
-                + "from veiculo "
-                + "inner join clienteComVeiculos on "
-                + "clienteComVeiculos.idVeiculo = veiculo.idVeiculo "
-                + "inner join cliente on "
-                + "clienteComVeiculos.idCliente = cliente.idCliente");
-        try {
-            stmt = conexao.prepareStatement(sql);
-            rs = stmt.executeQuery();
-            while (rs.next()) {
-                Cliente cliente = new Cliente();
-                cliente.setIdCliente(rs.getInt(1));
-                cliente.setCondutor(rs.getString(2));
-                VeiculoDao veiculoDao = new VeiculoDao();
-                cliente.setVeiculo(veiculoDao.listarPorId(rs.getInt(3)));
-                cliente.setTipoCliente(rs.getBoolean(4));
-                cliente.setValorPagoCliente(rs.getDouble(5));
-                cliente.setAtivado(rs.getInt(6));
-                clientes.add(cliente);
-            }
-        } catch (SQLException ex) {
-            Logger.getLogger(ClienteDao.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return clientes;
-    }
-
     /**
      * Método para cadastrar um cliente no BD
      * <br>Retorna id do cliente cadastrado
@@ -80,9 +55,11 @@ public class ClienteDao extends Dao implements DaoI<Cliente> {
     public int cadastrar(Cliente obj) {
         PreparedStatement stmt;
         try {
-            String sql = "insert into cliente(";
+            String sql = "insert into cliente(condutor, tipoCliente, valorPagoCliente) values(?,?,?)";
             stmt = conexao.prepareStatement(sql);
-            stmt.setString(1, obj.getCondutor());;
+            stmt.setString(1, obj.getCondutor());
+            stmt.setBoolean(2, obj.isTipoCiente());
+            stmt.setDouble(3, obj.getValorPagoCliente());
             stmt.executeUpdate();
 
         } catch (SQLException ex) {
@@ -149,41 +126,5 @@ public class ClienteDao extends Dao implements DaoI<Cliente> {
         return clientesTemp;
     }
 
-    public List<Cliente> listarTodosVeiculosComSemClientes(String placa) {
-        PreparedStatement stmt;
-        List<Cliente> clienteTemp = new ArrayList<>();
-        try {
-            String sql = ("       SELECT veiculo.idveiculo, veiculo.placa, veiculo.cor, veiculo.modelo, veiculo.marca, veiculo.ativado, cliente.idcliente, cliente.tipocliente,cliente.condutor, cliente.ativado "
-                    + " from veiculo "
-                    + " left join clienteComVeiculos on "
-                    + " veiculo.idVeiculo = clienteComVeiculos.idVeiculo "
-                    + " left join cliente on "
-                    + " cliente.idcliente = clienteComVeiculos.idcliente "
-                    + "  where veiculo.placa like '" + placa + "%'");
-
-            stmt = conexao.prepareStatement(sql);
-            ResultSet rs = stmt.executeQuery();
-            while (rs.next()) {
-                Cliente  cliente = new Cliente();
-                Veiculo veiculo = new Veiculo();
-                veiculo.setIdVeiculo(rs.getInt(1));
-                veiculo.setPlaca(rs.getString(2));
-                veiculo.setCor(rs.getString(3));
-                veiculo.setModelo(rs.getString(4));
-                veiculo.setMarca(rs.getString(5));
-                veiculo.setAtivado(rs.getInt(6));
-                cliente.setVeiculo((List<Veiculo>) veiculo);
-                cliente.setIdCliente(rs.getInt(7));
-                cliente.setTipoCliente(rs.getBoolean(8));
-                cliente.setCondutor(rs.getString(9));
-                cliente.setAtivado(rs.getInt(10));
-                clienteTemp.add(cliente);
-            }
-        } catch (SQLException ex) {
-            Logger.getLogger(OrdemServicoDao.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return clienteTemp;
-
-    }
 
 }

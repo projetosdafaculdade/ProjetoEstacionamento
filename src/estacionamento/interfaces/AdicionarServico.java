@@ -1,13 +1,13 @@
 package estacionamento.interfaces;
 
-import estacionamento.dao.PesquisarClienteVeiculoDao;
-import estacionamento.model.PesquisarClienteVeiculo;
+import estacionamento.dao.ClienteRelacionamentoVeiculoDao;
+import estacionamento.model.Cliente;
 import java.awt.Frame;
 
 public class AdicionarServico extends javax.swing.JDialog {
 
     Frame parent;
-    PesquisarClienteVeiculo pesquisarClienteVeiculo;
+    Cliente cliente;
 
     public AdicionarServico(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
@@ -15,15 +15,17 @@ public class AdicionarServico extends javax.swing.JDialog {
         initComponents();
         pnlPlaca.setVisible(true);
         pnlServico.setVisible(false);
-        pesquisarClienteVeiculo = new PesquisarClienteVeiculo();
+        cliente = new Cliente();
     }
 
     public void lerDados() {
-            jtfCorServico.setText(pesquisarClienteVeiculo.getCor());
-            jtfMarcaServico.setText(pesquisarClienteVeiculo.getMarca());
-            jtfModeloServico.setText(pesquisarClienteVeiculo.getModelo());
-            jtfPlacaServico.setText(pesquisarClienteVeiculo.getPlaca());
-            jtfCondutorServico.setText(pesquisarClienteVeiculo.getCondutor());
+        if (!cliente.getVeiculo().isEmpty()) {
+            jtfCorServico.setText(cliente.getVeiculo().get(0).getCor());
+            jtfMarcaServico.setText(cliente.getVeiculo().get(0).getMarca());
+            jtfModeloServico.setText(cliente.getVeiculo().get(0).getModelo());
+            jtfPlacaServico.setText(cliente.getVeiculo().get(0).getPlaca());
+            jtfCondutorServico.setText(cliente.getCondutor());
+        }
     }
 
     @SuppressWarnings("unchecked")
@@ -295,7 +297,7 @@ public class AdicionarServico extends javax.swing.JDialog {
                 .addGroup(pnlServicoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jPanel10, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(14, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         getContentPane().add(pnlServico);
@@ -310,16 +312,16 @@ public class AdicionarServico extends javax.swing.JDialog {
         if (placa.trim().length() == 8) {
             pnlPlaca.setVisible(false);
             pnlServico.setVisible(true);
-            PesquisarClienteVeiculoDao pesquisarClienteVeiculoDao = new PesquisarClienteVeiculoDao();
-            pesquisarClienteVeiculo = pesquisarClienteVeiculoDao.buscarPorPlaca(placa);
-            if (pesquisarClienteVeiculoDao.buscarPorPlaca(placa) != null) {
+            ClienteRelacionamentoVeiculoDao clienteRelacionamentoVeiculoDao = new ClienteRelacionamentoVeiculoDao();
+            cliente = clienteRelacionamentoVeiculoDao.buscarPorPlaca(placa);
+            if (clienteRelacionamentoVeiculoDao.buscarPorPlaca(placa) != null) {
                 lerDados();
             }
-            }
+        }
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        MenuCliente menuCliente = new MenuCliente(parent, rootPaneCheckingEnabled, pesquisarClienteVeiculo);
+        MenuCliente menuCliente = new MenuCliente(parent, rootPaneCheckingEnabled, cliente);
         menuCliente.setVisible(true);
         lerDados();
     }//GEN-LAST:event_jButton2ActionPerformed

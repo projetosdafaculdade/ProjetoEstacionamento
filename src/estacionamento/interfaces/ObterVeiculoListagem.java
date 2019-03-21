@@ -1,29 +1,41 @@
 package estacionamento.interfaces;
 
 import estacionamento.dao.ClienteDao;
-import estacionamento.dao.PesquisarClienteVeiculoDao;
+import estacionamento.dao.ClienteRelacionamentoVeiculoDao;
 import estacionamento.dao.VeiculoDao;
 import estacionamento.model.Cliente;
 import estacionamento.model.PesquisarClienteVeiculo;
 import estacionamento.model.Veiculo;
 import java.util.ArrayList;
 import java.util.List;
+import javax.swing.JPanel;
+import javax.swing.border.Border;
+import javax.swing.plaf.BorderUIResource;
 import javax.swing.table.DefaultTableModel;
 
 public class ObterVeiculoListagem extends javax.swing.JDialog {
 
-    public static Veiculo veiculo;
+    public Veiculo veiculo;
     List<PesquisarClienteVeiculo> pesquisarClienteVeiculos;
     List<Cliente> clientes;
     DefaultTableModel modelo;
     Cliente cliente;
+    ClienteDao clienteDao;
+    ClienteRelacionamentoVeiculoDao clienteRelacionamentoVeiculoDao;
 
     public ObterVeiculoListagem(java.awt.Frame parent, boolean modal, Cliente cliente) {
         super(parent, modal);
         initComponents();
+        this.veiculo = new Veiculo();
         this.cliente = cliente;
-        modelo = (DefaultTableModel) tblVeiculos.getModel();
+        this.clienteDao = new ClienteDao();
+        this.clienteRelacionamentoVeiculoDao = new ClienteRelacionamentoVeiculoDao();
+        this.modelo = (DefaultTableModel) tblVeiculos.getModel();
+        jpnlCor.setVisible(false);
+        jpnlMarca.setVisible(false);
+        jpnlModelo.setVisible(false);
         lerTodosVeiculos();
+
     }
 
     private void lerTodosVeiculos() {
@@ -32,26 +44,31 @@ public class ObterVeiculoListagem extends javax.swing.JDialog {
             modelo.removeRow(0);
         }
 
-        ClienteDao clienteDao = new ClienteDao();
-        List<Cliente> clientesSelecionados = clienteDao.ListarClientesComVeiculo();
-        List<Cliente> clienteTemp = new ArrayList<>();
-        for (int i = 0; clientesSelecionados.size() > i; i++) {
-            if (clientesSelecionados.get(i).getAtivado() == 1) {
-                for (Veiculo veiculo : clientesSelecionados.get(i).getVeiculo()) {
+        List<Cliente> clientesSelecionados = clienteRelacionamentoVeiculoDao.listarTodosVeiculosComESemClientes("");
+        List<Cliente> clientesTemp = new ArrayList<>();
+        for (Cliente clienteTemp : clientesSelecionados) {
+
+            for (Veiculo veiculo : clienteTemp.getVeiculo()) {
+                if (veiculo.getAtivado() == 1) {
+                    String cliente;
+                    if (clienteTemp.getCondutor() == null) {
+                        cliente = "Veículo Sem Dono";
+                    } else {
+                        cliente = clienteTemp.getCondutor();
+                    }
                     Object[] linha = new Object[]{
-                        clientesSelecionados.get(i).getCondutor(),
+                        cliente,
                         veiculo.getPlaca(),
                         veiculo.getMarca(),
                         veiculo.getModelo(),
-                        veiculo.getCor(),
-                        veiculo.getAtivado()
-                    };
+                        veiculo.getCor(),};
                     modelo.addRow(linha);
-                    clienteTemp.add(clientesSelecionados.get(i));
+                    clientesTemp.add(clienteTemp);
                 }
+
             }
         }
-        clientes = clienteTemp;
+        clientes = clientesTemp;
     }
 
     @SuppressWarnings("unchecked")
@@ -61,10 +78,16 @@ public class ObterVeiculoListagem extends javax.swing.JDialog {
         jPanel5 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         tblVeiculos = new javax.swing.JTable();
-        jButton2 = new javax.swing.JButton();
+        btnSelecionar = new javax.swing.JButton();
         jPanel10 = new javax.swing.JPanel();
         jtfPlaca = new javax.swing.JFormattedTextField();
         btnAdicionar = new javax.swing.JButton();
+        jpnlMarca = new javax.swing.JPanel();
+        jtfMarcaServico = new javax.swing.JTextField();
+        jpnlModelo = new javax.swing.JPanel();
+        jtfModeloServico = new javax.swing.JTextField();
+        jpnlCor = new javax.swing.JPanel();
+        jtfCorServico = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -79,23 +102,31 @@ public class ObterVeiculoListagem extends javax.swing.JDialog {
             new String [] {
                 "Dono", "Placa", "Marca", "Modelo", "Cor"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         jScrollPane1.setViewportView(tblVeiculos);
         if (tblVeiculos.getColumnModel().getColumnCount() > 0) {
             tblVeiculos.getColumnModel().getColumn(0).setMinWidth(180);
         }
 
         jPanel5.add(jScrollPane1);
-        jScrollPane1.setBounds(13, 86, 627, 330);
+        jScrollPane1.setBounds(13, 86, 610, 330);
 
-        jButton2.setText("Selecionar");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
+        btnSelecionar.setText("Selecionar");
+        btnSelecionar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
+                btnSelecionarActionPerformed(evt);
             }
         });
-        jPanel5.add(jButton2);
-        jButton2.setBounds(253, 422, 143, 23);
+        jPanel5.add(btnSelecionar);
+        btnSelecionar.setBounds(253, 422, 143, 23);
 
         jPanel10.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createTitledBorder(new javax.swing.border.LineBorder(new java.awt.Color(102, 102, 102), 1, true), "", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 11), new java.awt.Color(102, 102, 102)), "Placa", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 11), new java.awt.Color(51, 51, 51))); // NOI18N
         jPanel10.setAutoscrolls(true);
@@ -107,9 +138,6 @@ public class ObterVeiculoListagem extends javax.swing.JDialog {
         }
         jtfPlaca.setFocusLostBehavior(javax.swing.JFormattedTextField.PERSIST);
         jtfPlaca.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                jtfPlacaKeyPressed(evt);
-            }
             public void keyReleased(java.awt.event.KeyEvent evt) {
                 jtfPlacaKeyReleased(evt);
             }
@@ -127,15 +155,77 @@ public class ObterVeiculoListagem extends javax.swing.JDialog {
         );
 
         jPanel5.add(jPanel10);
-        jPanel10.setBounds(260, 25, 110, 40);
+        jPanel10.setBounds(20, 30, 110, 40);
 
         btnAdicionar.setText("Adicionar");
         btnAdicionar.setToolTipText("");
         btnAdicionar.setAlignmentX(0.5F);
         btnAdicionar.setEnabled(false);
         btnAdicionar.setInheritsPopupMenu(true);
+        btnAdicionar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAdicionarActionPerformed(evt);
+            }
+        });
         jPanel5.add(btnAdicionar);
-        btnAdicionar.setBounds(380, 30, 83, 36);
+        btnAdicionar.setBounds(140, 36, 83, 36);
+
+        jpnlMarca.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createTitledBorder(new javax.swing.border.LineBorder(new java.awt.Color(102, 102, 102), 1, true), "", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 11), new java.awt.Color(102, 102, 102)), "Marca", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 11), new java.awt.Color(51, 51, 51))); // NOI18N
+        jpnlMarca.setAutoscrolls(true);
+
+        javax.swing.GroupLayout jpnlMarcaLayout = new javax.swing.GroupLayout(jpnlMarca);
+        jpnlMarca.setLayout(jpnlMarcaLayout);
+        jpnlMarcaLayout.setHorizontalGroup(
+            jpnlMarcaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jtfMarcaServico)
+        );
+        jpnlMarcaLayout.setVerticalGroup(
+            jpnlMarcaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jpnlMarcaLayout.createSequentialGroup()
+                .addComponent(jtfMarcaServico, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 2, Short.MAX_VALUE))
+        );
+
+        jPanel5.add(jpnlMarca);
+        jpnlMarca.setBounds(240, 30, 110, 41);
+
+        jpnlModelo.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createTitledBorder(new javax.swing.border.LineBorder(new java.awt.Color(102, 102, 102), 1, true), "", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 11), new java.awt.Color(102, 102, 102)), "Modelo", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 11), new java.awt.Color(51, 51, 51))); // NOI18N
+        jpnlModelo.setAutoscrolls(true);
+
+        javax.swing.GroupLayout jpnlModeloLayout = new javax.swing.GroupLayout(jpnlModelo);
+        jpnlModelo.setLayout(jpnlModeloLayout);
+        jpnlModeloLayout.setHorizontalGroup(
+            jpnlModeloLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jtfModeloServico, javax.swing.GroupLayout.DEFAULT_SIZE, 112, Short.MAX_VALUE)
+        );
+        jpnlModeloLayout.setVerticalGroup(
+            jpnlModeloLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jpnlModeloLayout.createSequentialGroup()
+                .addComponent(jtfModeloServico, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 2, Short.MAX_VALUE))
+        );
+
+        jPanel5.add(jpnlModelo);
+        jpnlModelo.setBounds(360, 30, 118, 41);
+
+        jpnlCor.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createTitledBorder(new javax.swing.border.LineBorder(new java.awt.Color(102, 102, 102), 1, true), "", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 11), new java.awt.Color(102, 102, 102)), "Cor", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 11), new java.awt.Color(51, 51, 51))); // NOI18N
+        jpnlCor.setAutoscrolls(true);
+
+        javax.swing.GroupLayout jpnlCorLayout = new javax.swing.GroupLayout(jpnlCor);
+        jpnlCor.setLayout(jpnlCorLayout);
+        jpnlCorLayout.setHorizontalGroup(
+            jpnlCorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jtfCorServico, javax.swing.GroupLayout.DEFAULT_SIZE, 112, Short.MAX_VALUE)
+        );
+        jpnlCorLayout.setVerticalGroup(
+            jpnlCorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jpnlCorLayout.createSequentialGroup()
+                .addComponent(jtfCorServico, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 2, Short.MAX_VALUE))
+        );
+
+        jPanel5.add(jpnlCor);
+        jpnlCor.setBounds(490, 30, 118, 41);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -143,8 +233,8 @@ public class ObterVeiculoListagem extends javax.swing.JDialog {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
+                .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, 637, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -153,31 +243,36 @@ public class ObterVeiculoListagem extends javax.swing.JDialog {
                 .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, 459, Short.MAX_VALUE))
         );
 
-        setSize(new java.awt.Dimension(689, 508));
+        setSize(new java.awt.Dimension(673, 508));
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        PesquisarClienteVeiculo veiculoSelecionado = pesquisarClienteVeiculos.get(tblVeiculos.getSelectedRow());
-        veiculo = new Veiculo();
-        veiculo.setAtivado(veiculoSelecionado.getAtivadoVeiculo());
-        veiculo.setCor(veiculoSelecionado.getCor());
-        veiculo.setIdVeiculo(veiculoSelecionado.getIdVeiculo());
-        veiculo.setMarca(veiculoSelecionado.getMarca());
-        veiculo.setModelo(veiculoSelecionado.getModelo());
-        veiculo.setPlaca(veiculoSelecionado.getPlaca());
-        VeiculoDao veiculoDao = new VeiculoDao();
-        veiculoDao.cadastrar(veiculo);
-    }//GEN-LAST:event_jButton2ActionPerformed
+    private void btnSelecionarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSelecionarActionPerformed
+        Cliente clienteSelecionado = clientes.get(tblVeiculos.getSelectedRow());
+//        clienteRelacionamentoVeiculoDao.
+//        veiculoDao.alterar(veiculo);
+        if (clienteRelacionamentoVeiculoDao.verificarExistência(clienteSelecionado.getVeiculo().get(0).getIdVeiculo())) {
+            clienteRelacionamentoVeiculoDao.alterarRelacionamento(cliente.getIdCliente(), clienteSelecionado.getVeiculo().get(0).getIdVeiculo());
+        } else {
+            clienteRelacionamentoVeiculoDao.criarRelacionamento(cliente.getIdCliente(), clienteSelecionado.getVeiculo().get(0).getIdVeiculo());
+
+        }
+        dispose();
+    }//GEN-LAST:event_btnSelecionarActionPerformed
 
     private void jtfPlacaKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jtfPlacaKeyReleased
         lerVeiculoPesquisado();
     }//GEN-LAST:event_jtfPlacaKeyReleased
 
-    private void jtfPlacaKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jtfPlacaKeyPressed
-
-
-    }//GEN-LAST:event_jtfPlacaKeyPressed
+    private void btnAdicionarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAdicionarActionPerformed
+        VeiculoDao veiculoDao = new VeiculoDao();
+        veiculo.setCor(jtfCorServico.getText());
+        veiculo.setMarca(jtfMarcaServico.getText());
+        veiculo.setModelo(jtfModeloServico.getText());
+        veiculo.setPlaca(jtfPlaca.getText());
+        veiculoDao.cadastrar(veiculo);
+        lerVeiculoPesquisado();
+    }//GEN-LAST:event_btnAdicionarActionPerformed
 
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
@@ -187,7 +282,7 @@ public class ObterVeiculoListagem extends javax.swing.JDialog {
          */
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
+                if ("Windows".equals(info.getName())) {
                     javax.swing.UIManager.setLookAndFeel(info.getClassName());
                     break;
 
@@ -225,10 +320,16 @@ public class ObterVeiculoListagem extends javax.swing.JDialog {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAdicionar;
-    private javax.swing.JButton jButton2;
+    private javax.swing.JButton btnSelecionar;
     private javax.swing.JPanel jPanel10;
     private javax.swing.JPanel jPanel5;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JPanel jpnlCor;
+    private javax.swing.JPanel jpnlMarca;
+    private javax.swing.JPanel jpnlModelo;
+    private javax.swing.JTextField jtfCorServico;
+    private javax.swing.JTextField jtfMarcaServico;
+    private javax.swing.JTextField jtfModeloServico;
     private javax.swing.JFormattedTextField jtfPlaca;
     private javax.swing.JTable tblVeiculos;
     // End of variables declaration//GEN-END:variables
@@ -237,37 +338,54 @@ public class ObterVeiculoListagem extends javax.swing.JDialog {
         while (modelo.getRowCount() > 0) {
             modelo.removeRow(0);
         }
-        ClienteDao clienteDao = new ClienteDao();
         if (jtfPlaca.getText().replaceAll(" ", "").length() <= 3) {
-            pesquisarClienteVeiculos = clienteDao.listarTodosVeiculosComSemClientes((jtfPlaca.getText().replaceAll(" ", "")).replaceAll("-", "").trim());
+            clientes = clienteRelacionamentoVeiculoDao.listarTodosVeiculosComESemClientes((jtfPlaca.getText().replaceAll(" ", "")).replaceAll("-", "").trim());
         } else {
-            pesquisarClienteVeiculos = pesquisarClienteVeiculoDao.listarPorPlaca((jtfPlaca.getText().replaceAll(" ", "")));
+            clientes = clienteRelacionamentoVeiculoDao.listarTodosVeiculosComESemClientes((jtfPlaca.getText().replaceAll(" ", "")));
         }
-        List<PesquisarClienteVeiculo> pesquisarClienteVeiculoTemp = new ArrayList<>();
-        for (int i = 0; pesquisarClienteVeiculos.size() > i; i++) {
-            if (pesquisarClienteVeiculos.get(i).getAtivadoVeiculo() == 1) {
-                Object[] linha = new Object[]{
-                    pesquisarClienteVeiculos.get(i).getCondutor(),
-                    pesquisarClienteVeiculos.get(i).getPlaca(),
-                    pesquisarClienteVeiculos.get(i).getMarca(),
-                    pesquisarClienteVeiculos.get(i).getModelo(),
-                    pesquisarClienteVeiculos.get(i).getCor(),
-                    pesquisarClienteVeiculos.get(i).getAtivadoVeiculo()
-                };
-                modelo.addRow(linha);
-                pesquisarClienteVeiculoTemp.add(pesquisarClienteVeiculos.get(i));
+        List<Cliente> clientesTemp = new ArrayList<>();
+        for (Cliente clienteTemp : clientes) {
+            for (Veiculo veiculoTemp : clienteTemp.getVeiculo()) {
+                if (veiculoTemp.getAtivado() == 1) {
+                    String clienteString;
+                    if (clienteTemp.getCondutor() == null) {
+                        clienteString = "Veículo Sem Dono";
+                    } else {
+                        clienteString = clienteTemp.getCondutor();
+                    }
+                    Object[] linha = new Object[]{
+                        clienteString,
+                        veiculoTemp.getPlaca(),
+                        veiculoTemp.getMarca(),
+                        veiculoTemp.getModelo(),
+                        veiculoTemp.getCor(),
+                        veiculoTemp.getAtivado()
+                    };
+                    modelo.addRow(linha);
+                    clientesTemp.add(clienteTemp);
+                }
             }
+
         }
-        if (pesquisarClienteVeiculoTemp.isEmpty()) {
+        if (clientesTemp.isEmpty()) {
             if (jtfPlaca.getText().replaceAll(" ", "").length() == 8) {
                 btnAdicionar.setEnabled(true);
+                jpnlCor.setVisible(true);
+                jpnlMarca.setVisible(true);
+                jpnlModelo.setVisible(true);
             } else {
                 btnAdicionar.setEnabled(false);
+                jpnlCor.setVisible(false);
+                jpnlMarca.setVisible(false);
+                jpnlModelo.setVisible(false);
             }
         } else {
             btnAdicionar.setEnabled(false);
+            jpnlCor.setVisible(false);
+            jpnlMarca.setVisible(false);
+            jpnlModelo.setVisible(false);
         }
-        pesquisarClienteVeiculos = pesquisarClienteVeiculoTemp;
+        clientes = clientesTemp;
     }
 
 }

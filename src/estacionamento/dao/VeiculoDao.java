@@ -19,7 +19,19 @@ public class VeiculoDao extends Dao implements DaoI<Veiculo> {
 
     @Override
     public int cadastrar(Veiculo obj) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        PreparedStatement stmt;
+        try {
+            String sql = "insert into veiculo(cor, placa, modelo, marca) values(?,?,?,?)";
+            stmt = conexao.prepareStatement(sql);
+            stmt.setString(1, obj.getCor());
+            stmt.setString(2, obj.getPlaca());
+            stmt.setString(3, obj.getModelo());
+            stmt.setString(4, obj.getMarca());
+            stmt.executeUpdate();
+        } catch (SQLException ex) {
+            Logger.getLogger(ClienteDao.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return 0;
     }
 
     @Override

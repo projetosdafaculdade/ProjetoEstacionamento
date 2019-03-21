@@ -1,11 +1,14 @@
 package estacionamento.interfaces;
 
-import estacionamento.dao.PesquisarClienteVeiculoDao;
+import estacionamento.dao.ClienteRelacionamentoVeiculoDao;
 import estacionamento.dao.VeiculoDao;
 import estacionamento.model.Cliente;
-import estacionamento.model.PesquisarClienteVeiculo;
 import estacionamento.model.Veiculo;
 import java.awt.Frame;
+import java.awt.JobAttributes;
+import java.util.ArrayList;
+import java.util.List;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 public class MenuCliente extends javax.swing.JDialog {
@@ -13,16 +16,16 @@ public class MenuCliente extends javax.swing.JDialog {
     Frame parent;
     Cliente cliente;
     Veiculo veiculo;
-    PesquisarClienteVeiculo pesquisarClienteVeiculo;
+    List<Veiculo> veiculos;
     DefaultTableModel modelo;
 
-    public MenuCliente(java.awt.Frame parent, boolean modal, PesquisarClienteVeiculo pesquisarClienteVeiculo) {
+    public MenuCliente(java.awt.Frame parent, boolean modal, Cliente cliente) {
         super(parent, modal);
         this.parent = parent;
-        this.pesquisarClienteVeiculo = pesquisarClienteVeiculo;
+        this.cliente = cliente;
+        veiculos = new ArrayList<>();
         initComponents();
         modelo = (DefaultTableModel) tblVeiculos.getModel();
-        cliente = new Cliente();
         lerDadosInicias();
     }
 
@@ -35,11 +38,11 @@ public class MenuCliente extends javax.swing.JDialog {
         jPanel5 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         tblVeiculos = new javax.swing.JTable();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
+        btnAdicionar = new javax.swing.JButton();
+        btnRemover = new javax.swing.JButton();
         jPanel1 = new javax.swing.JPanel();
         jtfCondutor = new javax.swing.JTextField();
-        jButton3 = new javax.swing.JButton();
+        btnTrocarCliente = new javax.swing.JButton();
         jPanel11 = new javax.swing.JPanel();
         jtfTipoCliente = new javax.swing.JTextField();
         jButton4 = new javax.swing.JButton();
@@ -69,14 +72,19 @@ public class MenuCliente extends javax.swing.JDialog {
         });
         jScrollPane1.setViewportView(tblVeiculos);
 
-        jButton1.setText("Adicionar");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        btnAdicionar.setText("Adicionar");
+        btnAdicionar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                btnAdicionarActionPerformed(evt);
             }
         });
 
-        jButton2.setText("Remover");
+        btnRemover.setText("Remover");
+        btnRemover.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRemoverActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
         jPanel5.setLayout(jPanel5Layout);
@@ -87,9 +95,9 @@ public class MenuCliente extends javax.swing.JDialog {
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane1)
                     .addGroup(jPanel5Layout.createSequentialGroup()
-                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 252, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(btnAdicionar, javax.swing.GroupLayout.PREFERRED_SIZE, 252, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 252, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(btnRemover, javax.swing.GroupLayout.PREFERRED_SIZE, 252, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
         jPanel5Layout.setVerticalGroup(
@@ -99,24 +107,23 @@ public class MenuCliente extends javax.swing.JDialog {
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 123, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton1)
-                    .addComponent(jButton2)))
+                    .addComponent(btnAdicionar)
+                    .addComponent(btnRemover)))
         );
 
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createTitledBorder(new javax.swing.border.LineBorder(new java.awt.Color(102, 102, 102), 1, true), "", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 11), new java.awt.Color(102, 102, 102)), "Nome", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 11), new java.awt.Color(51, 51, 51))); // NOI18N
 
         jtfCondutor.setEditable(false);
-        jtfCondutor.setEnabled(false);
         jtfCondutor.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jtfCondutorActionPerformed(evt);
             }
         });
 
-        jButton3.setText("...");
-        jButton3.addActionListener(new java.awt.event.ActionListener() {
+        btnTrocarCliente.setText("...");
+        btnTrocarCliente.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton3ActionPerformed(evt);
+                btnTrocarClienteActionPerformed(evt);
             }
         });
 
@@ -128,7 +135,7 @@ public class MenuCliente extends javax.swing.JDialog {
                 .addContainerGap()
                 .addComponent(jtfCondutor, javax.swing.GroupLayout.DEFAULT_SIZE, 348, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(btnTrocarCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(6, 6, 6))
         );
         jPanel1Layout.setVerticalGroup(
@@ -136,14 +143,14 @@ public class MenuCliente extends javax.swing.JDialog {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jtfCondutor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton3))
+                    .addComponent(btnTrocarCliente))
                 .addGap(0, 0, Short.MAX_VALUE))
         );
 
         jPanel11.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createTitledBorder(new javax.swing.border.LineBorder(new java.awt.Color(102, 102, 102), 1, true), "", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 11), new java.awt.Color(102, 102, 102)), "Tipo de Cliente", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 11), new java.awt.Color(51, 51, 51))); // NOI18N
         jPanel11.setAutoscrolls(true);
 
-        jtfTipoCliente.setEnabled(false);
+        jtfTipoCliente.setEditable(false);
 
         javax.swing.GroupLayout jPanel11Layout = new javax.swing.GroupLayout(jPanel11);
         jPanel11.setLayout(jPanel11Layout);
@@ -219,23 +226,37 @@ public class MenuCliente extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-
+        if (tblVeiculos.getSelectedRow() == -1) {
+            JOptionPane.showMessageDialog(null, "Por favor escolha um veículo!");
+        } else {
+            veiculo = veiculos.get(tblVeiculos.getSelectedRow());
+            cliente.getVeiculo().clear();
+            cliente.addVeiculo(veiculo);
+            dispose();
+        }
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void jtfCondutorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jtfCondutorActionPerformed
 
     }//GEN-LAST:event_jtfCondutorActionPerformed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void btnAdicionarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAdicionarActionPerformed
         ObterVeiculoListagem obterVeiculoListagem = new ObterVeiculoListagem(parent, rootPaneCheckingEnabled, cliente);
         obterVeiculoListagem.setVisible(true);
-    }//GEN-LAST:event_jButton1ActionPerformed
+        lerDadosCliente();
+    }//GEN-LAST:event_btnAdicionarActionPerformed
 
-    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+    private void btnTrocarClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTrocarClienteActionPerformed
         ObterClienteListagem obterClienteListagem = new ObterClienteListagem(parent, rootPaneCheckingEnabled, cliente);
         obterClienteListagem.setVisible(true);
         lerDadosCliente();
-    }//GEN-LAST:event_jButton3ActionPerformed
+    }//GEN-LAST:event_btnTrocarClienteActionPerformed
+
+    private void btnRemoverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRemoverActionPerformed
+        ClienteRelacionamentoVeiculoDao clienteRelacionamentoVeiculoDao = new ClienteRelacionamentoVeiculoDao();
+        clienteRelacionamentoVeiculoDao.removerRelacionamento(veiculos.get(tblVeiculos.getSelectedRow()).getIdVeiculo());
+        lerDadosCliente();
+    }//GEN-LAST:event_btnRemoverActionPerformed
 
     public static void main(String args[]) {
         try {
@@ -259,7 +280,7 @@ public class MenuCliente extends javax.swing.JDialog {
         /* Create and display the dialog */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                MenuCliente dialog = new MenuCliente(new javax.swing.JFrame(), true, new PesquisarClienteVeiculo());
+                MenuCliente dialog = new MenuCliente(new javax.swing.JFrame(), true, new Cliente());
                 dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                     @Override
                     public void windowClosing(java.awt.event.WindowEvent e) {
@@ -272,10 +293,10 @@ public class MenuCliente extends javax.swing.JDialog {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnAdicionar;
     private javax.swing.ButtonGroup btnGroupTipoCliente;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
+    private javax.swing.JButton btnRemover;
+    private javax.swing.JButton btnTrocarCliente;
     private javax.swing.JButton jButton4;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel11;
@@ -291,22 +312,25 @@ public class MenuCliente extends javax.swing.JDialog {
         while (modelo.getRowCount() > 0) {
             modelo.removeRow(0);
         }
-        PesquisarClienteVeiculoDao pesquisarClienteVeiculoDao = new PesquisarClienteVeiculoDao();
-        if (pesquisarClienteVeiculo.getCondutor() != null) {
-            jtfCondutor.setText(pesquisarClienteVeiculo.getCondutor());
-            if (pesquisarClienteVeiculo.isTipoCiente()) {
+        ClienteRelacionamentoVeiculoDao clienteRelacionamentoVeiculoDao = new ClienteRelacionamentoVeiculoDao();
+        if (cliente.getCondutor() != null) {
+            jtfCondutor.setText(cliente.getCondutor());
+            if (cliente.isTipoCiente()) {
                 jtfTipoCliente.setText("Servidor");
             } else {
                 jtfTipoCliente.setText("Público");
             }
-            for (PesquisarClienteVeiculo pesquisarClienteVeiculos : pesquisarClienteVeiculoDao.veiculosPorIdCliente(pesquisarClienteVeiculo.getIdCliente())) {
-                Object[] linha = new Object[]{
-                    pesquisarClienteVeiculos.getMarca(),
-                    pesquisarClienteVeiculos.getModelo(),
-                    pesquisarClienteVeiculos.getCor(),
-                    pesquisarClienteVeiculos.getPlaca()
-                };
-                modelo.addRow(linha);
+            for (Cliente cliente : clienteRelacionamentoVeiculoDao.veiculosPorIdCliente(cliente.getIdCliente())) {
+                for (Veiculo veiculo : cliente.getVeiculo()) {
+                    Object[] linha = new Object[]{
+                        veiculo.getMarca(),
+                        veiculo.getModelo(),
+                        veiculo.getCor(),
+                        veiculo.getPlaca()
+                    };
+                    modelo.addRow(linha);
+                    veiculos.add(veiculo);
+                }
             }
 
         }
@@ -324,6 +348,7 @@ public class MenuCliente extends javax.swing.JDialog {
                 modelo.removeRow(0);
             }
             VeiculoDao veiculoDao = new VeiculoDao();
+            veiculos.clear();
             for (Veiculo veiculo : veiculoDao.listarPorId(cliente.getIdCliente())) {
                 Object[] linha = new Object[]{
                     veiculo.getMarca(),
@@ -331,6 +356,7 @@ public class MenuCliente extends javax.swing.JDialog {
                     veiculo.getCor(),
                     veiculo.getPlaca()
                 };
+                veiculos.add(veiculo);
                 modelo.addRow(linha);
             }
 
