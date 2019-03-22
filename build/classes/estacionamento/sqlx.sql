@@ -31,7 +31,8 @@ use estacionamento;
     
     create table servicos(
     idServicos int not null primary key auto_increment,
-    valorHora double,
+    valorServidor double,
+    valorPublico double,
     fracao int,
     ativado int default 1
     );
@@ -56,13 +57,6 @@ use estacionamento;
         FOREIGN KEY (idVeiculo) REFERENCES veiculo (idVeiculo)
 	);
     
-		idOrdemServicoComServicos INT AUTO_INCREMENT,
-		idServicos INT NOT NULL,
-		idOrdemServico INT NOT NULL,
-		PRIMARY KEY(idOrdemServicoComServicos, idServicos, idOrdemServico),
-		FOREIGN KEY (idServicos) REFERENCES servicos (idServicos),
-		FOREIGN KEY (idOrdemServico) REFERENCES ordemServico (idOrdemServico) 
-	);
     
         
     insert into ordemServico(valorServico,dataEntrada,horaEntrada, ativado) values (20,'2019-3-18','12:55:55',1);
@@ -99,3 +93,5 @@ select * from OrdemServicoComClienteServico;
 
 
 delete from clienteComVeiculos where idVeiculo = 4;
+
+

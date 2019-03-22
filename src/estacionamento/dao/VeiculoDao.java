@@ -13,7 +13,7 @@ import java.util.logging.Logger;
 public class VeiculoDao extends Dao implements DaoI<Veiculo> {
 
     @Override
-    public List<Veiculo> Listar() {
+    public List<Veiculo> listar() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 

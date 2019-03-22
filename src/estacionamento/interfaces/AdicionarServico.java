@@ -253,6 +253,11 @@ public class AdicionarServico extends javax.swing.JDialog {
         jtfServico.setEditable(false);
 
         jButton3.setText("...");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel10Layout = new javax.swing.GroupLayout(jPanel10);
         jPanel10.setLayout(jPanel10Layout);
@@ -325,6 +330,10 @@ public class AdicionarServico extends javax.swing.JDialog {
         menuCliente.setVisible(true);
         lerDados();
     }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+         AdicionarServico adicionarServico = new AdicionarServico(parent, rootPaneCheckingEnabled);
+    }//GEN-LAST:event_jButton3ActionPerformed
 
     /**
      * @param args the command line arguments

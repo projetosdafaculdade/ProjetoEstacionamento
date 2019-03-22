@@ -9,7 +9,7 @@ public interface DaoI<T> {
      *
      * @return
      */
-    public List<T> Listar();
+    public List<T> listar();
 
     public int cadastrar(T obj);
 

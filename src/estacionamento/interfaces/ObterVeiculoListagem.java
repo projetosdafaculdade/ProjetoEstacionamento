@@ -8,9 +8,6 @@ import estacionamento.model.PesquisarClienteVeiculo;
 import estacionamento.model.Veiculo;
 import java.util.ArrayList;
 import java.util.List;
-import javax.swing.JPanel;
-import javax.swing.border.Border;
-import javax.swing.plaf.BorderUIResource;
 import javax.swing.table.DefaultTableModel;
 
 public class ObterVeiculoListagem extends javax.swing.JDialog {

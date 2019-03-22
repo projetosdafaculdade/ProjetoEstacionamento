@@ -16,7 +16,7 @@ import java.util.logging.Logger;
 public class OrdemServicoDao extends Dao implements DaoI<OrdemServico> {
 
     @Override
-    public List<OrdemServico> Listar() {
+    public List<OrdemServico> listar() {
         PreparedStatement stmt;
         List<OrdemServico> ordemServicos = new ArrayList<>();
 

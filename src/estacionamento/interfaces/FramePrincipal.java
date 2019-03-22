@@ -26,7 +26,7 @@ public class FramePrincipal extends javax.swing.JFrame {
         while (modelo.getRowCount() > 0) {
             modelo.removeRow(0);
         }
-        ordemServicos = ordemServicoDao.Listar();
+        ordemServicos = ordemServicoDao.listar();
 
         List<OrdemServico> ordemServicosTemp = new ArrayList<>();
         for (OrdemServico ordemservico : ordemServicos) {
@@ -39,7 +39,7 @@ public class FramePrincipal extends javax.swing.JFrame {
                     ordemservico.getVeiculo().getPlaca(),
                     ordemservico.getDataEntrada(),
                     ordemservico.getHoraEntrada(),
-                    ordemservico.getServico().getValorHora()
+                    ordemservico.getServico().getValorPublico()
                 };
                 modelo.addRow(linha);
                 ordemServicosTemp.add(ordemservico);

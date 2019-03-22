@@ -46,8 +46,10 @@ public class ObterClienteListagem extends javax.swing.JDialog {
             }
         }
         if (clientesTemp.isEmpty()) {
+            if(jtfNome.getText().length() != 0){
             btnAdicionar.setEnabled(true);
             jpnlTipoDeCliente.setVisible(true);
+        }
         } else {
             btnAdicionar.setEnabled(false);
             jpnlTipoDeCliente.setVisible(false);
@@ -61,7 +63,7 @@ public class ObterClienteListagem extends javax.swing.JDialog {
             modelo.removeRow(0);
         }
         ClienteDao clienteDao = new ClienteDao();
-        clientes = clienteDao.Listar();
+        clientes = clienteDao.listar();
         List<Cliente> clientesTemp = new ArrayList<>();
         if (clientes.size() > 0) {
             for (int i = 0; clientes.size() > i; i++) {
@@ -81,10 +83,7 @@ public class ObterClienteListagem extends javax.swing.JDialog {
                     clientesTemp.add(clientes.get(i));
                 }
             }
-        } else {
-           btnAdicionar.setEnabled(true);
-           jpnlTipoDeCliente.setVisible(true);
-        }
+        } 
         clientes = clientesTemp;
     }
 

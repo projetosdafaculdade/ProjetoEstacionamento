@@ -20,7 +20,7 @@ public class ClienteDao extends Dao implements DaoI<Cliente> {
      * @return List<>
      */
     @Override
-    public List<Cliente> Listar() {
+    public List<Cliente> listar() {
         PreparedStatement stmt;
         ResultSet rs;
         List<Cliente> clientes = new ArrayList<>();
