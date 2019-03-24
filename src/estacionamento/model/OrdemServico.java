@@ -1,63 +1,37 @@
 package estacionamento.model;
 
-import java.sql.Date;
-import java.sql.Time;
 
 public class OrdemServico {
 
     int idOrdemServico;
-    Date dataEntrada;
-    Time horaEntrada;
-    Date dataSaida;
-    Time horaSaida;
+    long dataTimeEntrada;
+    long dataTimeSaida;
     Cliente cliente;
     Veiculo veiculo;
     Servicos servico;
     double valorServico;
-    int ativado = 0;
-    
+    int ativado;
 
-    public OrdemServico() {
-    }
-
-    public OrdemServico(Date dataEntrada, Time horaEntrada, Cliente cliente, Servicos servico, double valorServico) {
-        this.dataEntrada = dataEntrada;
-        this.horaEntrada = horaEntrada;
+    public OrdemServico(int idOrdemServico, long dataTimeEntrada, long dataTimeSaida, Cliente cliente, Veiculo veiculo, Servicos servico, double valorServico) {
+        this.idOrdemServico = idOrdemServico;
+        this.dataTimeEntrada = dataTimeEntrada;
+        this.dataTimeSaida = dataTimeSaida;
         this.cliente = cliente;
+        this.veiculo = veiculo;
         this.servico = servico;
         this.valorServico = valorServico;
     }
 
-    public Date getDataEntrada() {
-        return dataEntrada;
+    public long getDataTimeEntrada() {
+        return dataTimeEntrada;
     }
 
-    public void setDataEntrada(Date dataEntrada) {
-        this.dataEntrada = dataEntrada;
+    public long getDataTimeSaida() {
+        return dataTimeSaida;
     }
 
-    public Time getHoraEntrada() {
-        return horaEntrada;
-    }
-
-    public void setHoraEntrada(Time horaEntrada) {
-        this.horaEntrada = horaEntrada;
-    }
-
-    public Date getDataSaida() {
-        return dataSaida;
-    }
-
-    public void setDataSaida(Date dataSaida) {
-        this.dataSaida = dataSaida;
-    }
-
-    public Time getHoraSaida() {
-        return horaSaida;
-    }
-
-    public void setHoraSaida(Time horaSaida) {
-        this.horaSaida = horaSaida;
+    public OrdemServico() {
+        this.valorServico = 0;
     }
 
     public Cliente getCliente() {
@@ -70,6 +44,14 @@ public class OrdemServico {
 
     public Servicos getServico() {
         return servico;
+    }
+
+    public void setDataTimeEntrada(long dataTimeEntrada) {
+        this.dataTimeEntrada = dataTimeEntrada;
+    }
+
+    public void setDataTimeSaida(long dataTimeSaida) {
+        this.dataTimeSaida = dataTimeSaida;
     }
 
     public void setServico(Servicos servico) {
@@ -107,6 +89,5 @@ public class OrdemServico {
     public void setVeiculo(Veiculo veiculo) {
         this.veiculo = veiculo;
     }
-    
 
 }

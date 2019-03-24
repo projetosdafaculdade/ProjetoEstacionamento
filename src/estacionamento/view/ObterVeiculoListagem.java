@@ -1,4 +1,4 @@
-package estacionamento.interfaces;
+package estacionamento.view;
 
 import estacionamento.dao.ClienteDao;
 import estacionamento.dao.ClienteRelacionamentoVeiculoDao;
@@ -73,24 +73,81 @@ public class ObterVeiculoListagem extends javax.swing.JDialog {
     private void initComponents() {
 
         jPanel5 = new javax.swing.JPanel();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        tblVeiculos = new javax.swing.JTable();
-        btnSelecionar = new javax.swing.JButton();
-        jPanel10 = new javax.swing.JPanel();
-        jtfPlaca = new javax.swing.JFormattedTextField();
-        btnAdicionar = new javax.swing.JButton();
         jpnlMarca = new javax.swing.JPanel();
         jtfMarcaServico = new javax.swing.JTextField();
         jpnlModelo = new javax.swing.JPanel();
         jtfModeloServico = new javax.swing.JTextField();
         jpnlCor = new javax.swing.JPanel();
         jtfCorServico = new javax.swing.JTextField();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        tblVeiculos = new javax.swing.JTable();
+        btnSelecionar = new javax.swing.JButton();
+        jPanel10 = new javax.swing.JPanel();
+        jtfPlaca = new javax.swing.JFormattedTextField();
+        btnAdicionar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         jPanel5.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createTitledBorder(new javax.swing.border.LineBorder(new java.awt.Color(102, 102, 102), 1, true), "", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 11), new java.awt.Color(102, 102, 102)), "Veículos", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 11), new java.awt.Color(51, 51, 51))); // NOI18N
         jPanel5.setAutoscrolls(true);
         jPanel5.setLayout(null);
+
+        jpnlMarca.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createTitledBorder(new javax.swing.border.LineBorder(new java.awt.Color(102, 102, 102), 1, true), "", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 11), new java.awt.Color(102, 102, 102)), "Marca", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 11), new java.awt.Color(51, 51, 51))); // NOI18N
+        jpnlMarca.setAutoscrolls(true);
+
+        javax.swing.GroupLayout jpnlMarcaLayout = new javax.swing.GroupLayout(jpnlMarca);
+        jpnlMarca.setLayout(jpnlMarcaLayout);
+        jpnlMarcaLayout.setHorizontalGroup(
+            jpnlMarcaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jtfMarcaServico)
+        );
+        jpnlMarcaLayout.setVerticalGroup(
+            jpnlMarcaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jpnlMarcaLayout.createSequentialGroup()
+                .addComponent(jtfMarcaServico, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 2, Short.MAX_VALUE))
+        );
+
+        jPanel5.add(jpnlMarca);
+        jpnlMarca.setBounds(240, 30, 110, 41);
+
+        jpnlModelo.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createTitledBorder(new javax.swing.border.LineBorder(new java.awt.Color(102, 102, 102), 1, true), "", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 11), new java.awt.Color(102, 102, 102)), "Modelo", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 11), new java.awt.Color(51, 51, 51))); // NOI18N
+        jpnlModelo.setAutoscrolls(true);
+
+        javax.swing.GroupLayout jpnlModeloLayout = new javax.swing.GroupLayout(jpnlModelo);
+        jpnlModelo.setLayout(jpnlModeloLayout);
+        jpnlModeloLayout.setHorizontalGroup(
+            jpnlModeloLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jtfModeloServico, javax.swing.GroupLayout.DEFAULT_SIZE, 112, Short.MAX_VALUE)
+        );
+        jpnlModeloLayout.setVerticalGroup(
+            jpnlModeloLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jpnlModeloLayout.createSequentialGroup()
+                .addComponent(jtfModeloServico, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 2, Short.MAX_VALUE))
+        );
+
+        jPanel5.add(jpnlModelo);
+        jpnlModelo.setBounds(360, 30, 118, 41);
+
+        jpnlCor.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createTitledBorder(new javax.swing.border.LineBorder(new java.awt.Color(102, 102, 102), 1, true), "", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 11), new java.awt.Color(102, 102, 102)), "Cor", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 11), new java.awt.Color(51, 51, 51))); // NOI18N
+        jpnlCor.setAutoscrolls(true);
+
+        javax.swing.GroupLayout jpnlCorLayout = new javax.swing.GroupLayout(jpnlCor);
+        jpnlCor.setLayout(jpnlCorLayout);
+        jpnlCorLayout.setHorizontalGroup(
+            jpnlCorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jtfCorServico, javax.swing.GroupLayout.DEFAULT_SIZE, 112, Short.MAX_VALUE)
+        );
+        jpnlCorLayout.setVerticalGroup(
+            jpnlCorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jpnlCorLayout.createSequentialGroup()
+                .addComponent(jtfCorServico, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 2, Short.MAX_VALUE))
+        );
+
+        jPanel5.add(jpnlCor);
+        jpnlCor.setBounds(490, 30, 118, 41);
 
         tblVeiculos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -167,63 +224,6 @@ public class ObterVeiculoListagem extends javax.swing.JDialog {
         jPanel5.add(btnAdicionar);
         btnAdicionar.setBounds(140, 36, 83, 36);
 
-        jpnlMarca.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createTitledBorder(new javax.swing.border.LineBorder(new java.awt.Color(102, 102, 102), 1, true), "", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 11), new java.awt.Color(102, 102, 102)), "Marca", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 11), new java.awt.Color(51, 51, 51))); // NOI18N
-        jpnlMarca.setAutoscrolls(true);
-
-        javax.swing.GroupLayout jpnlMarcaLayout = new javax.swing.GroupLayout(jpnlMarca);
-        jpnlMarca.setLayout(jpnlMarcaLayout);
-        jpnlMarcaLayout.setHorizontalGroup(
-            jpnlMarcaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jtfMarcaServico)
-        );
-        jpnlMarcaLayout.setVerticalGroup(
-            jpnlMarcaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jpnlMarcaLayout.createSequentialGroup()
-                .addComponent(jtfMarcaServico, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 2, Short.MAX_VALUE))
-        );
-
-        jPanel5.add(jpnlMarca);
-        jpnlMarca.setBounds(240, 30, 110, 41);
-
-        jpnlModelo.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createTitledBorder(new javax.swing.border.LineBorder(new java.awt.Color(102, 102, 102), 1, true), "", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 11), new java.awt.Color(102, 102, 102)), "Modelo", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 11), new java.awt.Color(51, 51, 51))); // NOI18N
-        jpnlModelo.setAutoscrolls(true);
-
-        javax.swing.GroupLayout jpnlModeloLayout = new javax.swing.GroupLayout(jpnlModelo);
-        jpnlModelo.setLayout(jpnlModeloLayout);
-        jpnlModeloLayout.setHorizontalGroup(
-            jpnlModeloLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jtfModeloServico, javax.swing.GroupLayout.DEFAULT_SIZE, 112, Short.MAX_VALUE)
-        );
-        jpnlModeloLayout.setVerticalGroup(
-            jpnlModeloLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jpnlModeloLayout.createSequentialGroup()
-                .addComponent(jtfModeloServico, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 2, Short.MAX_VALUE))
-        );
-
-        jPanel5.add(jpnlModelo);
-        jpnlModelo.setBounds(360, 30, 118, 41);
-
-        jpnlCor.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createTitledBorder(new javax.swing.border.LineBorder(new java.awt.Color(102, 102, 102), 1, true), "", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 11), new java.awt.Color(102, 102, 102)), "Cor", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 11), new java.awt.Color(51, 51, 51))); // NOI18N
-        jpnlCor.setAutoscrolls(true);
-
-        javax.swing.GroupLayout jpnlCorLayout = new javax.swing.GroupLayout(jpnlCor);
-        jpnlCor.setLayout(jpnlCorLayout);
-        jpnlCorLayout.setHorizontalGroup(
-            jpnlCorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jtfCorServico, javax.swing.GroupLayout.DEFAULT_SIZE, 112, Short.MAX_VALUE)
-        );
-        jpnlCorLayout.setVerticalGroup(
-            jpnlCorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jpnlCorLayout.createSequentialGroup()
-                .addComponent(jtfCorServico, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 2, Short.MAX_VALUE))
-        );
-
-        jPanel5.add(jpnlCor);
-        jpnlCor.setBounds(490, 30, 118, 41);
-
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -246,13 +246,10 @@ public class ObterVeiculoListagem extends javax.swing.JDialog {
 
     private void btnSelecionarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSelecionarActionPerformed
         Cliente clienteSelecionado = clientes.get(tblVeiculos.getSelectedRow());
-//        clienteRelacionamentoVeiculoDao.
-//        veiculoDao.alterar(veiculo);
         if (clienteRelacionamentoVeiculoDao.verificarExistência(clienteSelecionado.getVeiculo().get(0).getIdVeiculo())) {
             clienteRelacionamentoVeiculoDao.alterarRelacionamento(cliente.getIdCliente(), clienteSelecionado.getVeiculo().get(0).getIdVeiculo());
         } else {
             clienteRelacionamentoVeiculoDao.criarRelacionamento(cliente.getIdCliente(), clienteSelecionado.getVeiculo().get(0).getIdVeiculo());
-
         }
         dispose();
     }//GEN-LAST:event_btnSelecionarActionPerformed

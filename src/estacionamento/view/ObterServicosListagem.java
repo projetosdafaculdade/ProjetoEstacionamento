@@ -1,8 +1,6 @@
-package estacionamento.interfaces;
+package estacionamento.view;
 
-import estacionamento.dao.ClienteDao;
 import estacionamento.dao.ServicosDao;
-import estacionamento.model.Cliente;
 import estacionamento.model.Servicos;
 import java.util.ArrayList;
 import java.util.List;
@@ -10,7 +8,6 @@ import javax.swing.table.DefaultTableModel;
 
 public class ObterServicosListagem extends javax.swing.JDialog {
 
-    List<Cliente> clientes;
     DefaultTableModel modelo;
     Servicos servicos;
     List<Servicos> servicosList;
@@ -19,12 +16,11 @@ public class ObterServicosListagem extends javax.swing.JDialog {
         super(parent, modal);
         initComponents();
         this.servicos = servicos;
-        modelo = (DefaultTableModel) tblClientes.getModel();
+        modelo = (DefaultTableModel) tblServicos.getModel();
         lerTodosServicos();
     }
 
     private void lerTodosServicos() {
-
         while (modelo.getRowCount() > 0) {
             modelo.removeRow(0);
         }
@@ -53,16 +49,17 @@ public class ObterServicosListagem extends javax.swing.JDialog {
 
         buttonGroup1 = new javax.swing.ButtonGroup();
         jPanel5 = new javax.swing.JPanel();
+        jPanel12 = new javax.swing.JPanel();
+        jtfFracao = new javax.swing.JTextField();
+        jPanel11 = new javax.swing.JPanel();
+        jtfValorPublico = new javax.swing.JFormattedTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
-        tblClientes = new javax.swing.JTable();
-        jButton2 = new javax.swing.JButton();
+        tblServicos = new javax.swing.JTable();
+        btnSelecionar = new javax.swing.JButton();
         jPanel10 = new javax.swing.JPanel();
         jtfValorServidor = new javax.swing.JFormattedTextField();
         btnAdicionar = new javax.swing.JButton();
-        jPanel11 = new javax.swing.JPanel();
-        jtfValorPublico = new javax.swing.JFormattedTextField();
-        jPanel12 = new javax.swing.JPanel();
-        jtfFracao = new javax.swing.JTextField();
+        jButton2 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -70,7 +67,54 @@ public class ObterServicosListagem extends javax.swing.JDialog {
         jPanel5.setAutoscrolls(true);
         jPanel5.setLayout(null);
 
-        tblClientes.setModel(new javax.swing.table.DefaultTableModel(
+        jPanel12.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createTitledBorder(new javax.swing.border.LineBorder(new java.awt.Color(102, 102, 102), 1, true), "", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 11), new java.awt.Color(102, 102, 102)), "Fração", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 11), new java.awt.Color(51, 51, 51))); // NOI18N
+        jPanel12.setAutoscrolls(true);
+        jPanel12.setVerifyInputWhenFocusTarget(false);
+
+        javax.swing.GroupLayout jPanel12Layout = new javax.swing.GroupLayout(jPanel12);
+        jPanel12.setLayout(jPanel12Layout);
+        jPanel12Layout.setHorizontalGroup(
+            jPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jtfFracao, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 144, Short.MAX_VALUE)
+        );
+        jPanel12Layout.setVerticalGroup(
+            jPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jtfFracao, javax.swing.GroupLayout.DEFAULT_SIZE, 31, Short.MAX_VALUE)
+        );
+
+        jPanel5.add(jPanel12);
+        jPanel12.setBounds(350, 20, 150, 50);
+
+        jPanel11.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createTitledBorder(new javax.swing.border.LineBorder(new java.awt.Color(102, 102, 102), 1, true), "", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 11), new java.awt.Color(102, 102, 102)), "Valor Público", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 11), new java.awt.Color(51, 51, 51))); // NOI18N
+        jPanel11.setAutoscrolls(true);
+        jPanel11.setVerifyInputWhenFocusTarget(false);
+
+        try {
+            jtfValorPublico.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("###.##")));
+        } catch (java.text.ParseException ex) {
+            ex.printStackTrace();
+        }
+        jtfValorPublico.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        jtfValorPublico.setText("000.00");
+
+        javax.swing.GroupLayout jPanel11Layout = new javax.swing.GroupLayout(jPanel11);
+        jPanel11.setLayout(jPanel11Layout);
+        jPanel11Layout.setHorizontalGroup(
+            jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel11Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jtfValorPublico, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(11, Short.MAX_VALUE))
+        );
+        jPanel11Layout.setVerticalGroup(
+            jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jtfValorPublico, javax.swing.GroupLayout.DEFAULT_SIZE, 31, Short.MAX_VALUE)
+        );
+
+        jPanel5.add(jPanel11);
+        jPanel11.setBounds(190, 20, 150, 50);
+
+        tblServicos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
@@ -86,22 +130,22 @@ public class ObterServicosListagem extends javax.swing.JDialog {
                 return canEdit [columnIndex];
             }
         });
-        jScrollPane1.setViewportView(tblClientes);
-        if (tblClientes.getColumnModel().getColumnCount() > 0) {
-            tblClientes.getColumnModel().getColumn(0).setMinWidth(25);
+        jScrollPane1.setViewportView(tblServicos);
+        if (tblServicos.getColumnModel().getColumnCount() > 0) {
+            tblServicos.getColumnModel().getColumn(0).setMinWidth(25);
         }
 
         jPanel5.add(jScrollPane1);
         jScrollPane1.setBounds(10, 90, 610, 330);
 
-        jButton2.setText("Selecionar");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
+        btnSelecionar.setText("Selecionar");
+        btnSelecionar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
+                btnSelecionarActionPerformed(evt);
             }
         });
-        jPanel5.add(jButton2);
-        jButton2.setBounds(253, 422, 143, 23);
+        jPanel5.add(btnSelecionar);
+        btnSelecionar.setBounds(253, 422, 143, 23);
 
         jPanel10.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createTitledBorder(new javax.swing.border.LineBorder(new java.awt.Color(102, 102, 102), 1, true), "", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 11), new java.awt.Color(102, 102, 102)), "Valor Servidor", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 11), new java.awt.Color(51, 51, 51))); // NOI18N
         jPanel10.setAutoscrolls(true);
@@ -144,52 +188,14 @@ public class ObterServicosListagem extends javax.swing.JDialog {
         jPanel5.add(btnAdicionar);
         btnAdicionar.setBounds(510, 30, 90, 50);
 
-        jPanel11.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createTitledBorder(new javax.swing.border.LineBorder(new java.awt.Color(102, 102, 102), 1, true), "", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 11), new java.awt.Color(102, 102, 102)), "Valor Público", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 11), new java.awt.Color(51, 51, 51))); // NOI18N
-        jPanel11.setAutoscrolls(true);
-        jPanel11.setVerifyInputWhenFocusTarget(false);
-
-        try {
-            jtfValorPublico.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("###.##")));
-        } catch (java.text.ParseException ex) {
-            ex.printStackTrace();
-        }
-        jtfValorPublico.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        jtfValorPublico.setText("000.00");
-
-        javax.swing.GroupLayout jPanel11Layout = new javax.swing.GroupLayout(jPanel11);
-        jPanel11.setLayout(jPanel11Layout);
-        jPanel11Layout.setHorizontalGroup(
-            jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel11Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jtfValorPublico, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(11, Short.MAX_VALUE))
-        );
-        jPanel11Layout.setVerticalGroup(
-            jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jtfValorPublico, javax.swing.GroupLayout.DEFAULT_SIZE, 31, Short.MAX_VALUE)
-        );
-
-        jPanel5.add(jPanel11);
-        jPanel11.setBounds(190, 20, 150, 50);
-
-        jPanel12.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createTitledBorder(new javax.swing.border.LineBorder(new java.awt.Color(102, 102, 102), 1, true), "", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 11), new java.awt.Color(102, 102, 102)), "Fração", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 11), new java.awt.Color(51, 51, 51))); // NOI18N
-        jPanel12.setAutoscrolls(true);
-        jPanel12.setVerifyInputWhenFocusTarget(false);
-
-        javax.swing.GroupLayout jPanel12Layout = new javax.swing.GroupLayout(jPanel12);
-        jPanel12.setLayout(jPanel12Layout);
-        jPanel12Layout.setHorizontalGroup(
-            jPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jtfFracao, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 144, Short.MAX_VALUE)
-        );
-        jPanel12Layout.setVerticalGroup(
-            jPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jtfFracao, javax.swing.GroupLayout.DEFAULT_SIZE, 31, Short.MAX_VALUE)
-        );
-
-        jPanel5.add(jPanel12);
-        jPanel12.setBounds(350, 20, 150, 50);
+        jButton2.setText("jButton1");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
+        jPanel5.add(jButton2);
+        jButton2.setBounds(610, 10, 40, 23);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -211,16 +217,15 @@ public class ObterServicosListagem extends javax.swing.JDialog {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        Cliente clienteSelecionado = new Cliente();
-//        clienteSelecionado = clientes.get(tblClientes.getSelectedRow());
-//        cliente.setIdCliente(clienteSelecionado.getIdCliente());
-//        cliente.setCondutor(clienteSelecionado.getCondutor());
-//        cliente.setTipoCliente(clienteSelecionado.isTipoCiente());
-//        cliente.setValorPagoCliente(clienteSelecionado.getValorPagoCliente());
-//        cliente.setAtivado(clienteSelecionado.getAtivado());
+    private void btnSelecionarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSelecionarActionPerformed
+        Servicos servicosTemp = servicosList.get(tblServicos.getSelectedRow());
+        servicos.setAtivado(servicosTemp.getAtivado());
+        servicos.setFracao(servicosTemp.getFracao());
+        servicos.setIdServicos(servicosTemp.getIdServicos());
+        servicos.setValorPublico(servicosTemp.getValorPublico());
+        servicos.setValorServidor(servicosTemp.getValorServidor());
         dispose();
-    }//GEN-LAST:event_jButton2ActionPerformed
+    }//GEN-LAST:event_btnSelecionarActionPerformed
 
     private void btnAdicionarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAdicionarActionPerformed
         ServicosDao servicoDao = new ServicosDao();
@@ -231,6 +236,10 @@ public class ObterServicosListagem extends javax.swing.JDialog {
         servicoDao.cadastrar(servicosTemp);
         lerTodosServicos();
     }//GEN-LAST:event_btnAdicionarActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        System.out.println("Eae");
+    }//GEN-LAST:event_jButton2ActionPerformed
 
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
@@ -260,9 +269,6 @@ public class ObterServicosListagem extends javax.swing.JDialog {
                     .getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
 
         /* Create and display the dialog */
         java.awt.EventQueue.invokeLater(new Runnable() {
@@ -278,9 +284,10 @@ public class ObterServicosListagem extends javax.swing.JDialog {
             }
         });
     }
-
+//<editor-fold desc="Declarações de variáveis">
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAdicionar;
+    private javax.swing.JButton btnSelecionar;
     private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.JButton jButton2;
     private javax.swing.JPanel jPanel10;
@@ -291,7 +298,7 @@ public class ObterServicosListagem extends javax.swing.JDialog {
     private javax.swing.JTextField jtfFracao;
     private javax.swing.JFormattedTextField jtfValorPublico;
     private javax.swing.JFormattedTextField jtfValorServidor;
-    private javax.swing.JTable tblClientes;
+    private javax.swing.JTable tblServicos;
     // End of variables declaration//GEN-END:variables
-
+// </editor-fold>
 }

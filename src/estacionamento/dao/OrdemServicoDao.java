@@ -8,6 +8,7 @@ import estacionamento.model.Veiculo;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -21,43 +22,61 @@ public class OrdemServicoDao extends Dao implements DaoI<OrdemServico> {
         List<OrdemServico> ordemServicos = new ArrayList<>();
 
         try {
-            String sql = ("select ordemServico.idOrdemServico, ordemServico.dataEntrada,ordemServico.horaEntrada,ordemServico.dataSaida,ordemServico.horaSaida, ordemServico.valorServico,ordemServico.ativado, cliente.idCliente, servicos.idServicos, veiculo.idVeiculo from OrdemServicoComClienteServico inner join cliente on cliente.idCliente = OrdemServicoComClienteServico.idCliente inner join servicos on servicos.idServicos = OrdemServicoComClienteServico.idServicos inner join ordemServico on ordemServico.idOrdemServico = OrdemServicoComClienteServico.idOrdemServico inner join veiculo on veiculo.idVeiculo = OrdemServicoComClienteServico.idVeiculo");
+            String sql = ("select ordemServico.idOrdemServico, ordemServico.dataTimeEntrada,ordemServico.dataTimeSaida, ordemServico.valorServico,ordemServico.ativado, cliente.idCliente, servicos.idServicos, veiculo.idVeiculo from OrdemServicoComClienteServico inner join cliente on cliente.idCliente = OrdemServicoComClienteServico.idCliente inner join servicos on servicos.idServicos = OrdemServicoComClienteServico.idServicos inner join ordemServico on ordemServico.idOrdemServico = OrdemServicoComClienteServico.idOrdemServico inner join veiculo on veiculo.idVeiculo = OrdemServicoComClienteServico.idVeiculo");
             stmt = conexao.prepareStatement(sql);
             ResultSet rs = stmt.executeQuery();
             while (rs.next()) {
                 OrdemServico ordemServico = new OrdemServico();
                 ordemServico.setIdOrdemServico(rs.getInt(1));
-                ordemServico.setDataEntrada(rs.getDate(2));
-                ordemServico.setHoraEntrada(rs.getTime(3));
-                ordemServico.setDataSaida(rs.getDate(4));
-                ordemServico.setHoraSaida(rs.getTime(5));
-                ordemServico.setValorServico(rs.getDouble(6));
-                ordemServico.setAtivado(rs.getInt(rs.getInt(7)));
+                ordemServico.setDataTimeEntrada(rs.getLong(2));
+                ordemServico.setDataTimeSaida(rs.getLong(3));
+                ordemServico.setValorServico(rs.getDouble(4));
+                ordemServico.setAtivado(rs.getInt(rs.getInt(5)));
 
                 ClienteDao clientedao = new ClienteDao();
-                Cliente cliente = clientedao.lerPorId(rs.getInt(8));
+                Cliente cliente = clientedao.lerPorId(rs.getInt(6));
                 ordemServico.setCliente(cliente);
 
                 ServicosDao servicosDao = new ServicosDao();
-                Servicos servicos = servicosDao.lerPorId(rs.getInt(9));
+                Servicos servicos = servicosDao.lerPorId(rs.getInt(7));
                 ordemServico.setServico(servicos);
 
                 VeiculoDao veiculoDao = new VeiculoDao();
-                Veiculo veiculo = veiculoDao.lerPorId(rs.getInt(10));
+                Veiculo veiculo = veiculoDao.lerPorId(rs.getInt(8));
                 ordemServico.setVeiculo(veiculo);
 
                 ordemServicos.add(ordemServico);
             }
- 
+
         } catch (SQLException ex) {
             Logger.getLogger(OrdemServicoDao.class.getName()).log(Level.SEVERE, null, ex);
         }
         return ordemServicos;
     }
 
+    /**
+     *
+     * @param obj
+     * @return
+     */
     @Override
     public int cadastrar(OrdemServico obj) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        PreparedStatement stmt;
+
+        try {
+            String sql = "insert into ordemServico(valorServico,dataTimeEntrada) values(?,?) ";
+            stmt = conexao.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+            stmt.setDouble(1, obj.getValorServico());
+            stmt.setLong(2, obj.getDataTimeEntrada());
+            stmt.executeUpdate();
+            ResultSet rs = stmt.getGeneratedKeys();
+            if (rs.next()) {
+                return rs.getInt(1);
+            }
+        } catch (SQLException ex) {
+            System.out.println("Erro ao cadastrar Ordem de serviço: "+ex.getMessage());
+        }
+        return 0;
     }
 
     @Override
@@ -65,17 +84,15 @@ public class OrdemServicoDao extends Dao implements DaoI<OrdemServico> {
         PreparedStatement stmt;
 
         try {
-            String sql = "UPDATE ordemServico SET valorServico = ?,dataEntrada = ?,horaEntrada = ?,dataSaida= ?, horaSaida= ?,cliente = ?,  servico = ?, ativado =?  WHERE idOrdemServico = ?";
+            String sql = "UPDATE ordemServico SET valorServico = ?,dataTimeEntrada = ?,dataTimeSaida= ?,cliente = ?,  servico = ?, ativado =?  WHERE idOrdemServico = ?";
             stmt = conexao.prepareStatement(sql);
             stmt.setInt(9, obj.getIdOrdemServico());
             stmt.setDouble(1, obj.getValorServico());
-            stmt.setDate(2, obj.getDataEntrada());
-            stmt.setTime(3, obj.getHoraEntrada());
-            stmt.setDate(4, obj.getDataSaida());
-            stmt.setTime(5, obj.getHoraSaida());
-            stmt.setInt(6, obj.getCliente().getIdCliente());
-            stmt.setInt(7, obj.getServico().getIdServicos());
-            stmt.setInt(8, obj.getAtivado());
+            stmt.setLong(2, obj.getDataTimeEntrada());
+            stmt.setLong(3, obj.getDataTimeSaida());
+            stmt.setInt(4, obj.getCliente().getIdCliente());
+            stmt.setInt(5, obj.getServico().getIdServicos());
+            stmt.setInt(6, obj.getAtivado());
             int status = stmt.executeUpdate();
             if (status > 0) {
                 return true;

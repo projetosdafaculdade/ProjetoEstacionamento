@@ -1,4 +1,4 @@
-package estacionamento.interfaces;
+package estacionamento.view;
 
 import estacionamento.dao.ClienteDao;
 import estacionamento.model.Cliente;

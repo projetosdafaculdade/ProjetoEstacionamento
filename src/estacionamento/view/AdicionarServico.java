@@ -1,17 +1,24 @@
-package estacionamento.interfaces;
+package estacionamento.view;
 
 import estacionamento.dao.ClienteRelacionamentoVeiculoDao;
+import estacionamento.dao.EntradaRelacionamentoOrdemServico;
+import estacionamento.dao.OrdemServicoDao;
 import estacionamento.model.Cliente;
+import estacionamento.model.OrdemServico;
+import estacionamento.model.Servicos;
 import java.awt.Frame;
+import javax.swing.JOptionPane;
 
 public class AdicionarServico extends javax.swing.JDialog {
 
     Frame parent;
     Cliente cliente;
+    Servicos servicos;
 
     public AdicionarServico(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         this.parent = parent;
+        this.servicos = new Servicos();
         initComponents();
         pnlPlaca.setVisible(true);
         pnlServico.setVisible(false);
@@ -25,6 +32,19 @@ public class AdicionarServico extends javax.swing.JDialog {
             jtfModeloServico.setText(cliente.getVeiculo().get(0).getModelo());
             jtfPlacaServico.setText(cliente.getVeiculo().get(0).getPlaca());
             jtfCondutorServico.setText(cliente.getCondutor());
+        }
+        if (servicos.getIdServicos() > 0) {
+            if (cliente != null) {
+                if (cliente.isTipoCiente()) {
+                    jtfValor.setText(String.valueOf(servicos.getValorServidor()));
+                } else {
+                    jtfValor.setText(String.valueOf(servicos.getValorPublico()));
+                }
+                jtfFracao.setText(String.valueOf(servicos.getFracao()));
+            } else {
+                JOptionPane.showMessageDialog(null, "Por favor selecione um cliente primeiro!", "Aviso!", JOptionPane.DEFAULT_OPTION);
+            }
+
         }
     }
 
@@ -49,11 +69,14 @@ public class AdicionarServico extends javax.swing.JDialog {
         jtfPlacaServico = new javax.swing.JFormattedTextField();
         jPanel1 = new javax.swing.JPanel();
         jtfCondutorServico = new javax.swing.JTextField();
-        jButton2 = new javax.swing.JButton();
-        jButton4 = new javax.swing.JButton();
+        btnTrocarCliente = new javax.swing.JButton();
         jPanel10 = new javax.swing.JPanel();
-        jtfServico = new javax.swing.JTextField();
+        jPanel11 = new javax.swing.JPanel();
+        jtfValor = new javax.swing.JTextField();
         jButton3 = new javax.swing.JButton();
+        jPanel13 = new javax.swing.JPanel();
+        jtfFracao = new javax.swing.JTextField();
+        jButton4 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setMinimumSize(new java.awt.Dimension(391, 310));
@@ -129,7 +152,7 @@ public class AdicionarServico extends javax.swing.JDialog {
         jPanel5.setLayout(jPanel5Layout);
         jPanel5Layout.setHorizontalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jtfMarcaServico)
+            .addComponent(jtfMarcaServico, javax.swing.GroupLayout.DEFAULT_SIZE, 116, Short.MAX_VALUE)
         );
         jPanel5Layout.setVerticalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -177,7 +200,7 @@ public class AdicionarServico extends javax.swing.JDialog {
         jPanel8.setLayout(jPanel8Layout);
         jPanel8Layout.setHorizontalGroup(
             jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jtfPlacaServico, javax.swing.GroupLayout.DEFAULT_SIZE, 116, Short.MAX_VALUE)
+            .addComponent(jtfPlacaServico)
         );
         jPanel8Layout.setVerticalGroup(
             jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -189,13 +212,13 @@ public class AdicionarServico extends javax.swing.JDialog {
         jPanel9Layout.setHorizontalGroup(
             jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel9Layout.createSequentialGroup()
-                .addContainerGap(50, Short.MAX_VALUE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jPanel8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanel8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(26, 26, 26)
                 .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jPanel6, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jPanel7, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(49, 49, 49))
         );
@@ -218,10 +241,10 @@ public class AdicionarServico extends javax.swing.JDialog {
 
         jtfCondutorServico.setEditable(false);
 
-        jButton2.setText("...");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
+        btnTrocarCliente.setText("...");
+        btnTrocarCliente.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
+                btnTrocarClienteActionPerformed(evt);
             }
         });
 
@@ -232,7 +255,7 @@ public class AdicionarServico extends javax.swing.JDialog {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addComponent(jtfCondutorServico)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(btnTrocarCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(6, 6, 6))
         );
         jPanel1Layout.setVerticalGroup(
@@ -240,17 +263,27 @@ public class AdicionarServico extends javax.swing.JDialog {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jtfCondutorServico, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton2))
+                    .addComponent(btnTrocarCliente))
                 .addGap(0, 0, Short.MAX_VALUE))
         );
 
-        jButton4.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        jButton4.setText("ENVIAR");
-
         jPanel10.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createTitledBorder(new javax.swing.border.LineBorder(new java.awt.Color(102, 102, 102), 1, true), "", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 11), new java.awt.Color(102, 102, 102)), "Servico", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 11), new java.awt.Color(51, 51, 51))); // NOI18N
         jPanel10.setToolTipText("");
+        jPanel10.setMinimumSize(new java.awt.Dimension(12, 12));
+        jPanel10.setLayout(null);
 
-        jtfServico.setEditable(false);
+        jPanel11.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createTitledBorder(new javax.swing.border.LineBorder(new java.awt.Color(102, 102, 102), 1, true), "", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 11), new java.awt.Color(102, 102, 102)), "Valor", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 11), new java.awt.Color(51, 51, 51))); // NOI18N
+        jPanel11.setAutoscrolls(true);
+        jPanel11.setLayout(null);
+
+        jtfValor.setEditable(false);
+        jtfValor.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jtfValorActionPerformed(evt);
+            }
+        });
+        jPanel11.add(jtfValor);
+        jtfValor.setBounds(3, 17, 100, 20);
 
         jButton3.setText("...");
         jButton3.addActionListener(new java.awt.event.ActionListener() {
@@ -258,23 +291,40 @@ public class AdicionarServico extends javax.swing.JDialog {
                 jButton3ActionPerformed(evt);
             }
         });
+        jPanel11.add(jButton3);
+        jButton3.setBounds(105, 16, 24, 23);
 
-        javax.swing.GroupLayout jPanel10Layout = new javax.swing.GroupLayout(jPanel10);
-        jPanel10.setLayout(jPanel10Layout);
-        jPanel10Layout.setHorizontalGroup(
-            jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel10Layout.createSequentialGroup()
-                .addComponent(jtfServico, javax.swing.GroupLayout.DEFAULT_SIZE, 184, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(6, 6, 6))
+        jPanel10.add(jPanel11);
+        jPanel11.setBounds(10, 15, 132, 43);
+
+        jPanel13.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createTitledBorder(new javax.swing.border.LineBorder(new java.awt.Color(102, 102, 102), 1, true), "", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 11), new java.awt.Color(102, 102, 102)), "Fração (Minutos)", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 11), new java.awt.Color(51, 51, 51))); // NOI18N
+        jPanel13.setAutoscrolls(true);
+
+        javax.swing.GroupLayout jPanel13Layout = new javax.swing.GroupLayout(jPanel13);
+        jPanel13.setLayout(jPanel13Layout);
+        jPanel13Layout.setHorizontalGroup(
+            jPanel13Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jtfFracao, javax.swing.GroupLayout.DEFAULT_SIZE, 112, Short.MAX_VALUE)
         );
-        jPanel10Layout.setVerticalGroup(
-            jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                .addComponent(jtfServico, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addComponent(jButton3))
+        jPanel13Layout.setVerticalGroup(
+            jPanel13Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel13Layout.createSequentialGroup()
+                .addComponent(jtfFracao, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
+
+        jPanel10.add(jPanel13);
+        jPanel13.setBounds(149, 16, 118, 42);
+
+        jButton4.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jButton4.setText("ADD");
+        jButton4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton4ActionPerformed(evt);
+            }
+        });
+        jPanel10.add(jButton4);
+        jButton4.setBounds(275, 21, 90, 39);
 
         javax.swing.GroupLayout pnlServicoLayout = new javax.swing.GroupLayout(pnlServico);
         pnlServico.setLayout(pnlServicoLayout);
@@ -285,10 +335,7 @@ public class AdicionarServico extends javax.swing.JDialog {
                 .addGroup(pnlServicoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jPanel9, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(pnlServicoLayout.createSequentialGroup()
-                        .addComponent(jPanel10, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jButton4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                    .addComponent(jPanel10, javax.swing.GroupLayout.DEFAULT_SIZE, 371, Short.MAX_VALUE))
                 .addContainerGap())
         );
         pnlServicoLayout.setVerticalGroup(
@@ -299,10 +346,8 @@ public class AdicionarServico extends javax.swing.JDialog {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel9, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(pnlServicoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jPanel10, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(jPanel10, javax.swing.GroupLayout.DEFAULT_SIZE, 66, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         getContentPane().add(pnlServico);
@@ -325,15 +370,34 @@ public class AdicionarServico extends javax.swing.JDialog {
         }
     }//GEN-LAST:event_jButton1ActionPerformed
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+    private void btnTrocarClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTrocarClienteActionPerformed
         MenuCliente menuCliente = new MenuCliente(parent, rootPaneCheckingEnabled, cliente);
         menuCliente.setVisible(true);
         lerDados();
-    }//GEN-LAST:event_jButton2ActionPerformed
+    }//GEN-LAST:event_btnTrocarClienteActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-         AdicionarServico adicionarServico = new AdicionarServico(parent, rootPaneCheckingEnabled);
+        MenuServicos menuServicos = new MenuServicos(parent, rootPaneCheckingEnabled, servicos);
+        menuServicos.setVisible(true);
+        lerDados();
     }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void jtfValorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jtfValorActionPerformed
+
+    }//GEN-LAST:event_jtfValorActionPerformed
+
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+        EntradaRelacionamentoOrdemServico entradaRelacionamentoOrdemServico = new EntradaRelacionamentoOrdemServico();
+        OrdemServicoDao ordemServicoDao = new OrdemServicoDao();
+        OrdemServico ordemServico = new OrdemServico();
+        ordemServico.setCliente(cliente);
+        ordemServico.setServico(servicos);
+        ordemServico.setVeiculo(cliente.getVeiculo().get(0));
+        ordemServico.setDataTimeEntrada(System.currentTimeMillis());
+ 
+        
+        entradaRelacionamentoOrdemServico.criarRelacionamento(cliente.getIdCliente(), servicos.getIdServicos(), cliente.getVeiculo().get(0).getIdVeiculo(), ordemServicoDao.cadastrar(ordemServico));
+    }//GEN-LAST:event_jButton4ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -378,13 +442,15 @@ public class AdicionarServico extends javax.swing.JDialog {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnTrocarCliente;
     private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel10;
+    private javax.swing.JPanel jPanel11;
+    private javax.swing.JPanel jPanel13;
     private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel6;
     private javax.swing.JPanel jPanel7;
@@ -393,11 +459,12 @@ public class AdicionarServico extends javax.swing.JDialog {
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JTextField jtfCondutorServico;
     private javax.swing.JTextField jtfCorServico;
+    private javax.swing.JTextField jtfFracao;
     private javax.swing.JTextField jtfMarcaServico;
     private javax.swing.JTextField jtfModeloServico;
     private javax.swing.JFormattedTextField jtfPlaca;
     private javax.swing.JFormattedTextField jtfPlacaServico;
-    private javax.swing.JTextField jtfServico;
+    private javax.swing.JTextField jtfValor;
     private javax.swing.JPanel pnlPlaca;
     private javax.swing.JPanel pnlServico;
     // End of variables declaration//GEN-END:variables

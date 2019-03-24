@@ -6,7 +6,7 @@ public class Servicos {
     double valorPublico;
     double valorServidor;
     int fracao;
-    int ativado = 0;
+    int ativado;
 
     public Servicos() {
     }

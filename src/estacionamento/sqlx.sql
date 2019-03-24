@@ -9,13 +9,11 @@ use estacionamento;
 	valorPagoCliente double,
     ativado int default 1
     );
-    
+
     create table ordemServico(
     idOrdemServico int not null primary key auto_increment,
-    dataEntrada date,
-    horaEntrada time,
-    dataSaida date,
-    horaSaida time,
+    dataTimeEntrada long,
+    dataTimeSaida long,
     valorServico double,
     ativado int default 1
     );
@@ -45,19 +43,21 @@ use estacionamento;
 		FOREIGN KEY (idVeiculo) REFERENCES Veiculo (idVeiculo) 
     );
     
+    drop table OrdemServicoComClienteServico;
+
     create table OrdemServicoComClienteServico(
+		idOrdemServicoCOmClienteServico int not null,
 		idCliente INT NOT NULL,
 		idServicos INT NOT NULL,
 		idOrdemServico INT NOT NULL,
         idVeiculo INT NOT NULL,
-		PRIMARY KEY(idCliente, idServicos, idOrdemServico),
+		PRIMARY KEY(idOrdemServicoComClienteServico),
         FOREIGN KEY (idCliente) REFERENCES cliente (idCliente),
 		FOREIGN KEY (idServicos) REFERENCES servicos (idServicos),
-		FOREIGN KEY (idOrdemServico) REFERENCES ordemServico (idOrdemServico),
         FOREIGN KEY (idVeiculo) REFERENCES veiculo (idVeiculo)
 	);
     
-    
+    select * from OrdemServicoComClienteServico;
         
     insert into ordemServico(valorServico,dataEntrada,horaEntrada, ativado) values (20,'2019-3-18','12:55:55',1);
     insert into veiculo(placa, cor, modelo, marca, ativado) values('QDS-2323','preto','toro','fiat', 1);

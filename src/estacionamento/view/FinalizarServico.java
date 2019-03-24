@@ -1,4 +1,4 @@
-package estacionamento.interfaces;
+package estacionamento.view;
 
 import java.awt.Dimension;
 import java.text.DateFormat;

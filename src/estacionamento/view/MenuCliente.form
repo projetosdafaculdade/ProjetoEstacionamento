@@ -135,9 +135,9 @@
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Component id="jScrollPane1" max="32767" attributes="0"/>
                           <Group type="102" attributes="0">
-                              <Component id="btnAdicionar" min="-2" pref="252" max="-2" attributes="0"/>
+                              <Component id="btnAdicionarVeiculo" min="-2" pref="252" max="-2" attributes="0"/>
                               <EmptySpace max="32767" attributes="0"/>
-                              <Component id="btnRemover" min="-2" pref="252" max="-2" attributes="0"/>
+                              <Component id="btnRemoverVeiculo" min="-2" pref="252" max="-2" attributes="0"/>
                           </Group>
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
@@ -151,8 +151,8 @@
                       <Component id="jScrollPane1" pref="123" max="32767" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="btnAdicionar" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="btnRemover" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="btnAdicionarVeiculo" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="btnRemoverVeiculo" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
                   </Group>
               </Group>
@@ -207,20 +207,20 @@
                 </Component>
               </SubComponents>
             </Container>
-            <Component class="javax.swing.JButton" name="btnAdicionar">
+            <Component class="javax.swing.JButton" name="btnAdicionarVeiculo">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Adicionar"/>
               </Properties>
               <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnAdicionarActionPerformed"/>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnAdicionarVeiculoActionPerformed"/>
               </Events>
             </Component>
-            <Component class="javax.swing.JButton" name="btnRemover">
+            <Component class="javax.swing.JButton" name="btnRemoverVeiculo">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Remover"/>
               </Properties>
               <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnRemoverActionPerformed"/>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnRemoverVeiculoActionPerformed"/>
               </Events>
             </Component>
           </SubComponents>

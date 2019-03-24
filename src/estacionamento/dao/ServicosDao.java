@@ -29,7 +29,7 @@ public class ServicosDao extends Dao implements DaoI<Servicos> {
                 servicos.add(servico);
             }
         } catch (SQLException ex) {
-            System.out.println("Erro ao ler um único serviço do BD" + ex.getSQLState());
+            System.out.println("Erro ao ler todos os serviços do BD" + ex.getMessage());
         }
         return servicos;
     }

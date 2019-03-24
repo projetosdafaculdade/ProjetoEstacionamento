@@ -7,7 +7,7 @@ public class Veiculo {
     String cor;
     String modelo;
     String marca;
-    int ativado = 0;
+    int ativado;
     public Veiculo() {
     }
     
