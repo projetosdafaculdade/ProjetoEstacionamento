@@ -7,8 +7,7 @@ public class OrdemServico {
     long dataTimeEntrada;
     long dataTimeSaida;
     Cliente cliente;
-    Veiculo veiculo;
-    Servicos servico;
+    Servicos servicos;
     double valorServico;
     int ativado;
 
@@ -17,11 +16,21 @@ public class OrdemServico {
         this.dataTimeEntrada = dataTimeEntrada;
         this.dataTimeSaida = dataTimeSaida;
         this.cliente = cliente;
-        this.veiculo = veiculo;
-        this.servico = servico;
+        this.servicos = servico;
         this.valorServico = valorServico;
     }
 
+    public OrdemServico(int idOrdemServico, long dataTimeEntrada, long dataTimeSaida, Cliente cliente, Servicos servico, double valorServico, int ativado) {
+        this.idOrdemServico = idOrdemServico;
+        this.dataTimeEntrada = dataTimeEntrada;
+        this.dataTimeSaida = dataTimeSaida;
+        this.cliente = cliente;
+        this.servicos = servico;
+        this.valorServico = valorServico;
+        this.ativado = ativado;
+    }
+
+    
     public long getDataTimeEntrada() {
         return dataTimeEntrada;
     }
@@ -32,6 +41,8 @@ public class OrdemServico {
 
     public OrdemServico() {
         this.valorServico = 0;
+        cliente = new Cliente();
+        servicos = new Servicos();
     }
 
     public Cliente getCliente() {
@@ -43,7 +54,7 @@ public class OrdemServico {
     }
 
     public Servicos getServico() {
-        return servico;
+        return servicos;
     }
 
     public void setDataTimeEntrada(long dataTimeEntrada) {
@@ -55,7 +66,7 @@ public class OrdemServico {
     }
 
     public void setServico(Servicos servico) {
-        this.servico = servico;
+        this.servicos = servico;
     }
 
     public double getValorServico() {
@@ -82,12 +93,6 @@ public class OrdemServico {
         this.ativado = ativado;
     }
 
-    public Veiculo getVeiculo() {
-        return veiculo;
-    }
 
-    public void setVeiculo(Veiculo veiculo) {
-        this.veiculo = veiculo;
-    }
 
 }

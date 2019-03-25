@@ -31,7 +31,7 @@ public class ObterClienteListagem extends javax.swing.JDialog {
         for (Cliente clienteAtual : clientes) {
             if (clienteAtual.getAtivado() == 1) {
                 String temp;
-                if (clienteAtual.isTipoCiente()) {
+                if (clienteAtual.isTipoCliente()) {
                     temp = "Servidor";
                 } else {
                     temp = "Público";
@@ -69,7 +69,7 @@ public class ObterClienteListagem extends javax.swing.JDialog {
             for (int i = 0; clientes.size() > i; i++) {
                 if (clientes.get(i).getAtivado() == 1) {
                     String temp = "";
-                    if (clientes.get(i).isTipoCiente()) {
+                    if (clientes.get(i).isTipoCliente()) {
                         temp = "Servidor";
                     } else {
                         temp = "Público";
@@ -183,6 +183,7 @@ public class ObterClienteListagem extends javax.swing.JDialog {
         jpnlTipoDeCliente.setAutoscrolls(true);
 
         buttonGroup1.add(jrbPublico);
+        jrbPublico.setSelected(true);
         jrbPublico.setText("Público");
 
         buttonGroup1.add(jrbServidor);
@@ -233,7 +234,7 @@ public class ObterClienteListagem extends javax.swing.JDialog {
         clienteSelecionado = clientes.get(tblClientes.getSelectedRow());
         cliente.setIdCliente(clienteSelecionado.getIdCliente());
         cliente.setCondutor(clienteSelecionado.getCondutor());
-        cliente.setTipoCliente(clienteSelecionado.isTipoCiente());
+        cliente.setTipoCliente(clienteSelecionado.isTipoCliente());
         cliente.setValorPagoCliente(clienteSelecionado.getValorPagoCliente());
         cliente.setAtivado(clienteSelecionado.getAtivado());
         dispose();

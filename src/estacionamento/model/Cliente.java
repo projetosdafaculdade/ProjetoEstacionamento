@@ -8,14 +8,14 @@ public class Cliente {
     int idCliente;
     String condutor;
     List<Veiculo> veiculos;
-    boolean tipoCiente;
+    boolean tipoCliente;
     double valorPagoCliente;
     int ativado;
 
 //<editor-fold desc="Getters, Setters e Construtores">
     public Cliente(String condutor, boolean tipoCiente) {
         this.condutor = condutor;
-        this.tipoCiente = tipoCiente;
+        this.tipoCliente = tipoCiente;
     }
 
     public Cliente() {
@@ -25,7 +25,7 @@ public class Cliente {
     public Cliente(int idCliente, String condutor, boolean tipoCiente, double valorPagoCliente, int ativado) {
         this.idCliente = idCliente;
         this.condutor = condutor;
-        this.tipoCiente = tipoCiente;
+        this.tipoCliente = tipoCiente;
         this.valorPagoCliente = valorPagoCliente;
         this.ativado = ativado;
     }
@@ -51,12 +51,12 @@ public class Cliente {
         this.veiculos = veiculo;
     }
 
-    public boolean isTipoCiente() {
-        return tipoCiente;
+    public boolean isTipoCliente() {
+        return tipoCliente;
     }
 
     public void setTipoCliente(boolean tipoCiente) {
-        this.tipoCiente = tipoCiente;
+        this.tipoCliente = tipoCiente;
     }
 
     public double getValorPagoCliente() {

@@ -43,7 +43,7 @@ public class OrdemServicoDao extends Dao implements DaoI<OrdemServico> {
 
                 VeiculoDao veiculoDao = new VeiculoDao();
                 Veiculo veiculo = veiculoDao.lerPorId(rs.getInt(8));
-                ordemServico.setVeiculo(veiculo);
+                ordemServico.getCliente().addVeiculo(veiculo);
 
                 ordemServicos.add(ordemServico);
             }
@@ -74,25 +74,28 @@ public class OrdemServicoDao extends Dao implements DaoI<OrdemServico> {
                 return rs.getInt(1);
             }
         } catch (SQLException ex) {
-            System.out.println("Erro ao cadastrar Ordem de serviço: "+ex.getMessage());
+            System.out.println("Erro ao cadastrar Ordem de serviço: " + ex.getMessage());
         }
         return 0;
     }
 
+    /**
+     *
+     * @param obj
+     * @return
+     */
     @Override
     public boolean alterar(OrdemServico obj) {
         PreparedStatement stmt;
 
         try {
-            String sql = "UPDATE ordemServico SET valorServico = ?,dataTimeEntrada = ?,dataTimeSaida= ?,cliente = ?,  servico = ?, ativado =?  WHERE idOrdemServico = ?";
+            String sql = "UPDATE ordemServico SET valorServico = ?,dataTimeEntrada = ?,dataTimeSaida= ?, ativado =?  WHERE idOrdemServico = ?";
             stmt = conexao.prepareStatement(sql);
-            stmt.setInt(9, obj.getIdOrdemServico());
             stmt.setDouble(1, obj.getValorServico());
             stmt.setLong(2, obj.getDataTimeEntrada());
             stmt.setLong(3, obj.getDataTimeSaida());
-            stmt.setInt(4, obj.getCliente().getIdCliente());
-            stmt.setInt(5, obj.getServico().getIdServicos());
-            stmt.setInt(6, obj.getAtivado());
+            stmt.setInt(4, obj.getAtivado());
+            stmt.setInt(5, obj.getIdOrdemServico());
             int status = stmt.executeUpdate();
             if (status > 0) {
                 return true;

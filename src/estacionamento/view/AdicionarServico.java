@@ -1,7 +1,7 @@
 package estacionamento.view;
 
 import estacionamento.dao.ClienteRelacionamentoVeiculoDao;
-import estacionamento.dao.EntradaRelacionamentoOrdemServico;
+import estacionamento.dao.EntradaRelacionamentoOrdemServicoDao;
 import estacionamento.dao.OrdemServicoDao;
 import estacionamento.model.Cliente;
 import estacionamento.model.OrdemServico;
@@ -35,7 +35,7 @@ public class AdicionarServico extends javax.swing.JDialog {
         }
         if (servicos.getIdServicos() > 0) {
             if (cliente != null) {
-                if (cliente.isTipoCiente()) {
+                if (cliente.isTipoCliente()) {
                     jtfValor.setText(String.valueOf(servicos.getValorServidor()));
                 } else {
                     jtfValor.setText(String.valueOf(servicos.getValorPublico()));
@@ -52,11 +52,6 @@ public class AdicionarServico extends javax.swing.JDialog {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        pnlPlaca = new javax.swing.JPanel();
-        jButton1 = new javax.swing.JButton();
-        jtfPlaca = new javax.swing.JFormattedTextField();
-        jLabel2 = new javax.swing.JLabel();
-        jSeparator1 = new javax.swing.JSeparator();
         pnlServico = new javax.swing.JPanel();
         jPanel9 = new javax.swing.JPanel();
         jPanel5 = new javax.swing.JPanel();
@@ -77,68 +72,15 @@ public class AdicionarServico extends javax.swing.JDialog {
         jPanel13 = new javax.swing.JPanel();
         jtfFracao = new javax.swing.JTextField();
         jButton4 = new javax.swing.JButton();
+        pnlPlaca = new javax.swing.JPanel();
+        jButton1 = new javax.swing.JButton();
+        jtfPlaca = new javax.swing.JFormattedTextField();
+        jLabel2 = new javax.swing.JLabel();
+        jSeparator1 = new javax.swing.JSeparator();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setMinimumSize(new java.awt.Dimension(391, 310));
         getContentPane().setLayout(null);
-
-        pnlPlaca.setMinimumSize(new java.awt.Dimension(391, 236));
-        pnlPlaca.setName(""); // NOI18N
-
-        jButton1.setText("Prosseguir");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
-            }
-        });
-
-        try {
-            jtfPlaca.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("???-####")));
-        } catch (java.text.ParseException ex) {
-            ex.printStackTrace();
-        }
-
-        jLabel2.setFont(new java.awt.Font("Tahoma", 1, 36)); // NOI18N
-        jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel2.setText("Placa:");
-        jLabel2.setToolTipText("");
-
-        javax.swing.GroupLayout pnlPlacaLayout = new javax.swing.GroupLayout(pnlPlaca);
-        pnlPlaca.setLayout(pnlPlacaLayout);
-        pnlPlacaLayout.setHorizontalGroup(
-            pnlPlacaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(pnlPlacaLayout.createSequentialGroup()
-                .addGroup(pnlPlacaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(pnlPlacaLayout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(pnlPlacaLayout.createSequentialGroup()
-                        .addGap(140, 140, 140)
-                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 129, Short.MAX_VALUE)))
-                .addContainerGap())
-            .addComponent(jSeparator1)
-            .addGroup(pnlPlacaLayout.createSequentialGroup()
-                .addGap(159, 159, 159)
-                .addComponent(jtfPlaca, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-        pnlPlacaLayout.setVerticalGroup(
-            pnlPlacaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlPlacaLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 5, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(28, 28, 28)
-                .addComponent(jtfPlaca, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 48, Short.MAX_VALUE)
-                .addComponent(jButton1)
-                .addGap(48, 48, 48))
-        );
-
-        getContentPane().add(pnlPlaca);
-        pnlPlaca.setBounds(0, 0, 400, 230);
 
         pnlServico.setMinimumSize(new java.awt.Dimension(391, 236));
         pnlServico.setName(""); // NOI18N
@@ -353,6 +295,64 @@ public class AdicionarServico extends javax.swing.JDialog {
         getContentPane().add(pnlServico);
         pnlServico.setBounds(0, 0, 391, 260);
 
+        pnlPlaca.setMinimumSize(new java.awt.Dimension(391, 236));
+        pnlPlaca.setName(""); // NOI18N
+
+        jButton1.setText("Prosseguir");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+
+        try {
+            jtfPlaca.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("???-####")));
+        } catch (java.text.ParseException ex) {
+            ex.printStackTrace();
+        }
+
+        jLabel2.setFont(new java.awt.Font("Tahoma", 1, 36)); // NOI18N
+        jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel2.setText("Placa:");
+        jLabel2.setToolTipText("");
+
+        javax.swing.GroupLayout pnlPlacaLayout = new javax.swing.GroupLayout(pnlPlaca);
+        pnlPlaca.setLayout(pnlPlacaLayout);
+        pnlPlacaLayout.setHorizontalGroup(
+            pnlPlacaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlPlacaLayout.createSequentialGroup()
+                .addGroup(pnlPlacaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(pnlPlacaLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(pnlPlacaLayout.createSequentialGroup()
+                        .addGap(140, 140, 140)
+                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 129, Short.MAX_VALUE)))
+                .addContainerGap())
+            .addComponent(jSeparator1)
+            .addGroup(pnlPlacaLayout.createSequentialGroup()
+                .addGap(159, 159, 159)
+                .addComponent(jtfPlaca, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        pnlPlacaLayout.setVerticalGroup(
+            pnlPlacaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlPlacaLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 5, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(28, 28, 28)
+                .addComponent(jtfPlaca, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 48, Short.MAX_VALUE)
+                .addComponent(jButton1)
+                .addGap(48, 48, 48))
+        );
+
+        getContentPane().add(pnlPlaca);
+        pnlPlaca.setBounds(0, 0, 400, 230);
+
         setSize(new java.awt.Dimension(407, 274));
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
@@ -387,16 +387,16 @@ public class AdicionarServico extends javax.swing.JDialog {
     }//GEN-LAST:event_jtfValorActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-        EntradaRelacionamentoOrdemServico entradaRelacionamentoOrdemServico = new EntradaRelacionamentoOrdemServico();
+        EntradaRelacionamentoOrdemServicoDao entradaRelacionamentoOrdemServico = new EntradaRelacionamentoOrdemServicoDao();
         OrdemServicoDao ordemServicoDao = new OrdemServicoDao();
         OrdemServico ordemServico = new OrdemServico();
         ordemServico.setCliente(cliente);
         ordemServico.setServico(servicos);
-        ordemServico.setVeiculo(cliente.getVeiculo().get(0));
+        ordemServico.getCliente().addVeiculo(cliente.getVeiculo().get(0));
         ordemServico.setDataTimeEntrada(System.currentTimeMillis());
- 
-        
-        entradaRelacionamentoOrdemServico.criarRelacionamento(cliente.getIdCliente(), servicos.getIdServicos(), cliente.getVeiculo().get(0).getIdVeiculo(), ordemServicoDao.cadastrar(ordemServico));
+        ordemServico.setIdOrdemServico(ordemServicoDao.cadastrar(ordemServico));
+        entradaRelacionamentoOrdemServico.criarRelacionamento(ordemServico);
+        dispose();
     }//GEN-LAST:event_jButton4ActionPerformed
 
     /**

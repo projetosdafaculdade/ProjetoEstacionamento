@@ -1,9 +1,8 @@
 package estacionamento.view;
 
+import estacionamento.dao.EntradaRelacionamentoOrdemServicoDao;
 import estacionamento.dao.OrdemServicoDao;
 import estacionamento.model.OrdemServico;
-import java.sql.Date;
-import java.sql.Time;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -13,42 +12,46 @@ import javax.swing.table.DefaultTableModel;
 
 public class FramePrincipal extends javax.swing.JFrame {
 
-    OrdemServicoDao ordemServicoDao;
     List<OrdemServico> ordemServicos;
     DefaultTableModel modelo;
 
     public FramePrincipal() {
         initComponents();
         modelo = (DefaultTableModel) tblEstacionamento.getModel();
-        ordemServicoDao = new OrdemServicoDao();
         lerDados();
     }
 
     private void lerDados() {
-//              DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-//        DateFormat horaFormat = new SimpleDateFormat("HH:mm");
         while (modelo.getRowCount() > 0) {
             modelo.removeRow(0);
         }
-        ordemServicos = ordemServicoDao.listar();
-
-        List<OrdemServico> ordemServicosTemp = new ArrayList<>();
-        for (OrdemServico ordemservico : ordemServicos) {
-            if (ordemservico.getAtivado() == 1) {
-                Object[] linha = new Object[]{
-                    ordemservico.getCliente().getCondutor(),
-                    ordemservico.getVeiculo().getMarca(),
-                    ordemservico.getVeiculo().getModelo(),
-                    ordemservico.getVeiculo().getCor(),
-                    ordemservico.getVeiculo().getPlaca(),
-                    ordemservico.getDataTimeEntrada(),
-                    ordemservico.getServico().getValorPublico()
-                };
-                modelo.addRow(linha);
-                ordemServicosTemp.add(ordemservico);
+        EntradaRelacionamentoOrdemServicoDao entradaRelacionamentoOrdemServicoDao = new EntradaRelacionamentoOrdemServicoDao();
+        ordemServicos = entradaRelacionamentoOrdemServicoDao.buscarRelacionamentosAtivos();
+        List<OrdemServico> ordemServicoTemp = new ArrayList<>();
+        for (OrdemServico ordemServicoSelecionada : ordemServicos) {
+            DateFormat dataFormat = new SimpleDateFormat("dd/MM/yyyy");
+            DateFormat horaFormat = new SimpleDateFormat("HH:mm");
+            double valorHora;
+            if (ordemServicoSelecionada.getCliente().isTipoCliente()) {
+                valorHora = ordemServicoSelecionada.getServico().getValorServidor();
+            } else {
+                valorHora = ordemServicoSelecionada.getServico().getValorPublico();
             }
+            Object[] linha = new Object[]{
+                ordemServicoSelecionada.getCliente().getCondutor(),
+                ordemServicoSelecionada.getCliente().getVeiculo().get(0).getMarca(),
+                ordemServicoSelecionada.getCliente().getVeiculo().get(0).getModelo(),
+                ordemServicoSelecionada.getCliente().getVeiculo().get(0).getCor(),
+                ordemServicoSelecionada.getCliente().getVeiculo().get(0).getPlaca(),
+                dataFormat.format(ordemServicoSelecionada.getDataTimeEntrada()),
+                horaFormat.format(ordemServicoSelecionada.getDataTimeEntrada()),
+                valorHora
+            };
+
+            modelo.addRow(linha);
+            ordemServicoTemp.add(ordemServicoSelecionada);
         }
-        ordemServicos = ordemServicosTemp;
+        ordemServicos = ordemServicoTemp;
     }
 
     @SuppressWarnings("unchecked")
@@ -59,7 +62,7 @@ public class FramePrincipal extends javax.swing.JFrame {
         tblEstacionamento = new javax.swing.JTable();
         jPanel1 = new javax.swing.JPanel();
         btnFinalizar = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
+        btnAdicionar = new javax.swing.JButton();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         jMenu2 = new javax.swing.JMenu();
@@ -87,10 +90,10 @@ public class FramePrincipal extends javax.swing.JFrame {
             }
         });
 
-        jButton2.setText("Adicionar entrada");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
+        btnAdicionar.setText("Adicionar entrada");
+        btnAdicionar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
+                btnAdicionarActionPerformed(evt);
             }
         });
 
@@ -101,7 +104,7 @@ public class FramePrincipal extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, 177, Short.MAX_VALUE)
+                    .addComponent(btnAdicionar, javax.swing.GroupLayout.DEFAULT_SIZE, 177, Short.MAX_VALUE)
                     .addComponent(btnFinalizar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap(63, Short.MAX_VALUE))
         );
@@ -109,7 +112,7 @@ public class FramePrincipal extends javax.swing.JFrame {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(80, 80, 80)
-                .addComponent(jButton2)
+                .addComponent(btnAdicionar)
                 .addGap(18, 18, 18)
                 .addComponent(btnFinalizar)
                 .addContainerGap(246, Short.MAX_VALUE))
@@ -131,45 +134,28 @@ public class FramePrincipal extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnFinalizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFinalizarActionPerformed
-        FinalizarServico finalizarServico = new FinalizarServico(this, rootPaneCheckingEnabled);
-        finalizarServico.setVisible(true);
         OrdemServico ordemServico = ordemServicos.get(tblEstacionamento.getSelectedRow());
-
-//        if (finalizarServico.data > ordemServico.getDataTimeEntrada())) {
-//            System.out.println("Entrou");
-//            Time horas = new Time(finalizarServico.hora);
-//            Date datas = new Date(finalizarServico.data);
-//            OrdemServico editar = ordemServico;
-//            editar.setHoraSaida(horas);
-//            editar.setDataSaida(datas);
-//            editar.setAtivado(0);
-//            Boolean valor = ordemServicoDao.alterar(editar);
-//            System.out.println("ALTEROU?> " + valor);
-//            lerDados();
-//        } else if (finalizarServico.data == ordemServico.getDataEntrada().getTime()) {
-//            if (finalizarServico.hora > ordemServico.getHoraEntrada().getTime()) {
-//                System.out.println("Entrou");
-//                Time horas = new Time(finalizarServico.hora);
-//                Date datas = new Date(finalizarServico.data);
-//                OrdemServico editar = ordemServico;
-//                editar.setHoraSaida(horas);
-//                editar.setDataSaida(datas);
-//                editar.setAtivado(0);
-//                Boolean valor = ordemServicoDao.alterar(editar);
-//                System.out.println("ALTEROU?> " + valor);
-//                lerDados();
-//            } else {
-//                JOptionPane.showMessageDialog(null, "Hora menor que a atual!");
-//            }
-//        } else {
-//            JOptionPane.showMessageDialog(null, "Data de saída é menor que a data de entrada do veículo!");
-//        }
+        FinalizarServicoAberto finalizarServico = new FinalizarServicoAberto(this, rootPaneCheckingEnabled, ordemServico);
+        finalizarServico.setVisible(true);
+        OrdemServicoDao ordemServicoDao = new OrdemServicoDao();
+        DateFormat dataFormat = new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat formatarhora = new SimpleDateFormat("HH:mm:SS");
+        if (ordemServico.getDataTimeSaida() >= ordemServico.getDataTimeEntrada()) {
+            ordemServico.setAtivado(0);
+            if (ordemServicoDao.alterar(ordemServico)) {
+                JOptionPane.showMessageDialog(null, ordemServico.getCliente().getCondutor()+" retirou o veículo da oficina!");
+                lerDados();
+            }
+        } else {
+            JOptionPane.showMessageDialog(null, "Data e hora menor que a atual!");
+        }
     }//GEN-LAST:event_btnFinalizarActionPerformed
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+    private void btnAdicionarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAdicionarActionPerformed
         AdicionarServico adicionarServico = new AdicionarServico(this, rootPaneCheckingEnabled);
         adicionarServico.setVisible(true);
-    }//GEN-LAST:event_jButton2ActionPerformed
+        lerDados();
+    }//GEN-LAST:event_btnAdicionarActionPerformed
 
     /**
      * @param args the command line arguments
@@ -203,8 +189,8 @@ public class FramePrincipal extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnAdicionar;
     private javax.swing.JButton btnFinalizar;
-    private javax.swing.JButton jButton2;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenuBar jMenuBar1;

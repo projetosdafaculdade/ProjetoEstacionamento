@@ -314,7 +314,7 @@ public class MenuCliente extends javax.swing.JDialog {
         ClienteRelacionamentoVeiculoDao clienteRelacionamentoVeiculoDao = new ClienteRelacionamentoVeiculoDao();
         if (cliente.getCondutor() != null) {
             jtfCondutor.setText(cliente.getCondutor());
-            if (cliente.isTipoCiente()) {
+            if (cliente.isTipoCliente()) {
                 jtfTipoCliente.setText("Servidor");
             } else {
                 jtfTipoCliente.setText("Público");
@@ -338,7 +338,7 @@ public class MenuCliente extends javax.swing.JDialog {
     public void lerDadosCliente() {
         if (cliente.getCondutor() != null) {
             jtfCondutor.setText(cliente.getCondutor());
-            if (cliente.isTipoCiente()) {
+            if (cliente.isTipoCliente()) {
                 jtfTipoCliente.setText("Servidor");
             } else {
                 jtfTipoCliente.setText("Público");

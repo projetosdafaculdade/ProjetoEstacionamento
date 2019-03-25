@@ -58,7 +58,7 @@ public class ClienteDao extends Dao implements DaoI<Cliente> {
             String sql = "insert into cliente(condutor, tipoCliente, valorPagoCliente) values(?,?,?)";
             stmt = conexao.prepareStatement(sql);
             stmt.setString(1, obj.getCondutor());
-            stmt.setBoolean(2, obj.isTipoCiente());
+            stmt.setBoolean(2, obj.isTipoCliente());
             stmt.setDouble(3, obj.getValorPagoCliente());
             stmt.executeUpdate();
 
