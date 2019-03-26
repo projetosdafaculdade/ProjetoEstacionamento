@@ -1,5 +1,6 @@
 package estacionamento.view;
 
+import estacionamento.controller.GestaoClienteController;
 import estacionamento.dao.ClienteRelacionamentoVeiculoDao;
 import estacionamento.dao.VeiculoDao;
 import estacionamento.model.Cliente;
@@ -7,7 +8,6 @@ import estacionamento.model.Veiculo;
 import java.awt.Frame;
 import java.util.ArrayList;
 import java.util.List;
-import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 public class MenuCliente extends javax.swing.JDialog {
@@ -17,6 +17,7 @@ public class MenuCliente extends javax.swing.JDialog {
     Veiculo veiculo;
     List<Veiculo> veiculos;
     DefaultTableModel modelo;
+    GestaoClienteController gestaoClienteController;
 
     public MenuCliente(java.awt.Frame parent, boolean modal, Cliente cliente) {
         super(parent, modal);
@@ -24,6 +25,7 @@ public class MenuCliente extends javax.swing.JDialog {
         this.cliente = cliente;
         veiculos = new ArrayList<>();
         initComponents();
+        gestaoClienteController = new GestaoClienteController(parent, rootPaneCheckingEnabled, modelo);
         modelo = (DefaultTableModel) tblVeiculos.getModel();
         lerDadosInicias();
     }
@@ -44,7 +46,7 @@ public class MenuCliente extends javax.swing.JDialog {
         btnTrocarCliente = new javax.swing.JButton();
         jPanel11 = new javax.swing.JPanel();
         jtfTipoCliente = new javax.swing.JTextField();
-        jButton4 = new javax.swing.JButton();
+        btnContinuar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -113,11 +115,6 @@ public class MenuCliente extends javax.swing.JDialog {
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createTitledBorder(new javax.swing.border.LineBorder(new java.awt.Color(102, 102, 102), 1, true), "", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 11), new java.awt.Color(102, 102, 102)), "Nome", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 11), new java.awt.Color(51, 51, 51))); // NOI18N
 
         jtfCondutor.setEditable(false);
-        jtfCondutor.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jtfCondutorActionPerformed(evt);
-            }
-        });
 
         btnTrocarCliente.setText("...");
         btnTrocarCliente.addActionListener(new java.awt.event.ActionListener() {
@@ -189,11 +186,11 @@ public class MenuCliente extends javax.swing.JDialog {
                 .addContainerGap())
         );
 
-        jButton4.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        jButton4.setText("Continuar");
-        jButton4.addActionListener(new java.awt.event.ActionListener() {
+        btnContinuar.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        btnContinuar.setText("Continuar");
+        btnContinuar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton4ActionPerformed(evt);
+                btnContinuarActionPerformed(evt);
             }
         });
 
@@ -207,7 +204,7 @@ public class MenuCliente extends javax.swing.JDialog {
                 .addGap(0, 9, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 309, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(btnContinuar, javax.swing.GroupLayout.PREFERRED_SIZE, 309, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(154, 154, 154))
         );
         layout.setVerticalGroup(
@@ -216,7 +213,7 @@ public class MenuCliente extends javax.swing.JDialog {
                 .addContainerGap()
                 .addComponent(jPanel9, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(btnContinuar, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
 
@@ -224,25 +221,16 @@ public class MenuCliente extends javax.swing.JDialog {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-        if (tblVeiculos.getSelectedRow() == -1) {
-            JOptionPane.showMessageDialog(null, "Por favor escolha um veículo!");
-        } else {
-            veiculo = veiculos.get(tblVeiculos.getSelectedRow());
-            cliente.getVeiculo().clear();
-            cliente.addVeiculo(veiculo);
-            dispose();
-        }
-    }//GEN-LAST:event_jButton4ActionPerformed
-
-    private void jtfCondutorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jtfCondutorActionPerformed
-
-    }//GEN-LAST:event_jtfCondutorActionPerformed
+    private void btnContinuarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnContinuarActionPerformed
+        gestaoClienteController.setCliente(cliente);
+        gestaoClienteController.setVeiculo(veiculo);
+        gestaoClienteController.setVeiculos(veiculos);
+        gestaoClienteController.selecionarVeiculoCliente();
+    }//GEN-LAST:event_btnContinuarActionPerformed
 
     private void btnAdicionarVeiculoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAdicionarVeiculoActionPerformed
-        ObterVeiculoListagem obterVeiculoListagem = new ObterVeiculoListagem(parent, rootPaneCheckingEnabled, cliente);
-        obterVeiculoListagem.setVisible(true);
-        lerDadosCliente();
+        gestaoClienteController.setCliente(cliente);
+        gestaoClienteController.listarVeiculos();
     }//GEN-LAST:event_btnAdicionarVeiculoActionPerformed
 
     private void btnTrocarClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTrocarClienteActionPerformed
@@ -252,9 +240,10 @@ public class MenuCliente extends javax.swing.JDialog {
     }//GEN-LAST:event_btnTrocarClienteActionPerformed
 
     private void btnRemoverVeiculoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRemoverVeiculoActionPerformed
-        ClienteRelacionamentoVeiculoDao clienteRelacionamentoVeiculoDao = new ClienteRelacionamentoVeiculoDao();
-        clienteRelacionamentoVeiculoDao.removerRelacionamento(veiculos.get(tblVeiculos.getSelectedRow()).getIdVeiculo());
-        lerDadosCliente();
+        gestaoClienteController.setTblVeiculos(tblVeiculos);
+        gestaoClienteController.setVeiculos(veiculos);
+        gestaoClienteController.setCliente(cliente);
+        gestaoClienteController.removerVeiculo();
     }//GEN-LAST:event_btnRemoverVeiculoActionPerformed
 
     public static void main(String args[]) {
@@ -293,10 +282,10 @@ public class MenuCliente extends javax.swing.JDialog {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAdicionarVeiculo;
+    private javax.swing.JButton btnContinuar;
     private javax.swing.ButtonGroup btnGroupTipoCliente;
     private javax.swing.JButton btnRemoverVeiculo;
     private javax.swing.JButton btnTrocarCliente;
-    private javax.swing.JButton jButton4;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel11;
     private javax.swing.JPanel jPanel5;
@@ -332,6 +321,10 @@ public class MenuCliente extends javax.swing.JDialog {
                 }
             }
 
+        }
+        if (cliente.getIdCliente() == 0) {
+            btnAdicionarVeiculo.setEnabled(false);
+            btnRemoverVeiculo.setEnabled(false);
         }
     }
 

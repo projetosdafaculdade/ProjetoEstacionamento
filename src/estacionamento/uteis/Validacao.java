@@ -1,7 +1,5 @@
 package estacionamento.uteis;
 
-import java.sql.Time;
-
 public class Validacao {
 
     /**
@@ -9,10 +7,10 @@ public class Validacao {
      * <br>Retorna true para vazio
      * <br>Retorna false ao contrário!
      *
-     * @param obj
+     * @param campo
      * @return boolean
      */
-    public boolean campoVazio(String campo) {
+    public static boolean campoVazio(String campo) {
         if (campo.trim().isEmpty()) {
             return true;
         } else {
@@ -26,11 +24,11 @@ public class Validacao {
      * <br>Retorna false ao contrário!
      * <br> valor -1.0 é considerado vazio!
      *
-     * @param obj
+     * @param campo
      * @return boolean
      *
      */
-    public boolean campoVazio(double campo) {
+    public static boolean campoVazio(double campo) {
         if (campo == -1.0) {
             return true;
         } else {
@@ -44,11 +42,11 @@ public class Validacao {
      * <br>Retorna false ao contrário!
      * <br> valor -1.0 é considerado vazio!
      *
-     * @param obj
+     * @param campo
      * @return boolean
      *
      */
-    public boolean campoVazio(Integer campo) {
+    public static boolean campoVazio(Integer campo) {
         if (campo == -1) {
             return true;
         } else {
@@ -56,19 +54,18 @@ public class Validacao {
         }
     }
 
-    public boolean horaSaida(Time entrada, Time saida) {
-        if (saida.getHours() < entrada.getHours()) {
-            return true;
-        } else {
-            return false;
-        }
-    }
+    /**
+     * Método para verificar se campo está vazio
+     * <br>Retorna true para vazio
+     * <br>Retorna false ao contrário!
+     * <br> valor -1.0 é considerado vazio!
+     *
+     * @param campo
+     * @return boolean
+     *
+     */
+    public static boolean campoNumericoVazio(String campo) {
+        return campo.replaceAll("[^0-9]", "").length() <= 0;
 
-    public boolean valorPago(double valorConta, double valorPago) {
-        if (valorPago < valorConta) {
-            return true;
-        } else {
-            return false;
-        }
     }
 }

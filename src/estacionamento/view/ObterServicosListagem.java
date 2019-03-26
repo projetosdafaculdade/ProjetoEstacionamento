@@ -2,6 +2,9 @@ package estacionamento.view;
 
 import estacionamento.dao.ServicosDao;
 import estacionamento.model.Servicos;
+import estacionamento.uteis.JOptionMessagem;
+import estacionamento.uteis.Mensagem;
+import estacionamento.uteis.Validacao;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.table.DefaultTableModel;
@@ -59,7 +62,6 @@ public class ObterServicosListagem extends javax.swing.JDialog {
         jPanel10 = new javax.swing.JPanel();
         jtfValorServidor = new javax.swing.JFormattedTextField();
         btnAdicionar = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -83,7 +85,7 @@ public class ObterServicosListagem extends javax.swing.JDialog {
         );
 
         jPanel5.add(jPanel12);
-        jPanel12.setBounds(350, 20, 150, 50);
+        jPanel12.setBounds(350, 30, 150, 50);
 
         jPanel11.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createTitledBorder(new javax.swing.border.LineBorder(new java.awt.Color(102, 102, 102), 1, true), "", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 11), new java.awt.Color(102, 102, 102)), "Valor Público", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 11), new java.awt.Color(51, 51, 51))); // NOI18N
         jPanel11.setAutoscrolls(true);
@@ -112,7 +114,7 @@ public class ObterServicosListagem extends javax.swing.JDialog {
         );
 
         jPanel5.add(jPanel11);
-        jPanel11.setBounds(190, 20, 150, 50);
+        jPanel11.setBounds(190, 30, 150, 50);
 
         tblServicos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -174,7 +176,7 @@ public class ObterServicosListagem extends javax.swing.JDialog {
         );
 
         jPanel5.add(jPanel10);
-        jPanel10.setBounds(30, 20, 150, 50);
+        jPanel10.setBounds(30, 30, 150, 50);
 
         btnAdicionar.setText("Adicionar");
         btnAdicionar.setToolTipText("");
@@ -186,16 +188,7 @@ public class ObterServicosListagem extends javax.swing.JDialog {
             }
         });
         jPanel5.add(btnAdicionar);
-        btnAdicionar.setBounds(510, 30, 90, 50);
-
-        jButton2.setText("jButton1");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
-            }
-        });
-        jPanel5.add(jButton2);
-        jButton2.setBounds(610, 10, 40, 23);
+        btnAdicionar.setBounds(510, 36, 90, 46);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -228,6 +221,7 @@ public class ObterServicosListagem extends javax.swing.JDialog {
     }//GEN-LAST:event_btnSelecionarActionPerformed
 
     private void btnAdicionarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAdicionarActionPerformed
+       if(!Validacao.campoNumericoVazio(jtfFracao.getText())){
         ServicosDao servicoDao = new ServicosDao();
         Servicos servicosTemp = new Servicos();
         servicosTemp.setValorPublico(Double.parseDouble(jtfValorPublico.getText()));
@@ -235,11 +229,10 @@ public class ObterServicosListagem extends javax.swing.JDialog {
         servicosTemp.setFracao(Integer.parseInt(jtfFracao.getText()));
         servicoDao.cadastrar(servicosTemp);
         lerTodosServicos();
+       }else{
+           JOptionMessagem.dialog("Aviso!", Mensagem.VALOR_INVALIDO);
+       }
     }//GEN-LAST:event_btnAdicionarActionPerformed
-
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        System.out.println("Eae");
-    }//GEN-LAST:event_jButton2ActionPerformed
 
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
@@ -289,7 +282,6 @@ public class ObterServicosListagem extends javax.swing.JDialog {
     private javax.swing.JButton btnAdicionar;
     private javax.swing.JButton btnSelecionar;
     private javax.swing.ButtonGroup buttonGroup1;
-    private javax.swing.JButton jButton2;
     private javax.swing.JPanel jPanel10;
     private javax.swing.JPanel jPanel11;
     private javax.swing.JPanel jPanel12;

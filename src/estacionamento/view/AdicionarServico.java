@@ -1,51 +1,26 @@
 package estacionamento.view;
 
-import estacionamento.dao.ClienteRelacionamentoVeiculoDao;
-import estacionamento.dao.EntradaRelacionamentoOrdemServicoDao;
-import estacionamento.dao.OrdemServicoDao;
+import estacionamento.controller.GestaoEntradaController;
 import estacionamento.model.Cliente;
-import estacionamento.model.OrdemServico;
 import estacionamento.model.Servicos;
 import java.awt.Frame;
-import javax.swing.JOptionPane;
 
 public class AdicionarServico extends javax.swing.JDialog {
 
     Frame parent;
     Cliente cliente;
     Servicos servicos;
+    GestaoEntradaController gestaoEntradaController;
 
     public AdicionarServico(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         this.parent = parent;
         this.servicos = new Servicos();
+        this.cliente = new Cliente();
         initComponents();
+        gestaoEntradaController = new GestaoEntradaController(rootPaneCheckingEnabled, this, parent, jtfCorServico, jtfMarcaServico, jtfModeloServico, jtfPlacaServico, jtfCondutorServico, jtfFracao, jtfPlaca, jtfValor, pnlServico, pnlPlaca);
         pnlPlaca.setVisible(true);
         pnlServico.setVisible(false);
-        cliente = new Cliente();
-    }
-
-    public void lerDados() {
-        if (!cliente.getVeiculo().isEmpty()) {
-            jtfCorServico.setText(cliente.getVeiculo().get(0).getCor());
-            jtfMarcaServico.setText(cliente.getVeiculo().get(0).getMarca());
-            jtfModeloServico.setText(cliente.getVeiculo().get(0).getModelo());
-            jtfPlacaServico.setText(cliente.getVeiculo().get(0).getPlaca());
-            jtfCondutorServico.setText(cliente.getCondutor());
-        }
-        if (servicos.getIdServicos() > 0) {
-            if (cliente != null) {
-                if (cliente.isTipoCliente()) {
-                    jtfValor.setText(String.valueOf(servicos.getValorServidor()));
-                } else {
-                    jtfValor.setText(String.valueOf(servicos.getValorPublico()));
-                }
-                jtfFracao.setText(String.valueOf(servicos.getFracao()));
-            } else {
-                JOptionPane.showMessageDialog(null, "Por favor selecione um cliente primeiro!", "Aviso!", JOptionPane.DEFAULT_OPTION);
-            }
-
-        }
     }
 
     @SuppressWarnings("unchecked")
@@ -68,12 +43,12 @@ public class AdicionarServico extends javax.swing.JDialog {
         jPanel10 = new javax.swing.JPanel();
         jPanel11 = new javax.swing.JPanel();
         jtfValor = new javax.swing.JTextField();
-        jButton3 = new javax.swing.JButton();
+        btnAlterarServico = new javax.swing.JButton();
         jPanel13 = new javax.swing.JPanel();
         jtfFracao = new javax.swing.JTextField();
-        jButton4 = new javax.swing.JButton();
+        btnAdicionar = new javax.swing.JButton();
         pnlPlaca = new javax.swing.JPanel();
-        jButton1 = new javax.swing.JButton();
+        btnBuscarPlaca = new javax.swing.JButton();
         jtfPlaca = new javax.swing.JFormattedTextField();
         jLabel2 = new javax.swing.JLabel();
         jSeparator1 = new javax.swing.JSeparator();
@@ -219,22 +194,17 @@ public class AdicionarServico extends javax.swing.JDialog {
         jPanel11.setLayout(null);
 
         jtfValor.setEditable(false);
-        jtfValor.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jtfValorActionPerformed(evt);
-            }
-        });
         jPanel11.add(jtfValor);
         jtfValor.setBounds(3, 17, 100, 20);
 
-        jButton3.setText("...");
-        jButton3.addActionListener(new java.awt.event.ActionListener() {
+        btnAlterarServico.setText("...");
+        btnAlterarServico.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton3ActionPerformed(evt);
+                btnAlterarServicoActionPerformed(evt);
             }
         });
-        jPanel11.add(jButton3);
-        jButton3.setBounds(105, 16, 24, 23);
+        jPanel11.add(btnAlterarServico);
+        btnAlterarServico.setBounds(105, 16, 24, 23);
 
         jPanel10.add(jPanel11);
         jPanel11.setBounds(10, 15, 132, 43);
@@ -258,15 +228,15 @@ public class AdicionarServico extends javax.swing.JDialog {
         jPanel10.add(jPanel13);
         jPanel13.setBounds(149, 16, 118, 42);
 
-        jButton4.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        jButton4.setText("ADD");
-        jButton4.addActionListener(new java.awt.event.ActionListener() {
+        btnAdicionar.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        btnAdicionar.setText("ADD");
+        btnAdicionar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton4ActionPerformed(evt);
+                btnAdicionarActionPerformed(evt);
             }
         });
-        jPanel10.add(jButton4);
-        jButton4.setBounds(275, 21, 90, 39);
+        jPanel10.add(btnAdicionar);
+        btnAdicionar.setBounds(275, 21, 90, 39);
 
         javax.swing.GroupLayout pnlServicoLayout = new javax.swing.GroupLayout(pnlServico);
         pnlServico.setLayout(pnlServicoLayout);
@@ -298,10 +268,10 @@ public class AdicionarServico extends javax.swing.JDialog {
         pnlPlaca.setMinimumSize(new java.awt.Dimension(391, 236));
         pnlPlaca.setName(""); // NOI18N
 
-        jButton1.setText("Prosseguir");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        btnBuscarPlaca.setText("Prosseguir");
+        btnBuscarPlaca.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                btnBuscarPlacaActionPerformed(evt);
             }
         });
 
@@ -327,7 +297,7 @@ public class AdicionarServico extends javax.swing.JDialog {
                         .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(pnlPlacaLayout.createSequentialGroup()
                         .addGap(140, 140, 140)
-                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(btnBuscarPlaca, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 129, Short.MAX_VALUE)))
                 .addContainerGap())
             .addComponent(jSeparator1)
@@ -346,7 +316,7 @@ public class AdicionarServico extends javax.swing.JDialog {
                 .addGap(28, 28, 28)
                 .addComponent(jtfPlaca, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 48, Short.MAX_VALUE)
-                .addComponent(jButton1)
+                .addComponent(btnBuscarPlaca)
                 .addGap(48, 48, 48))
         );
 
@@ -357,51 +327,24 @@ public class AdicionarServico extends javax.swing.JDialog {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        String placa = jtfPlaca.getText();
-        if (placa.trim().length() == 8) {
-            pnlPlaca.setVisible(false);
-            pnlServico.setVisible(true);
-            ClienteRelacionamentoVeiculoDao clienteRelacionamentoVeiculoDao = new ClienteRelacionamentoVeiculoDao();
-            cliente = clienteRelacionamentoVeiculoDao.buscarPorPlaca(placa);
-            if (clienteRelacionamentoVeiculoDao.buscarPorPlaca(placa) != null) {
-                lerDados();
-            }
-        }
-    }//GEN-LAST:event_jButton1ActionPerformed
+    private void btnBuscarPlacaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarPlacaActionPerformed
+        gestaoEntradaController.setCliente(cliente);
+        gestaoEntradaController.buscarClientePorPlacaController();
+    }//GEN-LAST:event_btnBuscarPlacaActionPerformed
 
     private void btnTrocarClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTrocarClienteActionPerformed
-        MenuCliente menuCliente = new MenuCliente(parent, rootPaneCheckingEnabled, cliente);
-        menuCliente.setVisible(true);
-        lerDados();
+        gestaoEntradaController.alterarClienteController();
     }//GEN-LAST:event_btnTrocarClienteActionPerformed
 
-    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        MenuServicos menuServicos = new MenuServicos(parent, rootPaneCheckingEnabled, servicos);
-        menuServicos.setVisible(true);
-        lerDados();
-    }//GEN-LAST:event_jButton3ActionPerformed
+    private void btnAlterarServicoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAlterarServicoActionPerformed
+        gestaoEntradaController.setServicos(servicos);
+        gestaoEntradaController.alterarServicoController();
+    }//GEN-LAST:event_btnAlterarServicoActionPerformed
 
-    private void jtfValorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jtfValorActionPerformed
+    private void btnAdicionarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAdicionarActionPerformed
+        gestaoEntradaController.adicionarServicoController();
+    }//GEN-LAST:event_btnAdicionarActionPerformed
 
-    }//GEN-LAST:event_jtfValorActionPerformed
-
-    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-        EntradaRelacionamentoOrdemServicoDao entradaRelacionamentoOrdemServico = new EntradaRelacionamentoOrdemServicoDao();
-        OrdemServicoDao ordemServicoDao = new OrdemServicoDao();
-        OrdemServico ordemServico = new OrdemServico();
-        ordemServico.setCliente(cliente);
-        ordemServico.setServico(servicos);
-        ordemServico.getCliente().addVeiculo(cliente.getVeiculo().get(0));
-        ordemServico.setDataTimeEntrada(System.currentTimeMillis());
-        ordemServico.setIdOrdemServico(ordemServicoDao.cadastrar(ordemServico));
-        entradaRelacionamentoOrdemServico.criarRelacionamento(ordemServico);
-        dispose();
-    }//GEN-LAST:event_jButton4ActionPerformed
-
-    /**
-     * @param args the command line arguments
-     */
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
@@ -442,10 +385,10 @@ public class AdicionarServico extends javax.swing.JDialog {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnAdicionar;
+    private javax.swing.JButton btnAlterarServico;
+    private javax.swing.JButton btnBuscarPlaca;
     private javax.swing.JButton btnTrocarCliente;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton4;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel10;

@@ -2,6 +2,8 @@ package estacionamento.view;
 
 import estacionamento.dao.ClienteDao;
 import estacionamento.model.Cliente;
+import estacionamento.uteis.JOptionMessagem;
+import estacionamento.uteis.Mensagem;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.table.DefaultTableModel;
@@ -46,10 +48,10 @@ public class ObterClienteListagem extends javax.swing.JDialog {
             }
         }
         if (clientesTemp.isEmpty()) {
-            if(jtfNome.getText().length() != 0){
-            btnAdicionar.setEnabled(true);
-            jpnlTipoDeCliente.setVisible(true);
-        }
+            if (jtfNome.getText().length() != 0) {
+                btnAdicionar.setEnabled(true);
+                jpnlTipoDeCliente.setVisible(true);
+            }
         } else {
             btnAdicionar.setEnabled(false);
             jpnlTipoDeCliente.setVisible(false);
@@ -83,7 +85,7 @@ public class ObterClienteListagem extends javax.swing.JDialog {
                     clientesTemp.add(clientes.get(i));
                 }
             }
-        } 
+        }
         clientes = clientesTemp;
     }
 
@@ -230,14 +232,18 @@ public class ObterClienteListagem extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        Cliente clienteSelecionado = new Cliente();
-        clienteSelecionado = clientes.get(tblClientes.getSelectedRow());
-        cliente.setIdCliente(clienteSelecionado.getIdCliente());
-        cliente.setCondutor(clienteSelecionado.getCondutor());
-        cliente.setTipoCliente(clienteSelecionado.isTipoCliente());
-        cliente.setValorPagoCliente(clienteSelecionado.getValorPagoCliente());
-        cliente.setAtivado(clienteSelecionado.getAtivado());
-        dispose();
+        if (tblClientes.getSelectedRow() != -1) {
+            Cliente clienteSelecionado;
+            clienteSelecionado = clientes.get(tblClientes.getSelectedRow());
+            cliente.setIdCliente(clienteSelecionado.getIdCliente());
+            cliente.setCondutor(clienteSelecionado.getCondutor());
+            cliente.setTipoCliente(clienteSelecionado.isTipoCliente());
+            cliente.setValorPagoCliente(clienteSelecionado.getValorPagoCliente());
+            cliente.setAtivado(clienteSelecionado.getAtivado());
+            dispose();
+        } else {
+            JOptionMessagem.dialog("Aviso", Mensagem.NENHUM_CLIENTE_SELECIONADO);
+        }
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jtfNomeKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jtfNomeKeyReleased
@@ -245,13 +251,12 @@ public class ObterClienteListagem extends javax.swing.JDialog {
     }//GEN-LAST:event_jtfNomeKeyReleased
 
     private void btnAdicionarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAdicionarActionPerformed
-        ClienteDao clienteDao = new ClienteDao();
-        Cliente clienteTemp = new Cliente();
-        clienteTemp.setCondutor(jtfNome.getText());
-        clienteTemp.setTipoCliente(jrbServidor.isSelected());
-        clienteDao.cadastrar(clienteTemp);
-        lerCLientePesquisado(jtfNome.getText());
-        
+            ClienteDao clienteDao = new ClienteDao();
+            Cliente clienteTemp = new Cliente();
+            clienteTemp.setCondutor(jtfNome.getText());
+            clienteTemp.setTipoCliente(jrbServidor.isSelected());
+            clienteDao.cadastrar(clienteTemp);
+            lerCLientePesquisado(jtfNome.getText());
     }//GEN-LAST:event_btnAdicionarActionPerformed
 
     public static void main(String args[]) {

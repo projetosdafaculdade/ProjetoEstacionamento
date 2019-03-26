@@ -3,11 +3,12 @@ package estacionamento.view;
 import estacionamento.dao.EntradaRelacionamentoOrdemServicoDao;
 import estacionamento.dao.OrdemServicoDao;
 import estacionamento.model.OrdemServico;
+import estacionamento.uteis.JOptionMessagem;
+import estacionamento.uteis.Mensagem;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
-import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 public class FramePrincipal extends javax.swing.JFrame {
@@ -134,20 +135,20 @@ public class FramePrincipal extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnFinalizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFinalizarActionPerformed
-        OrdemServico ordemServico = ordemServicos.get(tblEstacionamento.getSelectedRow());
-        FinalizarServicoAberto finalizarServico = new FinalizarServicoAberto(this, rootPaneCheckingEnabled, ordemServico);
-        finalizarServico.setVisible(true);
-        OrdemServicoDao ordemServicoDao = new OrdemServicoDao();
-        DateFormat dataFormat = new SimpleDateFormat("yyyy-MM-dd");
-        SimpleDateFormat formatarhora = new SimpleDateFormat("HH:mm:SS");
-        if (ordemServico.getDataTimeSaida() >= ordemServico.getDataTimeEntrada()) {
-            ordemServico.setAtivado(0);
-            if (ordemServicoDao.alterar(ordemServico)) {
-                JOptionPane.showMessageDialog(null, ordemServico.getCliente().getCondutor()+" retirou o veículo da oficina!");
-                lerDados();
+        if (tblEstacionamento.getSelectedRow() != -1) {
+            OrdemServico ordemServico = ordemServicos.get(tblEstacionamento.getSelectedRow());
+            FinalizarServicoAberto finalizarServico = new FinalizarServicoAberto(this, rootPaneCheckingEnabled, ordemServico);
+            finalizarServico.setVisible(true);
+            OrdemServicoDao ordemServicoDao = new OrdemServicoDao();
+            if (ordemServico.getDataTimeSaida() >= ordemServico.getDataTimeEntrada()) {
+                ordemServico.setAtivado(0);
+                if (ordemServicoDao.alterar(ordemServico)) {
+                    JOptionMessagem.dialog("Retirada", Mensagem.RETIRADA_VEICULO(ordemServico.getCliente().getCondutor(), ordemServico.getCliente().getVeiculo().get(0).getModelo()));
+                    lerDados();
+                }
             }
         } else {
-            JOptionPane.showMessageDialog(null, "Data e hora menor que a atual!");
+            JOptionMessagem.dialog("Aviso", Mensagem.NENHUM_SERVICO_SELECIONADO);
         }
     }//GEN-LAST:event_btnFinalizarActionPerformed
 
@@ -157,9 +158,6 @@ public class FramePrincipal extends javax.swing.JFrame {
         lerDados();
     }//GEN-LAST:event_btnAdicionarActionPerformed
 
-    /**
-     * @param args the command line arguments
-     */
     public static void main(String args[]) {
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {

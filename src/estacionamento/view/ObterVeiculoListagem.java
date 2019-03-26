@@ -6,6 +6,9 @@ import estacionamento.dao.VeiculoDao;
 import estacionamento.model.Cliente;
 import estacionamento.model.PesquisarClienteVeiculo;
 import estacionamento.model.Veiculo;
+import estacionamento.uteis.JOptionMessagem;
+import estacionamento.uteis.Mensagem;
+import estacionamento.uteis.Validacao;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.table.DefaultTableModel;
@@ -245,13 +248,17 @@ public class ObterVeiculoListagem extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnSelecionarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSelecionarActionPerformed
-        Cliente clienteSelecionado = clientes.get(tblVeiculos.getSelectedRow());
-        if (clienteRelacionamentoVeiculoDao.verificarExistência(clienteSelecionado.getVeiculo().get(0).getIdVeiculo())) {
-            clienteRelacionamentoVeiculoDao.alterarRelacionamento(cliente.getIdCliente(), clienteSelecionado.getVeiculo().get(0).getIdVeiculo());
+        if (tblVeiculos.getSelectedRow() != -1) {
+            Cliente clienteSelecionado = clientes.get(tblVeiculos.getSelectedRow());
+            if (clienteRelacionamentoVeiculoDao.verificarExistência(clienteSelecionado.getVeiculo().get(0).getIdVeiculo())) {
+                clienteRelacionamentoVeiculoDao.alterarRelacionamento(cliente.getIdCliente(), clienteSelecionado.getVeiculo().get(0).getIdVeiculo());
+            } else {
+                clienteRelacionamentoVeiculoDao.criarRelacionamento(cliente.getIdCliente(), clienteSelecionado.getVeiculo().get(0).getIdVeiculo());
+            }
+            dispose();
         } else {
-            clienteRelacionamentoVeiculoDao.criarRelacionamento(cliente.getIdCliente(), clienteSelecionado.getVeiculo().get(0).getIdVeiculo());
+            JOptionMessagem.dialog("Aviso", Mensagem.NENHUM_VEICULO_SELECIONADO);
         }
-        dispose();
     }//GEN-LAST:event_btnSelecionarActionPerformed
 
     private void jtfPlacaKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jtfPlacaKeyReleased
@@ -259,13 +266,19 @@ public class ObterVeiculoListagem extends javax.swing.JDialog {
     }//GEN-LAST:event_jtfPlacaKeyReleased
 
     private void btnAdicionarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAdicionarActionPerformed
-        VeiculoDao veiculoDao = new VeiculoDao();
-        veiculo.setCor(jtfCorServico.getText());
-        veiculo.setMarca(jtfMarcaServico.getText());
-        veiculo.setModelo(jtfModeloServico.getText());
-        veiculo.setPlaca(jtfPlaca.getText());
-        veiculoDao.cadastrar(veiculo);
-        lerVeiculoPesquisado();
+        if (Validacao.campoVazio(jtfCorServico.getText()) == false && Validacao.campoVazio(jtfMarcaServico.getText()) == false && Validacao.campoVazio(jtfModeloServico.getText()) == false && Validacao.campoVazio(jtfPlaca.getText()) == false) {
+
+            VeiculoDao veiculoDao = new VeiculoDao();
+            veiculo.setCor(jtfCorServico.getText());
+            veiculo.setMarca(jtfMarcaServico.getText());
+            veiculo.setModelo(jtfModeloServico.getText());
+            veiculo.setPlaca(jtfPlaca.getText());
+            veiculoDao.cadastrar(veiculo);
+            lerVeiculoPesquisado();
+            
+        }else{
+             JOptionMessagem.dialog("Aviso", Mensagem.CAMPO_VAZIO);
+        }
     }//GEN-LAST:event_btnAdicionarActionPerformed
 
     public static void main(String args[]) {
