@@ -1,26 +1,16 @@
 package estacionamento.view;
 
-import estacionamento.controller.GestaoEntradaController;
-import estacionamento.model.Cliente;
-import estacionamento.model.Servicos;
-import java.awt.Frame;
+import estacionamento.controller.AdicionarServicoController;
 
 public class AdicionarServico extends javax.swing.JDialog {
 
-    Frame parent;
-    Cliente cliente;
-    Servicos servicos;
-    GestaoEntradaController gestaoEntradaController;
+    AdicionarServicoController gestaoEntradaController;
 
     public AdicionarServico(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
-        this.parent = parent;
-        this.servicos = new Servicos();
-        this.cliente = new Cliente();
         initComponents();
-        gestaoEntradaController = new GestaoEntradaController(rootPaneCheckingEnabled, this, parent, jtfCorServico, jtfMarcaServico, jtfModeloServico, jtfPlacaServico, jtfCondutorServico, jtfFracao, jtfPlaca, jtfValor, pnlServico, pnlPlaca);
-        pnlPlaca.setVisible(true);
-        pnlServico.setVisible(false);
+        
+        gestaoEntradaController = new AdicionarServicoController(rootPaneCheckingEnabled, this, parent, jtfCorServico, jtfMarcaServico, jtfModeloServico, jtfPlacaServico, jtfCondutorServico, jtfFracao, jtfPlaca, jtfValor, pnlServico, pnlPlaca, modal);
     }
 
     @SuppressWarnings("unchecked")
@@ -65,6 +55,8 @@ public class AdicionarServico extends javax.swing.JDialog {
         jPanel5.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createTitledBorder(new javax.swing.border.LineBorder(new java.awt.Color(102, 102, 102), 1, true), "", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 11), new java.awt.Color(102, 102, 102)), "Marca", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 11), new java.awt.Color(51, 51, 51))); // NOI18N
         jPanel5.setAutoscrolls(true);
 
+        jtfMarcaServico.setEditable(false);
+
         javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
         jPanel5.setLayout(jPanel5Layout);
         jPanel5Layout.setHorizontalGroup(
@@ -80,6 +72,8 @@ public class AdicionarServico extends javax.swing.JDialog {
 
         jPanel6.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createTitledBorder(new javax.swing.border.LineBorder(new java.awt.Color(102, 102, 102), 1, true), "", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 11), new java.awt.Color(102, 102, 102)), "Modelo", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 11), new java.awt.Color(51, 51, 51))); // NOI18N
         jPanel6.setAutoscrolls(true);
+
+        jtfModeloServico.setEditable(false);
 
         javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
         jPanel6.setLayout(jPanel6Layout);
@@ -97,6 +91,8 @@ public class AdicionarServico extends javax.swing.JDialog {
         jPanel7.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createTitledBorder(new javax.swing.border.LineBorder(new java.awt.Color(102, 102, 102), 1, true), "", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 11), new java.awt.Color(102, 102, 102)), "Cor", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 11), new java.awt.Color(51, 51, 51))); // NOI18N
         jPanel7.setAutoscrolls(true);
 
+        jtfCorServico.setEditable(false);
+
         javax.swing.GroupLayout jPanel7Layout = new javax.swing.GroupLayout(jPanel7);
         jPanel7.setLayout(jPanel7Layout);
         jPanel7Layout.setHorizontalGroup(
@@ -112,6 +108,8 @@ public class AdicionarServico extends javax.swing.JDialog {
 
         jPanel8.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createTitledBorder(new javax.swing.border.LineBorder(new java.awt.Color(102, 102, 102), 1, true), "", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 11), new java.awt.Color(102, 102, 102)), "Placa", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 11), new java.awt.Color(51, 51, 51))); // NOI18N
         jPanel8.setAutoscrolls(true);
+
+        jtfPlacaServico.setEditable(false);
 
         javax.swing.GroupLayout jPanel8Layout = new javax.swing.GroupLayout(jPanel8);
         jPanel8.setLayout(jPanel8Layout);
@@ -211,6 +209,8 @@ public class AdicionarServico extends javax.swing.JDialog {
 
         jPanel13.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createTitledBorder(new javax.swing.border.LineBorder(new java.awt.Color(102, 102, 102), 1, true), "", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 11), new java.awt.Color(102, 102, 102)), "Fração (Minutos)", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 11), new java.awt.Color(51, 51, 51))); // NOI18N
         jPanel13.setAutoscrolls(true);
+
+        jtfFracao.setEditable(false);
 
         javax.swing.GroupLayout jPanel13Layout = new javax.swing.GroupLayout(jPanel13);
         jPanel13.setLayout(jPanel13Layout);
@@ -328,7 +328,6 @@ public class AdicionarServico extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnBuscarPlacaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarPlacaActionPerformed
-        gestaoEntradaController.setCliente(cliente);
         gestaoEntradaController.buscarClientePorPlacaController();
     }//GEN-LAST:event_btnBuscarPlacaActionPerformed
 
@@ -337,8 +336,7 @@ public class AdicionarServico extends javax.swing.JDialog {
     }//GEN-LAST:event_btnTrocarClienteActionPerformed
 
     private void btnAlterarServicoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAlterarServicoActionPerformed
-        gestaoEntradaController.setServicos(servicos);
-        gestaoEntradaController.alterarServicoController();
+     gestaoEntradaController.alterarServicoController();
     }//GEN-LAST:event_btnAlterarServicoActionPerformed
 
     private void btnAdicionarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAdicionarActionPerformed

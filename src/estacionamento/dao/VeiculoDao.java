@@ -95,11 +95,29 @@ public class VeiculoDao extends Dao implements DaoI<Veiculo> {
 
     @Override
     public List<Veiculo> pesquisar(String termo) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+          PreparedStatement stmt;
+        List<Veiculo> veiculos = new ArrayList<>();
+        try {
+            String sql = ("select veiculo.idVeiculo, veiculo.placa, veiculo.cor,veiculo.modelo, veiculo.marca, veiculo.ativado from  clienteComVeiculos inner join cliente on clienteComVeiculos.idCliente = cliente.idCliente inner join veiculo on clienteComVeiculos.idVeiculo = veiculo.idVeiculo where veiculo.modelo like ? ");
+            stmt = conexao.prepareStatement(sql);
+            stmt.setString(1, termo);
+            ResultSet rs;
+            rs = stmt.executeQuery();
+            while (rs.next()) {
+                Veiculo veiculo = new Veiculo();
+                veiculo.setIdVeiculo(rs.getInt(1));
+                veiculo.setPlaca(rs.getString(2));
+                veiculo.setCor(rs.getString(3));
+                veiculo.setModelo(rs.getString(4));
+                veiculo.setMarca(rs.getString(5));
+                veiculo.setAtivado(rs.getInt(6));
+                veiculos.add(veiculo);
+            }
+        } catch (SQLException ex) {
+            System.out.println("Erro ao listar todos os veículos pelo do cliente pelo id:"+ex.getMessage());
+        }
+        return veiculos;
     }
 
-    public List<Veiculo> ListarTodosVeiculosClientes() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
 
 }

@@ -1,33 +1,16 @@
 package estacionamento.view;
 
-import estacionamento.controller.GestaoClienteController;
-import estacionamento.dao.ClienteRelacionamentoVeiculoDao;
-import estacionamento.dao.VeiculoDao;
+import estacionamento.controller.MenuClienteController;
 import estacionamento.model.Cliente;
-import estacionamento.model.Veiculo;
-import java.awt.Frame;
-import java.util.ArrayList;
-import java.util.List;
 import javax.swing.table.DefaultTableModel;
-
 public class MenuCliente extends javax.swing.JDialog {
 
-    Frame parent;
-    Cliente cliente;
-    Veiculo veiculo;
-    List<Veiculo> veiculos;
-    DefaultTableModel modelo;
-    GestaoClienteController gestaoClienteController;
+    MenuClienteController menuClienteController;
 
     public MenuCliente(java.awt.Frame parent, boolean modal, Cliente cliente) {
         super(parent, modal);
-        this.parent = parent;
-        this.cliente = cliente;
-        veiculos = new ArrayList<>();
         initComponents();
-        gestaoClienteController = new GestaoClienteController(parent, rootPaneCheckingEnabled, modelo);
-        modelo = (DefaultTableModel) tblVeiculos.getModel();
-        lerDadosInicias();
+        menuClienteController = new MenuClienteController(parent, cliente, (DefaultTableModel) tblVeiculos.getModel(), tblVeiculos, this, jtfTipoCliente, jtfCondutor, rootPaneCheckingEnabled, btnAdicionarVeiculo, btnRemoverVeiculo);
     }
 
     @SuppressWarnings("unchecked")
@@ -222,28 +205,19 @@ public class MenuCliente extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnContinuarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnContinuarActionPerformed
-        gestaoClienteController.setCliente(cliente);
-        gestaoClienteController.setVeiculo(veiculo);
-        gestaoClienteController.setVeiculos(veiculos);
-        gestaoClienteController.selecionarVeiculoCliente();
+        menuClienteController.selecionarVeiculoCliente();
     }//GEN-LAST:event_btnContinuarActionPerformed
 
     private void btnAdicionarVeiculoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAdicionarVeiculoActionPerformed
-        gestaoClienteController.setCliente(cliente);
-        gestaoClienteController.listarVeiculos();
+        menuClienteController.listarVeiculos();
     }//GEN-LAST:event_btnAdicionarVeiculoActionPerformed
 
     private void btnTrocarClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTrocarClienteActionPerformed
-        ObterClienteListagem obterClienteListagem = new ObterClienteListagem(parent, rootPaneCheckingEnabled, cliente);
-        obterClienteListagem.setVisible(true);
-        lerDadosCliente();
+        menuClienteController.trocarCliente();
     }//GEN-LAST:event_btnTrocarClienteActionPerformed
 
     private void btnRemoverVeiculoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRemoverVeiculoActionPerformed
-        gestaoClienteController.setTblVeiculos(tblVeiculos);
-        gestaoClienteController.setVeiculos(veiculos);
-        gestaoClienteController.setCliente(cliente);
-        gestaoClienteController.removerVeiculo();
+        menuClienteController.removerVeiculo();
     }//GEN-LAST:event_btnRemoverVeiculoActionPerformed
 
     public static void main(String args[]) {
@@ -254,29 +228,19 @@ public class MenuCliente extends javax.swing.JDialog {
                     break;
                 }
             }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(MenuCliente.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(MenuCliente.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(MenuCliente.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | javax.swing.UnsupportedLookAndFeelException ex) {
             java.util.logging.Logger.getLogger(MenuCliente.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
-        //</editor-fold>
 
-        /* Create and display the dialog */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                MenuCliente dialog = new MenuCliente(new javax.swing.JFrame(), true, new Cliente());
-                dialog.addWindowListener(new java.awt.event.WindowAdapter() {
-                    @Override
-                    public void windowClosing(java.awt.event.WindowEvent e) {
-                        System.exit(0);
-                    }
-                });
-                dialog.setVisible(true);
-            }
+        java.awt.EventQueue.invokeLater(() -> {
+            MenuCliente dialog = new MenuCliente(new javax.swing.JFrame(), true, new Cliente());
+            dialog.addWindowListener(new java.awt.event.WindowAdapter() {
+                @Override
+                public void windowClosing(java.awt.event.WindowEvent e) {
+                    System.exit(0);
+                }
+            });
+            dialog.setVisible(true);
         });
     }
 
@@ -296,62 +260,4 @@ public class MenuCliente extends javax.swing.JDialog {
     private javax.swing.JTable tblVeiculos;
     // End of variables declaration//GEN-END:variables
 
-    private void lerDadosInicias() {
-        while (modelo.getRowCount() > 0) {
-            modelo.removeRow(0);
-        }
-        ClienteRelacionamentoVeiculoDao clienteRelacionamentoVeiculoDao = new ClienteRelacionamentoVeiculoDao();
-        if (cliente.getCondutor() != null) {
-            jtfCondutor.setText(cliente.getCondutor());
-            if (cliente.isTipoCliente()) {
-                jtfTipoCliente.setText("Servidor");
-            } else {
-                jtfTipoCliente.setText("Público");
-            }
-            for (Cliente cliente : clienteRelacionamentoVeiculoDao.veiculosPorIdCliente(cliente.getIdCliente())) {
-                for (Veiculo veiculo : cliente.getVeiculo()) {
-                    Object[] linha = new Object[]{
-                        veiculo.getMarca(),
-                        veiculo.getModelo(),
-                        veiculo.getCor(),
-                        veiculo.getPlaca()
-                    };
-                    modelo.addRow(linha);
-                    veiculos.add(veiculo);
-                }
-            }
-
-        }
-        if (cliente.getIdCliente() == 0) {
-            btnAdicionarVeiculo.setEnabled(false);
-            btnRemoverVeiculo.setEnabled(false);
-        }
-    }
-
-    public void lerDadosCliente() {
-        if (cliente.getCondutor() != null) {
-            jtfCondutor.setText(cliente.getCondutor());
-            if (cliente.isTipoCliente()) {
-                jtfTipoCliente.setText("Servidor");
-            } else {
-                jtfTipoCliente.setText("Público");
-            }
-            while (modelo.getRowCount() > 0) {
-                modelo.removeRow(0);
-            }
-            VeiculoDao veiculoDao = new VeiculoDao();
-            veiculos.clear();
-            for (Veiculo veiculo : veiculoDao.listarPorId(cliente.getIdCliente())) {
-                Object[] linha = new Object[]{
-                    veiculo.getMarca(),
-                    veiculo.getModelo(),
-                    veiculo.getCor(),
-                    veiculo.getPlaca()
-                };
-                veiculos.add(veiculo);
-                modelo.addRow(linha);
-            }
-
-        }
-    }
 }

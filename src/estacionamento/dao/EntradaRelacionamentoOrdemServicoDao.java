@@ -28,7 +28,7 @@ public class EntradaRelacionamentoOrdemServicoDao extends Dao {
 
     }
 
-    public List<OrdemServico> buscarRelacionamentosAtivos() {
+    public List<OrdemServico> buscarRelacionamentos() {
         PreparedStatement stmt;
         List<OrdemServico> ordemServicos = new ArrayList<>();
         try {
@@ -45,7 +45,7 @@ public class EntradaRelacionamentoOrdemServicoDao extends Dao {
                     + "geral.idveiculo = veiculo.idveiculo "
                     + "inner join servicos on "
                     + "geral.idservicos = servicos.idservicos "
-                    + "where ordemServico.ativado = 1";
+                    + "order by idOrdemServico";
             stmt = conexao.prepareStatement(sql);
             ResultSet rs = stmt.executeQuery();
             while (rs.next()) {

@@ -209,7 +209,7 @@ public class ClienteRelacionamentoVeiculoDao extends Dao {
         }
     }
 
-    public boolean verificarExistência(int idVeiculo) {
+    public boolean verificarExistencia(int idVeiculo) {
         PreparedStatement stmt;
         try {
             String sql = "select * from clienteComVeiculos where idVeiculo = ?";

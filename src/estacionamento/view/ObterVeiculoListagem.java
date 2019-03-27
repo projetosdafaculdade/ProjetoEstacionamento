@@ -1,75 +1,23 @@
 package estacionamento.view;
 
-import estacionamento.dao.ClienteDao;
-import estacionamento.dao.ClienteRelacionamentoVeiculoDao;
-import estacionamento.dao.VeiculoDao;
+import estacionamento.controller.ObterVeiculoListagemController;
 import estacionamento.model.Cliente;
-import estacionamento.model.PesquisarClienteVeiculo;
-import estacionamento.model.Veiculo;
-import estacionamento.uteis.JOptionMessagem;
-import estacionamento.uteis.Mensagem;
-import estacionamento.uteis.Validacao;
-import java.util.ArrayList;
-import java.util.List;
 import javax.swing.table.DefaultTableModel;
 
 public class ObterVeiculoListagem extends javax.swing.JDialog {
 
-    public Veiculo veiculo;
-    List<PesquisarClienteVeiculo> pesquisarClienteVeiculos;
-    List<Cliente> clientes;
-    DefaultTableModel modelo;
-    Cliente cliente;
-    ClienteDao clienteDao;
-    ClienteRelacionamentoVeiculoDao clienteRelacionamentoVeiculoDao;
+    ObterVeiculoListagemController obterVeiculoListagemController;
 
+    
     public ObterVeiculoListagem(java.awt.Frame parent, boolean modal, Cliente cliente) {
         super(parent, modal);
         initComponents();
-        this.veiculo = new Veiculo();
-        this.cliente = cliente;
-        this.clienteDao = new ClienteDao();
-        this.clienteRelacionamentoVeiculoDao = new ClienteRelacionamentoVeiculoDao();
-        this.modelo = (DefaultTableModel) tblVeiculos.getModel();
+        obterVeiculoListagemController = new ObterVeiculoListagemController(cliente, (DefaultTableModel) tblVeiculos.getModel(), this, jtfPlaca, jtfCorServico, jtfModeloServico, jtfMarcaServico, tblVeiculos, jpnlCor, jpnlMarca, jpnlModelo, btnAdicionar);
         jpnlCor.setVisible(false);
         jpnlMarca.setVisible(false);
-        jpnlModelo.setVisible(false);
-        lerTodosVeiculos();
-
+        jpnlModelo.setVisible(false);   
     }
 
-    private void lerTodosVeiculos() {
-
-        while (modelo.getRowCount() > 0) {
-            modelo.removeRow(0);
-        }
-
-        List<Cliente> clientesSelecionados = clienteRelacionamentoVeiculoDao.listarTodosVeiculosComESemClientes("");
-        List<Cliente> clientesTemp = new ArrayList<>();
-        for (Cliente clienteTemp : clientesSelecionados) {
-
-            for (Veiculo veiculo : clienteTemp.getVeiculo()) {
-                if (veiculo.getAtivado() == 1) {
-                    String cliente;
-                    if (clienteTemp.getCondutor() == null) {
-                        cliente = "Veículo Sem Dono";
-                    } else {
-                        cliente = clienteTemp.getCondutor();
-                    }
-                    Object[] linha = new Object[]{
-                        cliente,
-                        veiculo.getPlaca(),
-                        veiculo.getMarca(),
-                        veiculo.getModelo(),
-                        veiculo.getCor(),};
-                    modelo.addRow(linha);
-                    clientesTemp.add(clienteTemp);
-                }
-
-            }
-        }
-        clientes = clientesTemp;
-    }
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -248,37 +196,15 @@ public class ObterVeiculoListagem extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnSelecionarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSelecionarActionPerformed
-        if (tblVeiculos.getSelectedRow() != -1) {
-            Cliente clienteSelecionado = clientes.get(tblVeiculos.getSelectedRow());
-            if (clienteRelacionamentoVeiculoDao.verificarExistência(clienteSelecionado.getVeiculo().get(0).getIdVeiculo())) {
-                clienteRelacionamentoVeiculoDao.alterarRelacionamento(cliente.getIdCliente(), clienteSelecionado.getVeiculo().get(0).getIdVeiculo());
-            } else {
-                clienteRelacionamentoVeiculoDao.criarRelacionamento(cliente.getIdCliente(), clienteSelecionado.getVeiculo().get(0).getIdVeiculo());
-            }
-            dispose();
-        } else {
-            JOptionMessagem.dialog("Aviso", Mensagem.NENHUM_VEICULO_SELECIONADO);
-        }
+    obterVeiculoListagemController.selecionar();
     }//GEN-LAST:event_btnSelecionarActionPerformed
 
     private void jtfPlacaKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jtfPlacaKeyReleased
-        lerVeiculoPesquisado();
+      obterVeiculoListagemController.lerVeiculoPesquisado();
     }//GEN-LAST:event_jtfPlacaKeyReleased
 
     private void btnAdicionarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAdicionarActionPerformed
-        if (Validacao.campoVazio(jtfCorServico.getText()) == false && Validacao.campoVazio(jtfMarcaServico.getText()) == false && Validacao.campoVazio(jtfModeloServico.getText()) == false && Validacao.campoVazio(jtfPlaca.getText()) == false) {
-
-            VeiculoDao veiculoDao = new VeiculoDao();
-            veiculo.setCor(jtfCorServico.getText());
-            veiculo.setMarca(jtfMarcaServico.getText());
-            veiculo.setModelo(jtfModeloServico.getText());
-            veiculo.setPlaca(jtfPlaca.getText());
-            veiculoDao.cadastrar(veiculo);
-            lerVeiculoPesquisado();
-            
-        }else{
-             JOptionMessagem.dialog("Aviso", Mensagem.CAMPO_VAZIO);
-        }
+        obterVeiculoListagemController.Adicionar();
     }//GEN-LAST:event_btnAdicionarActionPerformed
 
     public static void main(String args[]) {
@@ -341,58 +267,5 @@ public class ObterVeiculoListagem extends javax.swing.JDialog {
     private javax.swing.JTable tblVeiculos;
     // End of variables declaration//GEN-END:variables
 
-    private void lerVeiculoPesquisado() {
-        while (modelo.getRowCount() > 0) {
-            modelo.removeRow(0);
-        }
-        if (jtfPlaca.getText().replaceAll(" ", "").length() <= 3) {
-            clientes = clienteRelacionamentoVeiculoDao.listarTodosVeiculosComESemClientes((jtfPlaca.getText().replaceAll(" ", "")).replaceAll("-", "").trim());
-        } else {
-            clientes = clienteRelacionamentoVeiculoDao.listarTodosVeiculosComESemClientes((jtfPlaca.getText().replaceAll(" ", "")));
-        }
-        List<Cliente> clientesTemp = new ArrayList<>();
-        for (Cliente clienteTemp : clientes) {
-            for (Veiculo veiculoTemp : clienteTemp.getVeiculo()) {
-                if (veiculoTemp.getAtivado() == 1) {
-                    String clienteString;
-                    if (clienteTemp.getCondutor() == null) {
-                        clienteString = "Veículo Sem Dono";
-                    } else {
-                        clienteString = clienteTemp.getCondutor();
-                    }
-                    Object[] linha = new Object[]{
-                        clienteString,
-                        veiculoTemp.getPlaca(),
-                        veiculoTemp.getMarca(),
-                        veiculoTemp.getModelo(),
-                        veiculoTemp.getCor(),
-                        veiculoTemp.getAtivado()
-                    };
-                    modelo.addRow(linha);
-                    clientesTemp.add(clienteTemp);
-                }
-            }
-
-        }
-        if (clientesTemp.isEmpty()) {
-            if (jtfPlaca.getText().replaceAll(" ", "").length() == 8) {
-                btnAdicionar.setEnabled(true);
-                jpnlCor.setVisible(true);
-                jpnlMarca.setVisible(true);
-                jpnlModelo.setVisible(true);
-            } else {
-                btnAdicionar.setEnabled(false);
-                jpnlCor.setVisible(false);
-                jpnlMarca.setVisible(false);
-                jpnlModelo.setVisible(false);
-            }
-        } else {
-            btnAdicionar.setEnabled(false);
-            jpnlCor.setVisible(false);
-            jpnlMarca.setVisible(false);
-            jpnlModelo.setVisible(false);
-        }
-        clientes = clientesTemp;
-    }
-
+ 
 }

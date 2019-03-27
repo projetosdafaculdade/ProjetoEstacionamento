@@ -7,8 +7,10 @@ import estacionamento.model.Veiculo;
 import estacionamento.uteis.JOptionMessagem;
 import estacionamento.uteis.Mensagem;
 import estacionamento.view.MenuCliente;
+import estacionamento.view.ObterClienteListagem;
 import estacionamento.view.ObterVeiculoListagem;
 import java.awt.Frame;
+import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
@@ -16,18 +18,18 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 
-public class GestaoClienteController {
+public class MenuClienteController {
 
-    private JTable tblVeiculos;
-    private MenuCliente menuCliente;
-    private Frame parent;
-    private Cliente cliente;
-    private Veiculo veiculo;
-    private Boolean rootPaneCheckingEnabled;
-    private List<Veiculo> veiculos;
+    Frame parent;
+    Cliente cliente;
+    Veiculo veiculo;
+    List<Veiculo> veiculos;
+    DefaultTableModel modelo;
+    JTable tblVeiculos;
+    MenuCliente menuCliente;
     private JTextField jtfTipoCliente;
     private JTextField jtfCondutor;
-    private DefaultTableModel modelo;
+    private Boolean rootPaneCheckingEnabled;
     private JButton btnAdicionarVeiculo;
     private JButton btnRemoverVeiculo;
 
@@ -40,12 +42,6 @@ public class GestaoClienteController {
             cliente.addVeiculo(veiculo);
             menuCliente.dispose();
         }
-    }
-
-    public void listarVeiculos() {
-        ObterVeiculoListagem obterVeiculoListagem = new ObterVeiculoListagem(parent, rootPaneCheckingEnabled, cliente);
-        obterVeiculoListagem.setVisible(true);
-        lerDadosCliente();
     }
 
     public void removerVeiculo() {
@@ -70,6 +66,7 @@ public class GestaoClienteController {
             } else {
                 jtfTipoCliente.setText("Público");
             }
+            veiculos = new ArrayList<>();
             for (Cliente cliente : clienteRelacionamentoVeiculoDao.veiculosPorIdCliente(cliente.getIdCliente())) {
                 for (Veiculo veiculo : cliente.getVeiculo()) {
                     Object[] linha = new Object[]{
@@ -92,69 +89,65 @@ public class GestaoClienteController {
 
     public void lerDadosCliente() {
         if (cliente.getCondutor() != null) {
-            jtfCondutor.setText(cliente.getCondutor());
-            if (cliente.isTipoCliente()) {
-                jtfTipoCliente.setText("Servidor");
-            } else {
-                jtfTipoCliente.setText("Público");
-            }
-            while (modelo.getRowCount() > 0) {
-                modelo.removeRow(0);
-            }
-            VeiculoDao veiculoDao = new VeiculoDao();
-            veiculos.clear();
-            for (Veiculo veiculo : veiculoDao.listarPorId(cliente.getIdCliente())) {
-                Object[] linha = new Object[]{
-                    veiculo.getMarca(),
-                    veiculo.getModelo(),
-                    veiculo.getCor(),
-                    veiculo.getPlaca()
-                };
-                veiculos.add(veiculo);
-                modelo.addRow(linha);
-            }
+            if (cliente.getIdCliente() != 0) {
+                jtfCondutor.setText(cliente.getCondutor());
+                if (cliente.isTipoCliente()) {
+                    jtfTipoCliente.setText("Servidor");
+                } else {
+                    jtfTipoCliente.setText("Público");
+                }
+                while (modelo.getRowCount() > 0) {
+                    modelo.removeRow(0);
+                }
+                VeiculoDao veiculoDao = new VeiculoDao();
+                veiculos = new ArrayList<>();
+                for (Veiculo veiculo : veiculoDao.listarPorId(cliente.getIdCliente())) {
+                    Object[] linha = new Object[]{
+                        veiculo.getMarca(),
+                        veiculo.getModelo(),
+                        veiculo.getCor(),
+                        veiculo.getPlaca()
+                    };
+                    veiculos.add(veiculo);
+                    modelo.addRow(linha);
+                }
 
+            }
         }
     }
 
-    public GestaoClienteController(Frame parent, Boolean rootPaneCheckingEnabled, DefaultTableModel modelo) {
+    public void trocarCliente() {
+        ObterClienteListagem obterClienteListagem = new ObterClienteListagem(parent, rootPaneCheckingEnabled, cliente);
+        obterClienteListagem.setVisible(true);
+        lerDadosCliente();
+        if (cliente.getIdCliente() != 0) {
+            btnAdicionarVeiculo.setEnabled(true);
+        }
+        if (cliente.getVeiculo() != null) {
+            if (cliente.getVeiculo().size() != 0) {
+                btnRemoverVeiculo.setEnabled(true);
+            }
+        }
+    }
+
+    public void listarVeiculos() {
+        ObterVeiculoListagem obterVeiculoListagem = new ObterVeiculoListagem(parent, rootPaneCheckingEnabled, cliente);
+        obterVeiculoListagem.setVisible(true);
+        lerDadosCliente();
+    }
+
+    public MenuClienteController(Frame parent, Cliente cliente, DefaultTableModel modelo, JTable tblVeiculos, MenuCliente menuCliente, JTextField jtfTipoCliente, JTextField jtfCondutor, Boolean rootPaneCheckingEnabled, JButton btnAdicionarVeiculo, JButton btnRemoverVeiculo) {
         this.parent = parent;
-        this.rootPaneCheckingEnabled = rootPaneCheckingEnabled;
-        this.modelo = modelo;
-    }
-
-
-
-    public Cliente getCliente() {
-        return cliente;
-    }
-
-    public void setCliente(Cliente cliente) {
         this.cliente = cliente;
-    }
-
-    public Veiculo getVeiculo() {
-        return veiculo;
-    }
-
-    public void setVeiculo(Veiculo veiculo) {
-        this.veiculo = veiculo;
-    }
-
-    public List<Veiculo> getVeiculos() {
-        return veiculos;
-    }
-
-    public void setVeiculos(List<Veiculo> veiculos) {
-        this.veiculos = veiculos;
-    }
-
-    public JTable getTblVeiculos() {
-        return tblVeiculos;
-    }
-
-    public void setTblVeiculos(JTable tblVeiculos) {
+        this.modelo = modelo;
         this.tblVeiculos = tblVeiculos;
+        this.menuCliente = menuCliente;
+        this.jtfTipoCliente = jtfTipoCliente;
+        this.jtfCondutor = jtfCondutor;
+        this.rootPaneCheckingEnabled = rootPaneCheckingEnabled;
+        this.btnAdicionarVeiculo = btnAdicionarVeiculo;
+        this.btnRemoverVeiculo = btnRemoverVeiculo;
+        lerDadosInicias();
+        
     }
-
 }

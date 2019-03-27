@@ -170,6 +170,9 @@
               </Layout>
               <SubComponents>
                 <Component class="javax.swing.JTextField" name="jtfMarcaServico">
+                  <Properties>
+                    <Property name="editable" type="boolean" value="false"/>
+                  </Properties>
                 </Component>
               </SubComponents>
             </Container>
@@ -212,6 +215,9 @@
               </Layout>
               <SubComponents>
                 <Component class="javax.swing.JTextField" name="jtfModeloServico">
+                  <Properties>
+                    <Property name="editable" type="boolean" value="false"/>
+                  </Properties>
                 </Component>
               </SubComponents>
             </Container>
@@ -254,6 +260,9 @@
               </Layout>
               <SubComponents>
                 <Component class="javax.swing.JTextField" name="jtfCorServico">
+                  <Properties>
+                    <Property name="editable" type="boolean" value="false"/>
+                  </Properties>
                 </Component>
               </SubComponents>
             </Container>
@@ -293,6 +302,9 @@
               </Layout>
               <SubComponents>
                 <Component class="javax.swing.JFormattedTextField" name="jtfPlacaServico">
+                  <Properties>
+                    <Property name="editable" type="boolean" value="false"/>
+                  </Properties>
                 </Component>
               </SubComponents>
             </Container>
@@ -487,6 +499,9 @@
               </Layout>
               <SubComponents>
                 <Component class="javax.swing.JTextField" name="jtfFracao">
+                  <Properties>
+                    <Property name="editable" type="boolean" value="false"/>
+                  </Properties>
                 </Component>
               </SubComponents>
             </Container>

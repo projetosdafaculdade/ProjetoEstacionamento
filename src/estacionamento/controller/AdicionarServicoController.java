@@ -10,12 +10,12 @@ import estacionamento.uteis.JOptionMessagem;
 import estacionamento.uteis.Mensagem;
 import estacionamento.view.AdicionarServico;
 import estacionamento.view.MenuCliente;
-import estacionamento.view.MenuServicos;
+import estacionamento.view.ObterServicosListagem;
 import java.awt.Frame;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-public class GestaoEntradaController {
+public class AdicionarServicoController {
 
     protected Boolean rootPaneCheckingEnabled;
     AdicionarServico frameAdicionarServico;
@@ -59,8 +59,8 @@ public class GestaoEntradaController {
     }
 
     public void alterarServicoController() {
-        MenuServicos menuServicos = new MenuServicos(parent, rootPaneCheckingEnabled, servicos);
-        menuServicos.setVisible(true);
+        ObterServicosListagem obterServicosListagem = new ObterServicosListagem(parent, rootPaneCheckingEnabled, servicos);
+        obterServicosListagem.setVisible(true);
         lerDados();
     }
 
@@ -108,44 +108,6 @@ public class GestaoEntradaController {
         }
     }
 
-    //<editor-fold desc="Construtores para fácil acesso">
-//    public GestaoServicoController(AdicionarServico frameAdicionarServico, Cliente cliente) {
-//        this.frameAdicionarServico = frameAdicionarServico;
-//        this.cliente = cliente;
-//
-//    }
-//
-//    public GestaoServicoController(AdicionarServico frameAdicionarServico, Servicos servicos, JTextField jtfCorServico, JTextField jtfMarcaServico, JTextField jtfModeloServico, JTextField jtfPlacaServico, JTextField jtfCondutorServico, JTextField jtfValor, JTextField jtfFracao) {
-//        this.frameAdicionarServico = frameAdicionarServico;
-//        this.servicos = servicos;
-//        this.jtfCorServico = jtfCorServico;
-//        this.jtfMarcaServico = jtfMarcaServico;
-//        this.jtfModeloServico = jtfModeloServico;
-//        this.jtfPlacaServico = jtfPlacaServico;
-//        this.jtfCondutorServico = jtfCondutorServico;
-//        this.jtfValor = jtfValor;
-//        this.jtfFracao = jtfFracao;
-//    }
-//
-//    public GestaoServicoController(AdicionarServico frameAdicionarServico, Cliente cliente, JTextField jtfCorServico, JTextField jtfMarcaServico, JTextField jtfModeloServico, JTextField jtfPlacaServico, JTextField jtfCondutorServico, JTextField jtfValor, JTextField jtfFracao) {
-//        this.frameAdicionarServico = frameAdicionarServico;
-//        this.cliente = cliente;
-//        this.jtfCorServico = jtfCorServico;
-//        this.jtfMarcaServico = jtfMarcaServico;
-//        this.jtfModeloServico = jtfModeloServico;
-//        this.jtfPlacaServico = jtfPlacaServico;
-//        this.jtfCondutorServico = jtfCondutorServico;
-//        this.jtfValor = jtfValor;
-//        this.jtfFracao = jtfFracao;
-//    }
-//
-//    public GestaoServicoController(Cliente cliente, JTextField jtfPlaca, JPanel pnlServico, JPanel pnlPlaca) {
-//        this.cliente = cliente;
-//        this.jtfPlaca = jtfPlaca;
-//        this.pnlServico = pnlServico;
-//        this.pnlPlaca = pnlPlaca;
-//    }
-    // </editor-fold>
     //<editor-fold desc="Getters e Setters">
     public Frame getParent() {
         return parent;
@@ -268,8 +230,7 @@ public class GestaoEntradaController {
     }
 
     // </editor-fold>
-
-    public GestaoEntradaController(Boolean rootPaneCheckingEnabled, AdicionarServico frameAdicionarServico, Frame parent, JTextField jtfCorServico, JTextField jtfMarcaServico, JTextField jtfModeloServico, JTextField jtfPlacaServico, JTextField jtfCondutorServico, JTextField jtfFracao, JTextField jtfPlaca, JTextField jtfValor, JPanel pnlServico, JPanel pnlPlaca) {
+    public AdicionarServicoController(Boolean rootPaneCheckingEnabled, AdicionarServico frameAdicionarServico, Frame parent, JTextField jtfCorServico, JTextField jtfMarcaServico, JTextField jtfModeloServico, JTextField jtfPlacaServico, JTextField jtfCondutorServico, JTextField jtfFracao, JTextField jtfPlaca, JTextField jtfValor, JPanel pnlServico, JPanel pnlPlaca, Boolean modal) {
         this.rootPaneCheckingEnabled = rootPaneCheckingEnabled;
         this.frameAdicionarServico = frameAdicionarServico;
         this.parent = parent;
@@ -283,7 +244,14 @@ public class GestaoEntradaController {
         this.jtfValor = jtfValor;
         this.pnlServico = pnlServico;
         this.pnlPlaca = pnlPlaca;
+        this.servicos = new Servicos();
+        if (modal == true) {
+            pnlPlaca.setVisible(true);
+            pnlServico.setVisible(false);
+        } else {
+            pnlPlaca.setVisible(true);
+            pnlServico.setVisible(false);
+        }
     }
-    
-    
+
 }

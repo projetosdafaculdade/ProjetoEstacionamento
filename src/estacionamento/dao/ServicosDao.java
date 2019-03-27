@@ -45,6 +45,7 @@ public class ServicosDao extends Dao implements DaoI<Servicos> {
             stmt.setDouble(2, obj.getValorServidor());
             stmt.setInt(3, obj.getFracao());
             stmt.executeUpdate();
+            return 1;
         } catch (SQLException ex) {
             System.out.println("Erro ao cadastrar servico" + ex.getMessage());
         }
@@ -53,12 +54,39 @@ public class ServicosDao extends Dao implements DaoI<Servicos> {
 
     @Override
     public boolean alterar(Servicos obj) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+            PreparedStatement stmt;
+        try {
+            String sql = ("insert into servicos(valorServidor, valorPublico, fracao, ativado) values (?,?,?,?) where idServicos = ?");
+            stmt = conexao.prepareStatement(sql);
+            ResultSet rs;
+            stmt.setDouble(1, obj.getValorPublico());
+            stmt.setDouble(2, obj.getValorServidor());
+            stmt.setInt(3, obj.getFracao());
+            stmt.setInt(4, obj.getAtivado());
+            stmt.setInt(5, obj.getIdServicos());
+            stmt.executeUpdate();
+            return true;
+        } catch (SQLException ex) {
+            System.out.println("Erro ao cadastrar servico" + ex.getMessage());
+        }
+        return false;
     }
+    
 
     @Override
     public boolean deletar(int id) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+            PreparedStatement stmt;
+        try {
+            String sql = ("delete from servicos where idServicos = ?");
+            stmt = conexao.prepareStatement(sql);
+            ResultSet rs;
+            stmt.setDouble(1, id);
+            stmt.executeUpdate();
+            return true;
+        } catch (SQLException ex) {
+            System.out.println("Erro ao cadastrar servico" + ex.getMessage());
+        }
+        return false;
     }
 
     @Override

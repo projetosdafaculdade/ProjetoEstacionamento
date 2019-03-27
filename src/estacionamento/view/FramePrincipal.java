@@ -1,71 +1,35 @@
 package estacionamento.view;
 
-import estacionamento.dao.EntradaRelacionamentoOrdemServicoDao;
-import estacionamento.dao.OrdemServicoDao;
-import estacionamento.model.OrdemServico;
-import estacionamento.uteis.JOptionMessagem;
-import estacionamento.uteis.Mensagem;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.List;
+
+import estacionamento.controller.FramePrincipalController;
 import javax.swing.table.DefaultTableModel;
 
 public class FramePrincipal extends javax.swing.JFrame {
 
-    List<OrdemServico> ordemServicos;
-    DefaultTableModel modelo;
+    FramePrincipalController framePrincipalController;
+
 
     public FramePrincipal() {
         initComponents();
-        modelo = (DefaultTableModel) tblEstacionamento.getModel();
-        lerDados();
-    }
-
-    private void lerDados() {
-        while (modelo.getRowCount() > 0) {
-            modelo.removeRow(0);
-        }
-        EntradaRelacionamentoOrdemServicoDao entradaRelacionamentoOrdemServicoDao = new EntradaRelacionamentoOrdemServicoDao();
-        ordemServicos = entradaRelacionamentoOrdemServicoDao.buscarRelacionamentosAtivos();
-        List<OrdemServico> ordemServicoTemp = new ArrayList<>();
-        for (OrdemServico ordemServicoSelecionada : ordemServicos) {
-            DateFormat dataFormat = new SimpleDateFormat("dd/MM/yyyy");
-            DateFormat horaFormat = new SimpleDateFormat("HH:mm");
-            if (ordemServicoSelecionada.getCliente().isTipoCliente()) {
-                ordemServicoSelecionada.setValorServico(ordemServicoSelecionada.getServico().getValorServidor());
-            } else {
-                ordemServicoSelecionada.setValorServico(ordemServicoSelecionada.getServico().getValorPublico());
-            }
-            Object[] linha = new Object[]{
-                ordemServicoSelecionada.getCliente().getCondutor(),
-                ordemServicoSelecionada.getCliente().getVeiculo().get(0).getMarca(),
-                ordemServicoSelecionada.getCliente().getVeiculo().get(0).getModelo(),
-                ordemServicoSelecionada.getCliente().getVeiculo().get(0).getCor(),
-                ordemServicoSelecionada.getCliente().getVeiculo().get(0).getPlaca(),
-                dataFormat.format(ordemServicoSelecionada.getDataTimeEntrada()),
-                horaFormat.format(ordemServicoSelecionada.getDataTimeEntrada()),
-                ordemServicoSelecionada.getValorServico()
-            };
-
-            modelo.addRow(linha);
-            ordemServicoTemp.add(ordemServicoSelecionada);
-        }
-        ordemServicos = ordemServicoTemp;
+        framePrincipalController = new FramePrincipalController((DefaultTableModel) tblEstacionamento.getModel(), tblEstacionamento, this, jrdTodos, lblValor);
+        framePrincipalController.lerDados();
     }
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        buttonGroup1 = new javax.swing.ButtonGroup();
         jScrollPane1 = new javax.swing.JScrollPane();
         tblEstacionamento = new javax.swing.JTable();
         jPanel1 = new javax.swing.JPanel();
-        btnFinalizar = new javax.swing.JButton();
         btnAdicionar = new javax.swing.JButton();
-        jMenuBar1 = new javax.swing.JMenuBar();
-        jMenu1 = new javax.swing.JMenu();
-        jMenu2 = new javax.swing.JMenu();
+        btnFinalizar = new javax.swing.JButton();
+        jLabel1 = new javax.swing.JLabel();
+        jrdEstacionamento = new javax.swing.JRadioButton();
+        jrdTodos = new javax.swing.JRadioButton();
+        jLabel2 = new javax.swing.JLabel();
+        lblValor = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(null);
@@ -75,20 +39,40 @@ public class FramePrincipal extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Cliente", "Marca", "Modelo", "Cor", "Placa", "Data entrada", "Hora entrada", "Valor Hora"
+                "Ativo", "Cliente", "Marca", "Modelo", "Cor", "Placa", "Data entrada", "Hora entrada", "Valor Hora", "Fração"
             }
-        ));
-        jScrollPane1.setViewportView(tblEstacionamento);
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, false, false, false, false, false
+            };
 
-        getContentPane().add(jScrollPane1);
-        jScrollPane1.setBounds(0, 0, 820, 400);
-
-        btnFinalizar.setText("Finalizar");
-        btnFinalizar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnFinalizarActionPerformed(evt);
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
             }
         });
+        jScrollPane1.setViewportView(tblEstacionamento);
+        if (tblEstacionamento.getColumnModel().getColumnCount() > 0) {
+            tblEstacionamento.getColumnModel().getColumn(0).setResizable(false);
+            tblEstacionamento.getColumnModel().getColumn(1).setMinWidth(200);
+            tblEstacionamento.getColumnModel().getColumn(1).setPreferredWidth(150);
+        }
+
+        getContentPane().add(jScrollPane1);
+        jScrollPane1.setBounds(10, 10, 820, 400);
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 250, Short.MAX_VALUE)
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 390, Short.MAX_VALUE)
+        );
+
+        getContentPane().add(jPanel1);
+        jPanel1.setBounds(820, 0, 250, 390);
 
         btnAdicionar.setText("Adicionar entrada");
         btnAdicionar.addActionListener(new java.awt.event.ActionListener() {
@@ -96,60 +80,70 @@ public class FramePrincipal extends javax.swing.JFrame {
                 btnAdicionarActionPerformed(evt);
             }
         });
+        getContentPane().add(btnAdicionar);
+        btnAdicionar.setBounds(40, 430, 177, 30);
 
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(btnAdicionar, javax.swing.GroupLayout.DEFAULT_SIZE, 177, Short.MAX_VALUE)
-                    .addComponent(btnFinalizar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap(63, Short.MAX_VALUE))
-        );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(80, 80, 80)
-                .addComponent(btnAdicionar)
-                .addGap(18, 18, 18)
-                .addComponent(btnFinalizar)
-                .addContainerGap(246, Short.MAX_VALUE))
-        );
+        btnFinalizar.setText("Finalizar");
+        btnFinalizar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnFinalizarActionPerformed(evt);
+            }
+        });
+        getContentPane().add(btnFinalizar);
+        btnFinalizar.setBounds(330, 430, 177, 30);
 
-        getContentPane().add(jPanel1);
-        jPanel1.setBounds(830, 10, 250, 390);
+        jLabel1.setText("Valor Total por hora:");
+        getContentPane().add(jLabel1);
+        jLabel1.setBounds(640, 450, 120, 20);
 
-        jMenu1.setText("Excluir");
-        jMenuBar1.add(jMenu1);
+        buttonGroup1.add(jrdEstacionamento);
+        jrdEstacionamento.setSelected(true);
+        jrdEstacionamento.setText("No Estacionamento");
+        jrdEstacionamento.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jrdEstacionamentoActionPerformed(evt);
+            }
+        });
+        getContentPane().add(jrdEstacionamento);
+        jrdEstacionamento.setBounds(710, 420, 120, 23);
 
-        jMenu2.setText("Editar");
-        jMenuBar1.add(jMenu2);
+        buttonGroup1.add(jrdTodos);
+        jrdTodos.setText("Todos");
+        jrdTodos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jrdTodosActionPerformed(evt);
+            }
+        });
+        getContentPane().add(jrdTodos);
+        jrdTodos.setBounds(650, 420, 55, 23);
 
-        setJMenuBar(jMenuBar1);
+        jLabel2.setText("Filtro:");
+        getContentPane().add(jLabel2);
+        jLabel2.setBounds(610, 420, 40, 20);
 
-        setSize(new java.awt.Dimension(1071, 463));
+        lblValor.setText("R$ 0,00");
+        getContentPane().add(lblValor);
+        lblValor.setBounds(750, 450, 50, 20);
+
+        setSize(new java.awt.Dimension(857, 515));
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnFinalizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFinalizarActionPerformed
-
-        if (tblEstacionamento.getSelectedRow() != -1) {
-            OrdemServico ordemServico = ordemServicos.get(tblEstacionamento.getSelectedRow());
-            FinalizarServicoAberto finalizarServico = new FinalizarServicoAberto(this, rootPaneCheckingEnabled, ordemServico);
-            finalizarServico.setVisible(true);
-            lerDados();
-        } else {
-            JOptionMessagem.dialog("Aviso", Mensagem.NENHUMA_ENTRADA_NA_OFICINA_SELECIONADA);
-        }
+        framePrincipalController.finalizarServico();
     }//GEN-LAST:event_btnFinalizarActionPerformed
 
     private void btnAdicionarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAdicionarActionPerformed
-        AdicionarServico adicionarServico = new AdicionarServico(this, rootPaneCheckingEnabled);
-        adicionarServico.setVisible(true);
-        lerDados();
+        framePrincipalController.adicionarServico();
     }//GEN-LAST:event_btnAdicionarActionPerformed
+
+    private void jrdTodosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jrdTodosActionPerformed
+        framePrincipalController.lerDados();
+    }//GEN-LAST:event_jrdTodosActionPerformed
+
+    private void jrdEstacionamentoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jrdEstacionamentoActionPerformed
+        framePrincipalController.lerDados();
+    }//GEN-LAST:event_jrdEstacionamentoActionPerformed
 
     public static void main(String args[]) {
         try {
@@ -159,17 +153,10 @@ public class FramePrincipal extends javax.swing.JFrame {
                     break;
                 }
             }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(FramePrincipal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(FramePrincipal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(FramePrincipal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | javax.swing.UnsupportedLookAndFeelException ex) {
             java.util.logging.Logger.getLogger(FramePrincipal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
-        //</editor-fold>
-        //</editor-fold>
+       
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
@@ -182,11 +169,14 @@ public class FramePrincipal extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAdicionar;
     private javax.swing.JButton btnFinalizar;
-    private javax.swing.JMenu jMenu1;
-    private javax.swing.JMenu jMenu2;
-    private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.ButtonGroup buttonGroup1;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JRadioButton jrdEstacionamento;
+    private javax.swing.JRadioButton jrdTodos;
+    private javax.swing.JLabel lblValor;
     private javax.swing.JTable tblEstacionamento;
     // End of variables declaration//GEN-END:variables
 }

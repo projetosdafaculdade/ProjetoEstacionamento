@@ -1,94 +1,20 @@
 package estacionamento.view;
 
-import estacionamento.dao.ClienteDao;
+import estacionamento.controller.ObterClienteListagemController;
 import estacionamento.model.Cliente;
-import estacionamento.uteis.JOptionMessagem;
-import estacionamento.uteis.Mensagem;
-import java.util.ArrayList;
-import java.util.List;
 import javax.swing.table.DefaultTableModel;
 
 public class ObterClienteListagem extends javax.swing.JDialog {
 
-    List<Cliente> clientes;
-    DefaultTableModel modelo;
-    Cliente cliente;
+ 
+    ObterClienteListagemController obterClienteListagemController;
 
     public ObterClienteListagem(java.awt.Frame parent, boolean modal, Cliente cliente) {
         super(parent, modal);
         initComponents();
-        this.cliente = cliente;
-        modelo = (DefaultTableModel) tblClientes.getModel();
-        jpnlTipoDeCliente.setVisible(false);
-        lerTodosClientes();
+        obterClienteListagemController = new ObterClienteListagemController(this,cliente, (DefaultTableModel) tblClientes.getModel(), jtfNome, btnAdicionar, jpnlTipoDeCliente, tblClientes, jrbServidor);
     }
-
-    private void lerCLientePesquisado(String condutor) {
-        while (modelo.getRowCount() > 0) {
-            modelo.removeRow(0);
-        }
-        ClienteDao clienteDao = new ClienteDao();
-        clientes = clienteDao.pesquisar(condutor);
-        List<Cliente> clientesTemp = new ArrayList<>();
-        for (Cliente clienteAtual : clientes) {
-            if (clienteAtual.getAtivado() == 1) {
-                String temp;
-                if (clienteAtual.isTipoCliente()) {
-                    temp = "Servidor";
-                } else {
-                    temp = "Público";
-                }
-                Object[] linha = new Object[]{
-                    clienteAtual.getIdCliente(),
-                    clienteAtual.getCondutor(),
-                    temp
-                };
-                modelo.addRow(linha);
-                clientesTemp.add(clienteAtual);
-            }
-        }
-        if (clientesTemp.isEmpty()) {
-            if (jtfNome.getText().length() != 0) {
-                btnAdicionar.setEnabled(true);
-                jpnlTipoDeCliente.setVisible(true);
-            }
-        } else {
-            btnAdicionar.setEnabled(false);
-            jpnlTipoDeCliente.setVisible(false);
-        }
-        clientes = clientesTemp;
-    }
-
-    private void lerTodosClientes() {
-
-        while (modelo.getRowCount() > 0) {
-            modelo.removeRow(0);
-        }
-        ClienteDao clienteDao = new ClienteDao();
-        clientes = clienteDao.listar();
-        List<Cliente> clientesTemp = new ArrayList<>();
-        if (clientes.size() > 0) {
-            for (int i = 0; clientes.size() > i; i++) {
-                if (clientes.get(i).getAtivado() == 1) {
-                    String temp = "";
-                    if (clientes.get(i).isTipoCliente()) {
-                        temp = "Servidor";
-                    } else {
-                        temp = "Público";
-                    }
-                    Object[] linha = new Object[]{
-                        clientes.get(i).getIdCliente(),
-                        clientes.get(i).getCondutor(),
-                        temp
-                    };
-                    modelo.addRow(linha);
-                    clientesTemp.add(clientes.get(i));
-                }
-            }
-        }
-        clientes = clientesTemp;
-    }
-
+    
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -97,7 +23,7 @@ public class ObterClienteListagem extends javax.swing.JDialog {
         jPanel5 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         tblClientes = new javax.swing.JTable();
-        jButton2 = new javax.swing.JButton();
+        btnSelecionar = new javax.swing.JButton();
         jPanel10 = new javax.swing.JPanel();
         jtfNome = new javax.swing.JTextField();
         btnAdicionar = new javax.swing.JButton();
@@ -135,14 +61,14 @@ public class ObterClienteListagem extends javax.swing.JDialog {
         jPanel5.add(jScrollPane1);
         jScrollPane1.setBounds(13, 86, 627, 330);
 
-        jButton2.setText("Selecionar");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
+        btnSelecionar.setText("Selecionar");
+        btnSelecionar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
+                btnSelecionarActionPerformed(evt);
             }
         });
-        jPanel5.add(jButton2);
-        jButton2.setBounds(253, 422, 143, 23);
+        jPanel5.add(btnSelecionar);
+        btnSelecionar.setBounds(253, 422, 143, 23);
 
         jPanel10.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createTitledBorder(new javax.swing.border.LineBorder(new java.awt.Color(102, 102, 102), 1, true), "", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 11), new java.awt.Color(102, 102, 102)), "Nome", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 11), new java.awt.Color(51, 51, 51))); // NOI18N
         jPanel10.setAutoscrolls(true);
@@ -231,32 +157,16 @@ public class ObterClienteListagem extends javax.swing.JDialog {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        if (tblClientes.getSelectedRow() != -1) {
-            Cliente clienteSelecionado;
-            clienteSelecionado = clientes.get(tblClientes.getSelectedRow());
-            cliente.setIdCliente(clienteSelecionado.getIdCliente());
-            cliente.setCondutor(clienteSelecionado.getCondutor());
-            cliente.setTipoCliente(clienteSelecionado.isTipoCliente());
-            cliente.setValorPagoCliente(clienteSelecionado.getValorPagoCliente());
-            cliente.setAtivado(clienteSelecionado.getAtivado());
-            dispose();
-        } else {
-            JOptionMessagem.dialog("Aviso", Mensagem.NENHUM_CLIENTE_SELECIONADO);
-        }
-    }//GEN-LAST:event_jButton2ActionPerformed
+    private void btnSelecionarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSelecionarActionPerformed
+       obterClienteListagemController.selecionar();
+    }//GEN-LAST:event_btnSelecionarActionPerformed
 
     private void jtfNomeKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jtfNomeKeyReleased
-        lerCLientePesquisado(jtfNome.getText().trim());
+        obterClienteListagemController.lerClientePesquisado(jtfNome.getText().trim());
     }//GEN-LAST:event_jtfNomeKeyReleased
 
     private void btnAdicionarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAdicionarActionPerformed
-            ClienteDao clienteDao = new ClienteDao();
-            Cliente clienteTemp = new Cliente();
-            clienteTemp.setCondutor(jtfNome.getText());
-            clienteTemp.setTipoCliente(jrbServidor.isSelected());
-            clienteDao.cadastrar(clienteTemp);
-            lerCLientePesquisado(jtfNome.getText());
+   obterClienteListagemController.adicionar();
     }//GEN-LAST:event_btnAdicionarActionPerformed
 
     public static void main(String args[]) {
@@ -306,8 +216,8 @@ public class ObterClienteListagem extends javax.swing.JDialog {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAdicionar;
+    private javax.swing.JButton btnSelecionar;
     private javax.swing.ButtonGroup buttonGroup1;
-    private javax.swing.JButton jButton2;
     private javax.swing.JPanel jPanel10;
     private javax.swing.JPanel jPanel5;
     private javax.swing.JScrollPane jScrollPane1;
