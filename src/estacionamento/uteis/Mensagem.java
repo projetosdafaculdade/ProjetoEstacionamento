@@ -17,17 +17,18 @@ public class Mensagem {
     public static String CAMPO_VAZIO = "Por favor, preencha todos os campos!";
 
     public static String VALOR_SERVICO(int horas) {
-        return "O troco do serviço de " + horas + " é:";
+        return "O valor do serviço de " + horas +" horas é:";
     }
 
     public static String VALOR_SERVICO_FRACAO(int horas, int fracao) {
-        return "<html> O troco do serviço de " + horas + "horas<br> e a fração de "+fracao+" minutos é:</html>";
+        return "<html> O valor do serviço de " + horas + " horas<br> e com fração de "+fracao+" minutos é:</html>";
     }
     public static String VALOR_MENOR(double valorServico, double valorPago) {
         return "Valor pago é insuficiente, falta: R$ "+(valorServico-valorPago)+" !";
     }
 
-    public static String RETIRADA_VEICULO(String cliente, String veiculo) {
-        return cliente + " retirou o veículo " + veiculo + " da oficina!";
+    public static String RETIRADA_VEICULO(String cliente, String veiculo,double troco) {
+        return cliente + " retirou o veículo " + veiculo + " da oficina!"
+                + "\nValor do troco: R$ "+troco;
     }
 }

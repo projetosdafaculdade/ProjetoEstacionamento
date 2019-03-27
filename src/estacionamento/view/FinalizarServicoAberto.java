@@ -47,8 +47,6 @@ public class FinalizarServicoAberto extends javax.swing.JDialog {
         jPanel2 = new javax.swing.JPanel();
         jtfData = new javax.swing.JFormattedTextField();
         jButton1 = new javax.swing.JButton();
-        jLabel1 = new javax.swing.JLabel();
-        lblValor = new javax.swing.JLabel();
         pnlTroco = new javax.swing.JPanel();
         valorDoServico = new javax.swing.JLabel();
         lblValorServico = new javax.swing.JLabel();
@@ -115,8 +113,6 @@ public class FinalizarServicoAberto extends javax.swing.JDialog {
             }
         });
 
-        jLabel1.setText("Valor total:");
-
         javax.swing.GroupLayout pnlFinalizarLayout = new javax.swing.GroupLayout(pnlFinalizar);
         pnlFinalizar.setLayout(pnlFinalizarLayout);
         pnlFinalizarLayout.setHorizontalGroup(
@@ -125,20 +121,13 @@ public class FinalizarServicoAberto extends javax.swing.JDialog {
                 .addGroup(pnlFinalizarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(pnlFinalizarLayout.createSequentialGroup()
                         .addContainerGap()
-                        .addGroup(pnlFinalizarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(pnlFinalizarLayout.createSequentialGroup()
-                                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(pnlFinalizarLayout.createSequentialGroup()
-                                .addGap(102, 102, 102)
-                                .addComponent(jButton1))))
-                    .addGroup(pnlFinalizarLayout.createSequentialGroup()
-                        .addGap(52, 52, 52)
-                        .addComponent(jLabel1)
+                        .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(lblValor, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(21, Short.MAX_VALUE))
+                        .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(pnlFinalizarLayout.createSequentialGroup()
+                        .addGap(63, 63, 63)
+                        .addComponent(jButton1)))
+                .addContainerGap(27, Short.MAX_VALUE))
         );
         pnlFinalizarLayout.setVerticalGroup(
             pnlFinalizarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -147,12 +136,9 @@ public class FinalizarServicoAberto extends javax.swing.JDialog {
                 .addGroup(pnlFinalizarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(24, 24, 24)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 19, Short.MAX_VALUE)
                 .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(pnlFinalizarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel1)
-                    .addComponent(lblValor, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(25, 25, 25))
         );
 
         getContentPane().add(pnlFinalizar);
@@ -199,25 +185,23 @@ public class FinalizarServicoAberto extends javax.swing.JDialog {
             .addComponent(valorDoServico, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(lblValorServico, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 230, Short.MAX_VALUE)
             .addGroup(pnlTrocoLayout.createSequentialGroup()
-                .addGroup(pnlTrocoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(pnlTrocoLayout.createSequentialGroup()
-                        .addGap(62, 62, 62)
-                        .addComponent(btnFinalizar, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(pnlTrocoLayout.createSequentialGroup()
-                        .addGap(71, 71, 71)
-                        .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(btnFinalizar, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
         pnlTrocoLayout.setVerticalGroup(
             pnlTrocoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnlTrocoLayout.createSequentialGroup()
                 .addComponent(valorDoServico, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(lblValorServico, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnFinalizar))
+                .addComponent(lblValorServico, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 26, Short.MAX_VALUE)
+                .addGroup(pnlTrocoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnFinalizar, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap())
         );
 
         getContentPane().add(pnlTroco);
@@ -235,7 +219,6 @@ public class FinalizarServicoAberto extends javax.swing.JDialog {
             Date datas = formatarData.parse(jtfData.getText());
             this.ordemServico.setDataTimeSaida((horas.getTime() - 10800000) + datas.getTime());
             if (ordemServico.getDataTimeSaida() >= ordemServico.getDataTimeEntrada()) {
-                double valorPago = Double.parseDouble((jtfValorPago.getText().replaceAll("\\.", "")).replaceAll(",", "."));
                 long longDoServico = ordemServico.getDataTimeSaida() - ordemServico.getDataTimeEntrada();
                 int horasNoEstacionamento = (int) (longDoServico / Calcular.HorasEmMilisegundos(1));
                 long minutosNoEstacionamentoLong = (mod(longDoServico, Calcular.HorasEmMilisegundos(1)));
@@ -245,8 +228,10 @@ public class FinalizarServicoAberto extends javax.swing.JDialog {
                     horasNoEstacionamento = horasNoEstacionamento + 1;
                     valorDoServico.setText(Mensagem.VALOR_SERVICO_FRACAO(horasNoEstacionamento, ordemServico.getServico().getFracao()));
                 }
-                valorServicoTemp = (horasNoEstacionamento * ordemServico.getValorServico());   
-                lblValor.setText(valorServicoTemp);
+                valorServicoTemp = (horasNoEstacionamento * ordemServico.getValorServico());
+                lblValorServico.setText(String.valueOf(valorServicoTemp));
+                pnlTroco.setVisible(true);
+                pnlFinalizar.setVisible(false);
             }
         } catch (ParseException ex) {
             System.out.println("Erro ao formatar horário de finalização de serviço:" + ex.getMessage());
@@ -255,13 +240,20 @@ public class FinalizarServicoAberto extends javax.swing.JDialog {
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void btnFinalizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFinalizarActionPerformed
-        OrdemServicoDao ordemServicoDao = new OrdemServicoDao();
-        ordemServico.setValorServico(valorServicoTemp);
-        ordemServico.setAtivado(0);
-        if (ordemServicoDao.alterar(ordemServico)) {
-            JOptionMessagem.dialog("Retirada", Mensagem.RETIRADA_VEICULO(ordemServico.getCliente().getCondutor(), ordemServico.getCliente().getVeiculo().get(0).getModelo()));
-            dispose();
+        double valorPago = Double.parseDouble((jtfValorPago.getText().replaceAll("\\.", "")).replaceAll(",", "."));
+        if (valorServicoTemp <= valorPago) {
+
+            OrdemServicoDao ordemServicoDao = new OrdemServicoDao();
+            ordemServico.setValorServico(valorServicoTemp);
+            ordemServico.setAtivado(0);
+            if (ordemServicoDao.alterar(ordemServico)) {
+                JOptionMessagem.dialog("Retirada", Mensagem.RETIRADA_VEICULO(ordemServico.getCliente().getCondutor(), ordemServico.getCliente().getVeiculo().get(0).getModelo(), (valorPago - ordemServico.getValorServico())));
+                dispose();
+            }
+        } else {
+            JOptionMessagem.dialog("Aviso", Mensagem.VALOR_MENOR(valorServicoTemp, valorPago));
         }
+
     }//GEN-LAST:event_btnFinalizarActionPerformed
 
     public static void main(String args[]) {
@@ -306,14 +298,12 @@ public class FinalizarServicoAberto extends javax.swing.JDialog {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnFinalizar;
     private javax.swing.JButton jButton1;
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JFormattedTextField jtfData;
     private javax.swing.JFormattedTextField jtfHora;
     private javax.swing.JFormattedTextField jtfValorPago;
-    private javax.swing.JLabel lblValor;
     private javax.swing.JLabel lblValorServico;
     private javax.swing.JPanel pnlFinalizar;
     private javax.swing.JPanel pnlTroco;
