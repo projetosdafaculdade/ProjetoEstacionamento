@@ -32,11 +32,10 @@ public class FramePrincipal extends javax.swing.JFrame {
         for (OrdemServico ordemServicoSelecionada : ordemServicos) {
             DateFormat dataFormat = new SimpleDateFormat("dd/MM/yyyy");
             DateFormat horaFormat = new SimpleDateFormat("HH:mm");
-            double valorHora;
             if (ordemServicoSelecionada.getCliente().isTipoCliente()) {
-                valorHora = ordemServicoSelecionada.getServico().getValorServidor();
+                ordemServicoSelecionada.setValorServico(ordemServicoSelecionada.getServico().getValorServidor());
             } else {
-                valorHora = ordemServicoSelecionada.getServico().getValorPublico();
+                ordemServicoSelecionada.setValorServico(ordemServicoSelecionada.getServico().getValorPublico());
             }
             Object[] linha = new Object[]{
                 ordemServicoSelecionada.getCliente().getCondutor(),
@@ -46,7 +45,7 @@ public class FramePrincipal extends javax.swing.JFrame {
                 ordemServicoSelecionada.getCliente().getVeiculo().get(0).getPlaca(),
                 dataFormat.format(ordemServicoSelecionada.getDataTimeEntrada()),
                 horaFormat.format(ordemServicoSelecionada.getDataTimeEntrada()),
-                valorHora
+                ordemServicoSelecionada.getValorServico()
             };
 
             modelo.addRow(linha);
@@ -135,20 +134,14 @@ public class FramePrincipal extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnFinalizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFinalizarActionPerformed
+
         if (tblEstacionamento.getSelectedRow() != -1) {
             OrdemServico ordemServico = ordemServicos.get(tblEstacionamento.getSelectedRow());
             FinalizarServicoAberto finalizarServico = new FinalizarServicoAberto(this, rootPaneCheckingEnabled, ordemServico);
             finalizarServico.setVisible(true);
-            OrdemServicoDao ordemServicoDao = new OrdemServicoDao();
-            if (ordemServico.getDataTimeSaida() >= ordemServico.getDataTimeEntrada()) {
-                ordemServico.setAtivado(0);
-                if (ordemServicoDao.alterar(ordemServico)) {
-                    JOptionMessagem.dialog("Retirada", Mensagem.RETIRADA_VEICULO(ordemServico.getCliente().getCondutor(), ordemServico.getCliente().getVeiculo().get(0).getModelo()));
-                    lerDados();
-                }
-            }
+            lerDados();
         } else {
-            JOptionMessagem.dialog("Aviso", Mensagem.NENHUM_SERVICO_SELECIONADO);
+            JOptionMessagem.dialog("Aviso", Mensagem.NENHUMA_ENTRADA_NA_OFICINA_SELECIONADA);
         }
     }//GEN-LAST:event_btnFinalizarActionPerformed
 
