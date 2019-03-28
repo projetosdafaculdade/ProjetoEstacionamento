@@ -191,7 +191,7 @@ public class FinalizarServicoAberto extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnContinuarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnContinuarActionPerformed
-        finalizarServicoAbertoControl.continuarFinalização();
+        finalizarServicoAbertoControl.continuarFinalizacao();
     }//GEN-LAST:event_btnContinuarActionPerformed
 
     private void btnFinalizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFinalizarActionPerformed

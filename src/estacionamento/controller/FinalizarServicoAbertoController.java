@@ -16,6 +16,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import static sun.util.calendar.CalendarUtils.mod;
 
+
 public class FinalizarServicoAbertoController {
 
     Frame parent;
@@ -30,24 +31,22 @@ public class FinalizarServicoAbertoController {
     JPanel pnlTroco;
     JPanel pnlFinalizar;
 
-    public void continuarFinalização() {
-            SimpleDateFormat formatarData = new SimpleDateFormat("dd/MM/yyyy");
-        SimpleDateFormat formatarhora = new SimpleDateFormat("HH:mm");
+    public void continuarFinalizacao() {
+        SimpleDateFormat formatarData = new SimpleDateFormat("dd/MM/yyyy HH:mm");
         try {
-            Date horas = formatarhora.parse(jtfHora.getText());
-            Date datas = formatarData.parse(jtfData.getText());
-            this.ordemServico.setDataTimeSaida((horas.getTime() - 10800000) + datas.getTime());
-            if (ordemServico.getDataTimeEntrada() - ordemServico.getDataTimeSaida() <= 0) {
-                long longDoServico = ordemServico.getDataTimeSaida() - ordemServico.getDataTimeEntrada();
-                int horasNoEstacionamento = (int) (longDoServico / Calcular.HorasEmMilisegundos(1));
-                long minutosNoEstacionamentoLong = (mod(longDoServico, Calcular.HorasEmMilisegundos(1)));
-                lblInformacao.setText(Mensagem.VALOR_SERVICO(horasNoEstacionamento));
-                int minutosNoEstacionamento = Calcular.milisegundosEmMinutos(minutosNoEstacionamentoLong);
-                if (minutosNoEstacionamento > ordemServico.getServico().getFracao()) {
-                    horasNoEstacionamento = horasNoEstacionamento + 1;
-                    lblInformacao.setText(Mensagem.VALOR_SERVICO_FRACAO(horasNoEstacionamento, ordemServico.getServico().getFracao()));
+            Date datas = formatarData.parse(jtfData.getText() + " " + jtfHora.getText());
+
+            this.ordemServico.setDataTimeSaida((datas.getTime()));
+            if (Calcular.milisegundosEmSegundos(ordemServico.getDataTimeSaida() - (ordemServico.getDataTimeEntrada())) >= 0) {
+                int minutosDoServico = Calcular.milisegundosEmMinutos(ordemServico.getDataTimeSaida() - ordemServico.getDataTimeEntrada());
+                int quantidadeHorasDoServico = (int) minutosDoServico / 60;
+                int sobraMinutosDoServico = (mod(minutosDoServico, 60));
+                lblInformacao.setText(Mensagem.VALOR_SERVICO(quantidadeHorasDoServico));
+                if (sobraMinutosDoServico >= ordemServico.getServico().getFracao()) {
+                    quantidadeHorasDoServico = quantidadeHorasDoServico + 1;
+                    lblInformacao.setText(Mensagem.VALOR_SERVICO_FRACAO(quantidadeHorasDoServico-1, ordemServico.getServico().getFracao()));
                 }
-                valorServicoTemp = (horasNoEstacionamento * ordemServico.getValorServico());
+                valorServicoTemp = (quantidadeHorasDoServico * ordemServico.getValorServico());
                 lblValorServico.setText("R$ " + String.valueOf(valorServicoTemp));
                 pnlTroco.setVisible(true);
                 pnlFinalizar.setVisible(false);
@@ -83,7 +82,7 @@ public class FinalizarServicoAbertoController {
         }
     }
 
-    public FinalizarServicoAbertoController(Frame parent,JTextField jtfValorPago, JTextField jtfHora, JTextField jtfData, JLabel lblInformacao, JPanel pnlTroco, JPanel pnlFinalizar, OrdemServico ordemServico, JLabel lblValorServico,FinalizarServicoAberto finalizarServicoAberto) {
+    public FinalizarServicoAbertoController(Frame parent, JTextField jtfValorPago, JTextField jtfHora, JTextField jtfData, JLabel lblInformacao, JPanel pnlTroco, JPanel pnlFinalizar, OrdemServico ordemServico, JLabel lblValorServico, FinalizarServicoAberto finalizarServicoAberto) {
         this.parent = parent;
         this.jtfHora = jtfHora;
         this.jtfData = jtfData;

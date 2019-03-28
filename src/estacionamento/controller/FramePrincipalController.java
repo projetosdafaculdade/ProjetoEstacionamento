@@ -67,16 +67,19 @@ public class FramePrincipalController {
                     horaFormat.format(ordemServicoSelecionada.getDataTimeEntrada()),
                     ordemServicoSelecionada.getValorServico(),
                     ordemServicoSelecionada.getServico().getFracao()
-
                 };
+                if (ordemServicoSelecionada.getAtivado() == 0) {
+                    valorTotal = valorTotal + ordemServicoSelecionada.getValorServico();
+                }
 
                 modelo.addRow(linha);
                 ordemServicoTemp.add(ordemServicoSelecionada);
-                valorTotal = valorTotal + ordemServicoSelecionada.getValorServico();
+
             }
         }
         ordemServicos = ordemServicoTemp;
         lblValor.setText("RS " + valorTotal);
+        valorTotal = 0.0;
     }
 
     public FramePrincipalController(DefaultTableModel modelo, JTable tblEstacionamento, Frame framePrincipal, JRadioButton jrd, JLabel lblValor) {

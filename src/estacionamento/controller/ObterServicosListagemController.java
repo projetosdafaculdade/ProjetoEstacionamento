@@ -7,6 +7,7 @@ import estacionamento.uteis.Mensagem;
 import estacionamento.uteis.Validacao;
 import estacionamento.view.ObterServicosListagem;
 import java.awt.Frame;
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JTable;
@@ -53,7 +54,6 @@ public class ObterServicosListagemController {
         if(servicos == null){
             servicos = new Servicos();
         }
-        
         Servicos servicosTemp = servicosList.get(tblServicos.getSelectedRow());
         servicos.setAtivado(servicosTemp.getAtivado());
         servicos.setFracao(servicosTemp.getFracao());

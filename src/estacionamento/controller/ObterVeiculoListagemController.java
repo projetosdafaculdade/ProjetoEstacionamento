@@ -143,12 +143,17 @@ public class ObterVeiculoListagemController {
         if (Validacao.campoVazio(jtfCorServico.getText()) == false && Validacao.campoVazio(jtfMarcaServico.getText()) == false && Validacao.campoVazio(jtfModeloServico.getText()) == false && Validacao.campoVazio(jtfPlaca.getText()) == false) {
 
             VeiculoDao veiculoDao = new VeiculoDao();
+            veiculo = new Veiculo();
             veiculo.setCor(jtfCorServico.getText());
             veiculo.setMarca(jtfMarcaServico.getText());
             veiculo.setModelo(jtfModeloServico.getText());
             veiculo.setPlaca(jtfPlaca.getText());
             veiculoDao.cadastrar(veiculo);
             lerVeiculoPesquisado();
+            jtfCorServico.setText("");
+            jtfMarcaServico.setText("");
+            jtfModeloServico.setText("");
+            jtfPlaca.setText("");
 
         } else {
             JOptionMessagem.dialog("Aviso", Mensagem.CAMPO_VAZIO);

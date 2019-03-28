@@ -11,7 +11,7 @@ public class ObterServicosListagem extends javax.swing.JDialog {
     public ObterServicosListagem(java.awt.Frame parent, boolean modal, Servicos servicos) {
         super(parent, modal);
         initComponents();
-        obterServicosListagemController = new ObterServicosListagemController((DefaultTableModel) tblServicos.getModel(), parent, servicos, jtfFracao, jtfFracao, jtfFracao, rootPaneCheckingEnabled, this, tblServicos);
+        obterServicosListagemController = new ObterServicosListagemController((DefaultTableModel) tblServicos.getModel(), parent, servicos, jtfFracao, jtfValorPublico, jtfValorServidor, rootPaneCheckingEnabled, this, tblServicos);
     }
 
     @SuppressWarnings("unchecked")

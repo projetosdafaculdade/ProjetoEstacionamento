@@ -13,5 +13,10 @@ public class Calcular {
     public static int milisegundosEmMinutos(long milisegundos) {
         return ((int)(milisegundos / 60000));
     }
+    
+    public static int milisegundosEmSegundos(long milisegundos){
+        int segundos = ((int) milisegundos / 1000);
+        return segundos;
+    }
 
 }
